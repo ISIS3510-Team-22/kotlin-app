@@ -1,7 +1,6 @@
-package com.example.exchangeapp.screens.sign_in
+package com.example.exchangeapp.screens.sign_up
 
 import com.example.exchangeapp.INFORMATION_SCREEN
-import com.example.exchangeapp.SIGN_IN_SCREEN
 import com.example.exchangeapp.SIGN_UP_SCREEN
 import com.example.exchangeapp.model.service.AccountService
 import com.example.exchangeapp.screens.ExchangeAppViewModel
@@ -10,11 +9,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(
+class SignUpViewModel @Inject constructor(
     private val accountService: AccountService
 ) : ExchangeAppViewModel() {
     val email = MutableStateFlow("")
     val password = MutableStateFlow("")
+    val confirmPassword = MutableStateFlow("")
+
 
     fun updateEmail(newEmail: String) {
         email.value = newEmail
@@ -24,15 +25,18 @@ class SignInViewModel @Inject constructor(
         password.value = newPassword
     }
 
-    fun onSignInClick(openAndPopUp: (String, String) -> Unit) {
-        launchCatching {
-            accountService.signIn(email.value, password.value)
-            openAndPopUp(INFORMATION_SCREEN, SIGN_IN_SCREEN)
-        }
+    fun updateConfirmPassword(newConfirmPassword: String) {
+        confirmPassword.value = newConfirmPassword
     }
 
-    fun onSingUpClick(openAndPopUp: (String, String) -> Unit){
-        openAndPopUp(SIGN_UP_SCREEN, SIGN_IN_SCREEN)
+    fun onSignUpClick(openAndPopUp:(String, String)->Unit){
+        launchCatching {
+            if (password.value != confirmPassword.value){
+                throw Exception("Passwords do not match")
+            }
+            accountService.signUp(email.value, password.value)
+            openAndPopUp(INFORMATION_SCREEN, SIGN_UP_SCREEN)
+        }
     }
 
 }
