@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -59,6 +62,25 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.text.google.fonts)
+    //Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.hilt.navigation.compose)
+    implementation (libs.androidx.hilt.navigation.fragment)
+    implementation (libs.google.firebase.analytics)
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.androidx.core.ktx.v1101)
+    implementation(libs.androidx.lifecycle.runtime.ktx.v261)
+    implementation(libs.androidx.activity.compose.v172)
+    implementation(platform(libs.androidx.compose.bom.v20221000))
+    implementation(libs.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.dagger.hilt.android)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -66,4 +88,9 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+
+    kapt(libs.hilt.compiler)
+    annotationProcessor(libs.dagger.hilt.android)
+
 }
