@@ -72,6 +72,15 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.androidx.core.ktx.v1101)
+    implementation(libs.androidx.lifecycle.runtime.ktx.v261)
+    implementation(libs.androidx.activity.compose.v172)
+    implementation(platform(libs.androidx.compose.bom.v20221000))
+    implementation(libs.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.dagger.hilt.android)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -80,16 +89,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.androidx.core.ktx.v1101)
-    implementation(libs.androidx.lifecycle.runtime.ktx.v261)
-    implementation(libs.androidx.activity.compose.v172)
-    implementation(platform(libs.androidx.compose.bom.v20221000))
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-
-    implementation(libs.hilt.navigation.compose)
-
-    implementation(libs.dagger.hilt.android)
 
     kapt(libs.hilt.compiler)
     annotationProcessor(libs.dagger.hilt.android)
