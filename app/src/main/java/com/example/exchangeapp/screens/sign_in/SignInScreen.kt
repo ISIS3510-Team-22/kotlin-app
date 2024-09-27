@@ -15,9 +15,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -33,8 +36,10 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose.ExchangeAppTheme
+import com.example.compose.backgroundDark
 import com.example.exchangeapp.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInScreen(
     openAndPopUp: (String, String) -> Unit,
@@ -55,15 +60,23 @@ fun SignInScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
 
         ) {
-        Image(painter = (painterResource(R.drawable.asset_1)), contentDescription = "",
-            Modifier.size(128.dp))
+        Image(
+            painter = (painterResource(R.drawable.asset_1)), contentDescription = "",
+            Modifier.size(128.dp)
+        )
 
         Spacer(modifier = Modifier.padding(bottom = 40.dp))
-        TextField(value = email.value, onValueChange = { viewModel.updateEmail(it) })
+        TextField(
+            isError = true,
+            singleLine = true,
+            value = email.value,
+            onValueChange = { viewModel.updateEmail(it) })
         Spacer(modifier = Modifier.padding(top = 20.dp))
 
 
         TextField(
+            isError = true,
+            singleLine = true,
             value = password.value,
             onValueChange = { viewModel.updatePassword(it) },
             visualTransformation = PasswordVisualTransformation()
@@ -71,10 +84,9 @@ fun SignInScreen(
         Spacer(modifier = Modifier.padding(top = 40.dp))
 
 
-        val context = LocalContext.current
         Button(
             onClick = {
-                Toast.makeText(context, "Login unsuccesful", Toast.LENGTH_SHORT).show()
+                viewModel.onSignInClick(openAndPopUp)
             },
             shape = RoundedCornerShape(20),
             colors = ButtonColors(
