@@ -65,7 +65,6 @@ fun NavigationScreen() {
                             selected = selectedItemIndex == index,
                             onClick = {
                                 selectedItemIndex = index
-                                //navcontroller here
                             },
                             label = { Text(item.title) },
                             icon = {
@@ -83,9 +82,28 @@ fun NavigationScreen() {
                 }
             }
         ) {
-
+            when(selectedItemIndex){
+                0 -> HomeScreen()
+                1 -> EmailScreen()
+                2 -> ProfileScreen()
+            }
 
         }
     }
 
+}
+
+@Composable
+fun HomeScreen() {
+    Text("Home Screen Content")
+}
+
+@Composable
+fun EmailScreen() {
+    Text("Email Screen Content")
+}
+
+@Composable
+fun ProfileScreen() {
+    Text("Profile Screen Content")
 }
