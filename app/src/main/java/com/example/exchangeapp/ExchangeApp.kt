@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.ExchangeAppTheme
 import com.example.exchangeapp.screens.sign_in.SignInScreen
+import com.example.exchangeapp.screens.splash.SplashScreen
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -26,7 +27,7 @@ fun ExchangeApp(){
             Scaffold { innerPaddingModifier ->
                 NavHost(
                     navController = appState.navController,
-                    startDestination = SIGN_IN_SCREEN,
+                    startDestination = SPLASH_SCREEN,
                     modifier = Modifier.padding(innerPaddingModifier)
                 ){
                     exchangeGraph(appState)
@@ -57,7 +58,7 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState){
     }
 
     composable(SPLASH_SCREEN){
-
+        SplashScreen(openAndPopUp = {route, popUp->appState.navigateAndPopUp(route, popUp)})
     }
 
 
