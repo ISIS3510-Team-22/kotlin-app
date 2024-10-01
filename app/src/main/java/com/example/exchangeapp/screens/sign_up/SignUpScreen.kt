@@ -1,4 +1,4 @@
-package com.example.exchangeapp.screens.sign_in
+package com.example.exchangeapp.screens.sign_up
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -43,14 +43,15 @@ import com.example.exchangeapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInScreen(
+fun SignUpScreen(
     openAndPopUp: (String, String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SignInViewModel = hiltViewModel()
+    viewModel: SignUpViewModel = hiltViewModel()
 ) {
 
     val email = viewModel.email.collectAsState()
     val password = viewModel.password.collectAsState()
+    val confirmPassword = viewModel.confirmPassword.collectAsState()
 
     Column(
         modifier = modifier
@@ -62,18 +63,15 @@ fun SignInScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
 
         ) {
-        Image(
-            painter = (painterResource(R.drawable.asset_1)), contentDescription = "",
-            Modifier.size(128.dp)
-        )
 
-        Spacer(modifier = Modifier.padding(bottom = 40.dp))
+        Spacer(modifier = Modifier.padding(bottom = 30.dp))
         TextField(
             isError = false,
             singleLine = true,
             value = email.value,
-            onValueChange = { viewModel.updateEmail(it) })
-        Spacer(modifier = Modifier.padding(top = 20.dp))
+            onValueChange = { viewModel.updateEmail(it) },
+            placeholder = { Text("Email") })
+        Spacer(modifier = Modifier.padding(top = 30.dp))
 
 
         TextField(
@@ -81,14 +79,25 @@ fun SignInScreen(
             singleLine = true,
             value = password.value,
             onValueChange = { viewModel.updatePassword(it) },
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            placeholder = { Text("Password") }
         )
-        Spacer(modifier = Modifier.padding(top = 40.dp))
+        Spacer(modifier = Modifier.padding(top = 30.dp))
+
+        TextField(
+            isError = false,
+            singleLine = true,
+            value = confirmPassword.value,
+            onValueChange = { viewModel.updateConfirmPassword(it) },
+            visualTransformation = PasswordVisualTransformation(),
+            placeholder = { Text("Confirm Password") }
+        )
+        Spacer(modifier = Modifier.padding(top = 50.dp))
 
 
         Button(
             onClick = {
-                viewModel.onSignInClick(openAndPopUp)
+                viewModel.onSignUpClick(openAndPopUp)
             },
             shape = RoundedCornerShape(20),
             colors = ButtonColors(
@@ -98,17 +107,10 @@ fun SignInScreen(
                 MaterialTheme.colorScheme.secondary
             )
         ) {
-            Text(stringResource(R.string.sign_in_text), fontSize = 18.sp)
+            Text(stringResource(R.string.sign_up), fontSize = 18.sp)
 
         }
 
-        TextButton(
-            onClick = {viewModel.onSignUpClick(openAndPopUp)}
-        ) {
-            Text(textDecoration = TextDecoration.Underline,
-                color = MaterialTheme.colorScheme.onPrimary,
-                text=stringResource(R.string.sign_up_text))
-        }
     }
 
 }

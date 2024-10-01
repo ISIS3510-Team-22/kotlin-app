@@ -2,5 +2,7 @@
     <string name="app_name">ExchangeApp</string>
     <string name="sign_in_text">Sign in</string>
     <string name="failed_sign_in_text">Sign in failed</string>
+    <string name="sign_up_text">Don\'t have an account? Sign up!</string>
+    <string name="sign_up">Sign up!</string>
 
 </resources>

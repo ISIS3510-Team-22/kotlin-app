@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.ExchangeAppTheme
 import com.example.exchangeapp.screens.sign_in.SignInScreen
+import com.example.exchangeapp.screens.sign_up.SignUpScreen
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,6 +54,7 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState){
     }
 
     composable(SIGN_UP_SCREEN){
+        SignUpScreen(openAndPopUp = {route, popUp->appState.navigateAndPopUp(route, popUp)})
 
     }
 
