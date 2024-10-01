@@ -19,9 +19,9 @@ import com.example.exchangeapp.screens.sign_up.SignUpScreen
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun ExchangeApp(){
+fun ExchangeApp() {
     ExchangeAppTheme {
-        Surface (color = MaterialTheme.colorScheme.background){
+        Surface(color = MaterialTheme.colorScheme.background) {
             val appState = rememberAppState()
 
             Scaffold { innerPaddingModifier ->
@@ -29,7 +29,7 @@ fun ExchangeApp(){
                     navController = appState.navController,
                     startDestination = SIGN_IN_SCREEN,
                     modifier = Modifier.padding(innerPaddingModifier)
-                ){
+                ) {
                     exchangeGraph(appState)
                 }
             }
@@ -44,21 +44,21 @@ fun rememberAppState(navController: NavHostController = rememberNavController())
         ExchangeAppState(navController)
     }
 
-fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState){
-    composable (INFORMATION_SCREEN){
+fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
+    composable(INFORMATION_SCREEN) {
     }
 
-    composable(SIGN_IN_SCREEN){
-        SignInScreen(openAndPopUp = {route, popUp->appState.navigateAndPopUp(route, popUp)})
-
-    }
-
-    composable(SIGN_UP_SCREEN){
-        SignUpScreen(openAndPopUp = {route, popUp->appState.navigateAndPopUp(route, popUp)})
+    composable(SIGN_IN_SCREEN) {
+        SignInScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
 
     }
 
-    composable(SPLASH_SCREEN){
+    composable(SIGN_UP_SCREEN) {
+        SignUpScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+
+    }
+
+    composable(SPLASH_SCREEN) {
 
     }
 
