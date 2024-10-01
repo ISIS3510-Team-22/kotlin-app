@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -43,7 +42,7 @@ fun SplashScreen(
 
             autoplay = true,
             loop = false,
-            speed = 1f,
+            speed = 2f,
             useFrameInterpolation = false,
 //            playMode = Mode.FORWARD,
             //modifier = Modifier.background(Color.LightGray)
