@@ -25,7 +25,7 @@ fun ExchangeApp(){
             Scaffold { innerPaddingModifier ->
                 NavHost(
                     navController = appState.navController,
-                    startDestination = SIGN_IN_SCREEN,
+                    startDestination = CHAT_PREVIEW_SCREEN,
                     modifier = Modifier.padding(innerPaddingModifier)
                 ){
                     exchangeGraph(appState)
@@ -56,6 +56,17 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState){
 
     composable(SPLASH_SCREEN){
 
+    }
+
+    composable(CHAT_PREVIEW_SCREEN) {
+        ChatPreviewScreen { contactName ->
+            appState.navController.navigate("$CHAT_SCREEN/$contactName")
+        }
+    }
+
+    composable("$CHAT_SCREEN/{contactName}") { backStackEntry ->
+        val contactName = backStackEntry.arguments?.getString("contactName") ?: "Unknown"
+        ChatScreen(contactName = contactName)
     }
 
 
