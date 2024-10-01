@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.material3)
     //Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
