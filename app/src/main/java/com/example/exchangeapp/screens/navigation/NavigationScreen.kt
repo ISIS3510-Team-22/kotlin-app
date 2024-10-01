@@ -1,5 +1,6 @@
 package com.example.exchangeapp.screens.navigation
 
+import android.annotation.SuppressLint
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
@@ -12,6 +13,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,12 +36,12 @@ val items = listOf(
         unselectedIcon = Icons.Outlined.Home
     ),
     BottomNavItem(
-        title = "Home",
+        title = "Email",
         selectedIcon = Icons.Filled.Email,
         unselectedIcon = Icons.Outlined.Email
     ),
     BottomNavItem(
-        title = "Home",
+        title = "Person",
         selectedIcon = Icons.Filled.Person,
         unselectedIcon = Icons.Outlined.Person
     )
@@ -47,6 +49,7 @@ val items = listOf(
 )
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NavigationScreen() {
     var selectedItemIndex by rememberSaveable {
@@ -64,6 +67,7 @@ fun NavigationScreen() {
                                 selectedItemIndex = index
                                 //navcontroller here
                             },
+                            label = { Text(item.title) },
                             icon = {
                                 Icon(
                                     imageVector = if (index == selectedItemIndex) {
@@ -79,6 +83,7 @@ fun NavigationScreen() {
                 }
             }
         ) {
+
 
         }
     }
