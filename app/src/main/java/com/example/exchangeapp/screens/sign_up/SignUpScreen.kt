@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -22,6 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,7 +61,11 @@ fun SignUpScreen(
             singleLine = true,
             value = email.value,
             onValueChange = { viewModel.updateEmail(it) },
-            placeholder = { Text("Email") })
+            placeholder = { Text("Email") },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next
+            ),
+        )
         Spacer(modifier = Modifier.padding(top = 30.dp))
 
 
@@ -68,7 +75,11 @@ fun SignUpScreen(
             value = password.value,
             onValueChange = { viewModel.updatePassword(it) },
             visualTransformation = PasswordVisualTransformation(),
-            placeholder = { Text("Password") }
+            placeholder = { Text("Password") },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Next
+            )
         )
         Spacer(modifier = Modifier.padding(top = 30.dp))
 
@@ -78,7 +89,11 @@ fun SignUpScreen(
             value = confirmPassword.value,
             onValueChange = { viewModel.updateConfirmPassword(it) },
             visualTransformation = PasswordVisualTransformation(),
-            placeholder = { Text("Confirm Password") }
+            placeholder = { Text("Confirm Password") },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done
+            )
         )
         Spacer(modifier = Modifier.padding(top = 50.dp))
 

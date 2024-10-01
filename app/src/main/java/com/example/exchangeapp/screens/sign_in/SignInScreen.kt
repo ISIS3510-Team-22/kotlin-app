@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -26,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -65,7 +68,9 @@ fun SignInScreen(
             isError = false,
             singleLine = true,
             value = email.value,
-            onValueChange = { viewModel.updateEmail(it) })
+            onValueChange = { viewModel.updateEmail(it) },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next))
         Spacer(modifier = Modifier.padding(top = 20.dp))
 
 
@@ -74,7 +79,11 @@ fun SignInScreen(
             singleLine = true,
             value = password.value,
             onValueChange = { viewModel.updatePassword(it) },
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done
+            )
         )
         Spacer(modifier = Modifier.padding(top = 40.dp))
 
