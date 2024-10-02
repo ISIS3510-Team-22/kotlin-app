@@ -1,5 +1,6 @@
 package com.example.exchangeapp.screens.sign_up
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,9 +37,14 @@ import com.example.exchangeapp.R
 @Composable
 fun SignUpScreen(
     openAndPopUp: (String, String) -> Unit,
+    popUp: ()-> Unit,
     modifier: Modifier = Modifier,
     viewModel: SignUpViewModel = hiltViewModel()
 ) {
+
+    BackHandler {
+        popUp()
+    }
 
     val email = viewModel.email.collectAsState()
     val password = viewModel.password.collectAsState()
