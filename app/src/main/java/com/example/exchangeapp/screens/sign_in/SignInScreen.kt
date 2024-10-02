@@ -69,6 +69,7 @@ fun SignInScreen(
             singleLine = true,
             value = email.value,
             onValueChange = { viewModel.updateEmail(it) },
+            placeholder = { Text("Email") },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next))
         Spacer(modifier = Modifier.padding(top = 20.dp))
@@ -79,6 +80,7 @@ fun SignInScreen(
             singleLine = true,
             value = password.value,
             onValueChange = { viewModel.updatePassword(it) },
+            placeholder = {Text("Password")},
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
