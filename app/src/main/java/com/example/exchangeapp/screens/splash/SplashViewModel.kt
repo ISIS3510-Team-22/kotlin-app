@@ -1,7 +1,7 @@
 package com.example.exchangeapp.screens.splash
 
 
-import com.example.exchangeapp.INFORMATION_SCREEN
+import com.example.exchangeapp.NAVIGATION_SCREEN
 import com.example.exchangeapp.SIGN_IN_SCREEN
 import com.example.exchangeapp.SPLASH_SCREEN
 import com.example.exchangeapp.model.service.AccountService
@@ -15,7 +15,7 @@ class SplashViewModel @Inject constructor(
 ) : ExchangeAppViewModel() {
 
     fun onAppStart(openAndPopUp: (String, String) -> Unit) {
-        if (accountService.hasUser()) openAndPopUp(INFORMATION_SCREEN, SPLASH_SCREEN)
+        if (accountService.hasUser()) openAndPopUp(NAVIGATION_SCREEN, SPLASH_SCREEN)
         else openAndPopUp(SIGN_IN_SCREEN, SPLASH_SCREEN)
     }
 }
