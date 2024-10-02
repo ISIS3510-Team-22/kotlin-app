@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.ExchangeAppTheme
+import com.example.exchangeapp.screens.navigation.NavigationScreen
 import com.example.exchangeapp.screens.sign_in.SignInScreen
 import com.example.exchangeapp.screens.splash.SplashScreen
 
@@ -45,7 +46,8 @@ fun rememberAppState(navController: NavHostController = rememberNavController())
     }
 
 fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState){
-    composable (INFORMATION_SCREEN){
+    composable (NAVIGATION_SCREEN){
+        NavigationScreen()
     }
 
     composable(SIGN_IN_SCREEN){
