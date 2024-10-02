@@ -27,7 +27,7 @@ fun ExchangeApp(){
             Scaffold { innerPaddingModifier ->
                 NavHost(
                     navController = appState.navController,
-                    startDestination = INFORMATION_SCREEN,
+                    startDestination = NAVIGATION_SCREEN,
                     modifier = Modifier.padding(innerPaddingModifier)
                 ){
                     exchangeGraph(appState)
