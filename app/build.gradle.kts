@@ -81,6 +81,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.dagger.hilt.android)
+    implementation(libs.androidx.material.icons.extended)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
