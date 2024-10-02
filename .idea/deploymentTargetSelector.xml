@@ -7,7 +7,7 @@
         <DropdownSelection timestamp="2024-10-02T02:38:09.836922400Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Leo\.android\avd\Resizable_Experimental_API_34.avd" />
+              <DeviceId pluginId="Default" identifier="serial=192.168.101.150:43401;connection=ada28772" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -15,7 +15,7 @@
           <targets>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="Default" identifier="serial=157.253.94.130:43977;connection=d76d289e" />
+                <DeviceId pluginId="Default" identifier="serial=192.168.101.150:45567;connection=0a421d6f" />
               </handle>
             </Target>
             <Target type="DEFAULT_BOOT">
