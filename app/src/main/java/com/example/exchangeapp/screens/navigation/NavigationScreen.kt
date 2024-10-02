@@ -1,21 +1,17 @@
 package com.example.exchangeapp.screens.navigation
 
+//import androidx.compose.material.icons.outlined.Anchor
 import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Anchor
+import androidx.compose.material.icons.automirrored.filled.StickyNote2
+import androidx.compose.material.icons.automirrored.outlined.StickyNote2
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.outlined.Anchor
 import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -29,37 +25,46 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.exchangeapp.R
 
 data class BottomNavItem(
     val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
+    val selectedIcon: ImageVector? = null,
+    val unselectedIcon: ImageVector? = null,
+    val selectedIconRes: Int? = null,  // For drawable resources
+    val unselectedIconRes: Int? = null,
     val hasNews: Boolean = false,
     val badgeCount: Int? = null
 )
 
+
 val items = listOf(
     BottomNavItem(
-        title = "Home",
-        selectedIcon = Icons.Filled.Home,
-        unselectedIcon = Icons.Outlined.Home
+        title = "Info",
+        selectedIcon = Icons.AutoMirrored.Filled.StickyNote2,
+        unselectedIcon = Icons.AutoMirrored.Outlined.StickyNote2
     ),
     BottomNavItem(
-        title = "Email",
+        title = "Chat",
         selectedIcon = Icons.Filled.Email,
         unselectedIcon = Icons.Outlined.Email
     ),
     BottomNavItem(
-        title = "Person",
-        selectedIcon = Icons.Filled.Person,
-        unselectedIcon = Icons.Outlined.Person
+        title = "News",
+        selectedIconRes = R.drawable.world,
+        unselectedIconRes = R.drawable.world
     ),
+
     BottomNavItem(
-        title = "Anchor",
-        selectedIcon = Icons.Filled.Anchor,
-        unselectedIcon = Icons.Outlined.Anchor
+        title = "AI help",
+        selectedIconRes = R.drawable.ai_bot,
+        unselectedIconRes = R.drawable.ai_bot
     )
+
+
+
 
 )
 
@@ -86,29 +91,27 @@ fun NavigationScreen() {
                                 selectedItemIndex = index
                             },
                             label = {
-                                    Text(item.title)
+                                Text(item.title)
                             },
                             icon = {
-                                Icon(
-                                    imageVector = if (index == selectedItemIndex) {
-                                        item.selectedIcon
-                                    } else {
-                                        item.unselectedIcon
-                                    },
-                                    contentDescription = item.title,
-                                    modifier = Modifier.size(iconSize.dp)
+                                MyIcon(
+                                    selectedItemIndex = selectedItemIndex,
+                                    index = index,
+                                    item = item,
+                                    iconSize = iconSize
                                 )
                             }
                         )
+
                     }
                 }
             }
         ) {
             when (selectedItemIndex) {
-                0 -> HomeScreen()
-                1 -> EmailScreen()
-                2 -> ProfileScreen()
-                3 -> AnchorScreen()
+                0 -> InfoScreen()
+                1 -> ChatScreen()
+                2 -> WorldScreen()
+                3 -> AIScreen()
             }
 
         }
@@ -117,21 +120,58 @@ fun NavigationScreen() {
 }
 
 @Composable
-fun HomeScreen() {
-    Text("Home Screen Content")
+fun MyIcon(selectedItemIndex: Int, index: Int, item: BottomNavItem, iconSize: Float){
+    if (selectedItemIndex == index) {
+        // Load selected drawable resource or vector icon
+        if (item.selectedIconRes != null) {
+            Image(
+                painter = painterResource(id = item.selectedIconRes),
+                contentDescription = item.title,
+                modifier = Modifier.size(iconSize.dp)
+            )
+        } else {
+            Icon(
+                imageVector = item.selectedIcon
+                    ?: Icons.Default.Home,  // Fallback icon
+                contentDescription = item.title,
+                modifier = Modifier.size(iconSize.dp)
+            )
+        }
+    } else {
+        // Load unselected drawable resource or vector icon
+        if (item.unselectedIconRes != null) {
+            Image(
+                painter = painterResource(id = item.unselectedIconRes),
+                contentDescription = item.title,
+                modifier = Modifier.size(iconSize.dp)
+            )
+        } else {
+            Icon(
+                imageVector = item.unselectedIcon
+                    ?: Icons.Default.Home,  // Fallback icon
+                contentDescription = item.title,
+                modifier = Modifier.size(iconSize.dp)
+            )
+        }
+    }
 }
 
 @Composable
-fun EmailScreen() {
-    Text("Email Screen Content")
+fun InfoScreen() {
+    Text("Info Screen Content")
 }
 
 @Composable
-fun ProfileScreen() {
-    Text("Profile Screen Content")
+fun ChatScreen() {
+    Text("Chat Screen Content")
 }
 
 @Composable
-fun AnchorScreen() {
-    Text("Anchor Screen Content")
+fun WorldScreen() {
+    Text("World screen")
+}
+
+@Composable
+fun AIScreen() {
+    Text("AI Screen")
 }
