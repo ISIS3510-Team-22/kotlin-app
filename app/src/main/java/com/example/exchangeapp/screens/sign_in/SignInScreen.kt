@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.compose.ExchangeAppTheme
 import com.example.exchangeapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)

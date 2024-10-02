@@ -1,6 +1,6 @@
 package com.example.exchangeapp.screens.sign_up
 
-import com.example.exchangeapp.INFORMATION_SCREEN
+import com.example.exchangeapp.NAVIGATION_SCREEN
 import com.example.exchangeapp.SIGN_UP_SCREEN
 import com.example.exchangeapp.model.service.AccountService
 import com.example.exchangeapp.screens.ExchangeAppViewModel
@@ -35,7 +35,7 @@ class SignUpViewModel @Inject constructor(
                 throw Exception("Passwords do not match")
             }
             accountService.signUp(email.value, password.value)
-            openAndPopUp(INFORMATION_SCREEN, SIGN_UP_SCREEN)
+            openAndPopUp(NAVIGATION_SCREEN, SIGN_UP_SCREEN)
         }
     }
 

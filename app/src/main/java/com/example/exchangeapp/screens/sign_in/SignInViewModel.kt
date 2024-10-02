@@ -1,6 +1,11 @@
 package com.example.exchangeapp.screens.sign_in
 
-import com.example.exchangeapp.INFORMATION_SCREEN
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
+import androidx.compose.ui.res.stringResource
+import com.example.exchangeapp.NAVIGATION_SCREEN
+import com.example.exchangeapp.R
 import com.example.exchangeapp.SIGN_IN_SCREEN
 import com.example.exchangeapp.SIGN_UP_SCREEN
 import com.example.exchangeapp.model.service.AccountService
@@ -27,7 +32,7 @@ class SignInViewModel @Inject constructor(
     fun onSignInClick(openAndPopUp: (String, String) -> Unit) {
         launchCatching {
                 accountService.signIn(email.value, password.value)
-                openAndPopUp(INFORMATION_SCREEN, SIGN_IN_SCREEN)
+                openAndPopUp(NAVIGATION_SCREEN, SIGN_IN_SCREEN)
             }
     }
 
