@@ -1,20 +1,20 @@
-package com.example.exchangeapp
+package com.example.exchangeapp.screens.chat
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.exchangeapp.model.service.module.RequestLocationPermission
 
 // Modelo para el mensaje
 data class Message(val content: String, val isSentByUser: Boolean)
 
 @Composable
 fun ChatScreen(contactName: String) {
+    RequestLocationPermission( { }, { }, { } )
     val messages = remember {
         mutableStateListOf(
             Message("Hello!", isSentByUser = true),

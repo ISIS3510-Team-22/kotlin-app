@@ -14,14 +14,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.ExchangeAppTheme
+import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
+import com.example.exchangeapp.screens.chat.ChatScreen
 import com.example.exchangeapp.screens.navigation.NavigationScreen
 import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
 import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
 import com.example.exchangeapp.screens.splash.SplashScreen
+import com.google.android.gms.location.FusedLocationProviderClient
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun ExchangeApp() {
+fun ExchangeApp(fusedLocationProviderClient: FusedLocationProviderClient){
     ExchangeAppTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
             val appState = rememberAppState()
@@ -51,7 +54,7 @@ fun rememberAppState(navController: NavHostController = rememberNavController())
 
 fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState){
     composable (NAVIGATION_SCREEN){
-        NavigationScreen()
+        NavigationScreen(appState)
     }
 
     composable(SIGN_IN_SCREEN) {
