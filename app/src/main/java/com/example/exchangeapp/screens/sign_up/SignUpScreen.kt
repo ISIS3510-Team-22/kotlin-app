@@ -132,7 +132,10 @@ fun SignUpScreen(
                 placeholder = { Text("Confirm Password") },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Send
+                ),
+                keyboardActions = KeyboardActions(
+                    onSend = { viewModel.onSignUpClick (openAndPopUp) }
                 )
             )
             if (confirmError.value != "") {
