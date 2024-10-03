@@ -15,8 +15,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.ExchangeAppTheme
 import com.example.exchangeapp.screens.navigation.NavigationScreen
-import com.example.exchangeapp.screens.sign_in.SignInScreen
-import com.example.exchangeapp.screens.sign_up.SignUpScreen
+import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
+import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

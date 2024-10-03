@@ -1,9 +1,10 @@
-package com.example.exchangeapp.screens.sign_up
+package com.example.exchangeapp.screens.auth.sign_up
 
 import com.example.exchangeapp.NAVIGATION_SCREEN
 import com.example.exchangeapp.SIGN_UP_SCREEN
 import com.example.exchangeapp.model.service.AccountService
 import com.example.exchangeapp.screens.ExchangeAppViewModel
+import com.example.exchangeapp.screens.auth.ValidationUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -22,39 +23,19 @@ class SignUpViewModel @Inject constructor(
 
     fun updateEmail(newEmail: String) {
         email.value = newEmail
-        val regex = """^[\w-.]+@([\w-]+\.)+[\w-]{2,4}${'$'}""".toRegex()
-        emailError.value =
-            if (!regex.containsMatchIn(email.value)) {
-                "Invalid email"
-            } else {
-                ""
-            }
+        emailError.value = ValidationUtils.validateEmail(newEmail)
         updateEnabled()
-
     }
 
     fun updatePassword(newPassword: String) {
         password.value = newPassword
-        val regex =
-            """^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@${'$'}%^&*-]).{6,}${'$'}""".toRegex()
-        passwordError.value =
-            if (!regex.containsMatchIn(password.value)) {
-                "Min 6 characters and special"
-            } else {
-                ""
-            }
+        passwordError.value = ValidationUtils.validatePassword(newPassword)
         updateEnabled()
-
     }
 
     fun updateConfirmPassword(newConfirmPassword: String) {
         confirmPassword.value = newConfirmPassword
-        confirmError.value =
-            if (confirmPassword.value != password.value) {
-                "Passwords do not match"
-            } else {
-                ""
-            }
+        confirmError.value = ValidationUtils.validatePasswordsMatch(password.value, newConfirmPassword)
         updateEnabled()
     }
 

@@ -1,15 +1,11 @@
-package com.example.exchangeapp.screens.sign_in
+package com.example.exchangeapp.screens.auth.sign_in
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
-import androidx.compose.ui.res.stringResource
 import com.example.exchangeapp.NAVIGATION_SCREEN
-import com.example.exchangeapp.R
 import com.example.exchangeapp.SIGN_IN_SCREEN
 import com.example.exchangeapp.SIGN_UP_SCREEN
 import com.example.exchangeapp.model.service.AccountService
 import com.example.exchangeapp.screens.ExchangeAppViewModel
+import com.example.exchangeapp.screens.auth.ValidationUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -26,26 +22,13 @@ class SignInViewModel @Inject constructor(
 
     fun updateEmail(newEmail: String) {
         email.value = newEmail
-        val regex = """^[\w-.]+@([\w-]+\.)+[\w-]{2,4}${'$'}""".toRegex()
-        emailError.value =
-            if (!regex.containsMatchIn(email.value)) {
-                "Invalid email"
-            } else {
-                ""
-            }
+        emailError.value = ValidationUtils.validateEmail(newEmail)
         updateEnabled()
     }
 
     fun updatePassword(newPassword: String) {
         password.value = newPassword
-        val regex =
-            """^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@${'$'}%^&*-]).{6,}${'$'}""".toRegex()
-        passwordError.value =
-            if (!regex.containsMatchIn(password.value)) {
-                "Min 6 characters and special"
-            } else {
-                ""
-            }
+        passwordError.value = ValidationUtils.validatePassword(newPassword)
         updateEnabled()
 
     }

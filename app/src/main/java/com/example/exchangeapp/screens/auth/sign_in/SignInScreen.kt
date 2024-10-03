@@ -1,4 +1,4 @@
-package com.example.exchangeapp.screens.sign_in
+package com.example.exchangeapp.screens.auth.sign_in
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.compose.ExchangeAppTheme
 import com.example.exchangeapp.R
 
 @SuppressLint("NewApi")
