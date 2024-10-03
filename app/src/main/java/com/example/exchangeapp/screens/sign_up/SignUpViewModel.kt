@@ -15,23 +15,49 @@ class SignUpViewModel @Inject constructor(
     val email = MutableStateFlow("")
     val password = MutableStateFlow("")
     val confirmPassword = MutableStateFlow("")
-
+    val isEnabled = MutableStateFlow(false)
+    val passwordError = MutableStateFlow("")
+    val confirmError = MutableStateFlow("")
+    val emailError = MutableStateFlow("")
 
     fun updateEmail(newEmail: String) {
         email.value = newEmail
+        val regex = """^[\w-.]+@([\w-]+\.)+[\w-]{2,4}${'$'}""".toRegex()
+        emailError.value =
+            if (!regex.containsMatchIn(email.value)) {
+                "Invalid email"
+            } else {
+                ""
+            }
+
     }
 
     fun updatePassword(newPassword: String) {
         password.value = newPassword
+        val regex = """^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@${'$'}%^&*-]).{6,}${'$'}""".toRegex()
+        passwordError.value =
+            if (!regex.containsMatchIn(password.value)) {
+                "Min 6 characters and special"
+            } else {
+                ""
+            }
     }
 
     fun updateConfirmPassword(newConfirmPassword: String) {
         confirmPassword.value = newConfirmPassword
+        confirmError.value =
+            if (confirmPassword.value != password.value) {
+                "Passwords do not match"
+            } else {
+                ""
+            }
+
+        isEnabled.value = passwordError.value.isEmpty() && confirmError.value.isEmpty()
     }
 
-    fun onSignUpClick(openAndPopUp:(String, String)->Unit){
+    fun onSignUpClick(openAndPopUp: (String, String) -> Unit) {
         launchCatching {
-            if (password.value != confirmPassword.value){
+            if (password.value != confirmPassword.value) {
                 throw Exception("Passwords do not match")
             }
             accountService.signUp(email.value, password.value)

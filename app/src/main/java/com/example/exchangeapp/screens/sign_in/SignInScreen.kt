@@ -1,5 +1,6 @@
 package com.example.exchangeapp.screens.sign_in
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -42,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose.ExchangeAppTheme
 import com.example.exchangeapp.R
 
+@SuppressLint("NewApi")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInScreen(
@@ -64,74 +66,82 @@ fun SignInScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
 
         ) {
-        Image(
-            painter = (painterResource(R.drawable.asset_1)), contentDescription = "",
-            Modifier.size(128.dp)
-        )
-
-        Spacer(modifier = Modifier.padding(bottom = 40.dp))
-        TextField(
-            isError = false,
-            singleLine = true,
-            value = email.value,
-            onValueChange = { viewModel.updateEmail(it) },
-            placeholder = { Text("Email") },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next
-            )
-        )
-        Spacer(modifier = Modifier.padding(top = 20.dp))
+        Column (modifier = Modifier.width(280.dp)){
 
 
-        TextField(
-            isError = false,
-            singleLine = true,
-            value = password.value,
-            onValueChange = { viewModel.updatePassword(it) },
-            placeholder = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
-            )
-        )
+            Image(
+                painter = (painterResource(R.drawable.asset_1)), contentDescription = "",
+                modifier = Modifier
+                    .size(128.dp)
+                    .align(Alignment.CenterHorizontally)
 
-        Spacer(modifier = Modifier.padding(top = 70.dp))
-
-        Button(
-            onClick = {
-                viewModel.onSignInClick(openAndPopUp)
-            },
-            shape = RoundedCornerShape(35),
-            colors = ButtonColors(
-                MaterialTheme.colorScheme.onTertiaryContainer,
-                MaterialTheme.colorScheme.primaryContainer,
-                MaterialTheme.colorScheme.secondary,
-                MaterialTheme.colorScheme.secondary
-            ),
-            modifier = Modifier
-                .height(55.dp)
-                .width(130.dp)
-                .shadow(elevation = 5.dp, RoundedCornerShape(35))
-        ) {
-            Text(
-                stringResource(R.string.sign_in_text),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
             )
 
-        }
-        Spacer(modifier = Modifier.padding(top = 10.dp))
-
-        TextButton(
-            onClick = { viewModel.onSignUpClick(open) }
-        ) {
-            Text(
-                textDecoration = TextDecoration.Underline,
-                color = Color.White,
-                text = stringResource(R.string.sign_up_text)
+            Spacer(modifier = Modifier.padding(bottom = 40.dp))
+            TextField(
+                isError = false,
+                singleLine = true,
+                value = email.value,
+                onValueChange = { viewModel.updateEmail(it) },
+                placeholder = { Text("Email") },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                )
             )
+            Spacer(modifier = Modifier.padding(top = 20.dp))
+
+
+            TextField(
+                isError = false,
+                singleLine = true,
+                value = password.value,
+                onValueChange = { viewModel.updatePassword(it) },
+                placeholder = { Text("Password") },
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                )
+            )
+
+            Spacer(modifier = Modifier.padding(top = 70.dp))
+
+            Button(
+                onClick = {
+                    viewModel.onSignInClick(openAndPopUp)
+                },
+                shape = RoundedCornerShape(35),
+                colors = ButtonColors(
+                    MaterialTheme.colorScheme.onTertiaryContainer,
+                    MaterialTheme.colorScheme.primaryContainer,
+                    MaterialTheme.colorScheme.secondary,
+                    MaterialTheme.colorScheme.secondary
+                ),
+                modifier = Modifier
+                    .height(55.dp)
+                    .width(130.dp)
+                    .shadow(elevation = 5.dp, RoundedCornerShape(35))
+                    .align(Alignment.CenterHorizontally)
+            ) {
+                Text(
+                    stringResource(R.string.sign_in_text),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+            }
+            Spacer(modifier = Modifier.padding(top = 10.dp))
+
+            TextButton(
+                onClick = { viewModel.onSignUpClick(open) },
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            ) {
+                Text(
+                    textDecoration = TextDecoration.Underline,
+                    color = Color.White,
+                    text = stringResource(R.string.sign_up_text)
+                )
+            }
         }
     }
-
 }
