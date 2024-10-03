@@ -4,5 +4,6 @@
     <string name="failed_sign_in_text">Sign in failed</string>
     <string name="sign_up_text">Don\'t have an account? Sign up!</string>
     <string name="sign_up">Sign up!</string>
+    <string name="sign_up_image">Sign up image</string>
 
 </resources>

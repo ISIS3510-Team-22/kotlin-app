@@ -2,6 +2,7 @@ package com.example.exchangeapp.screens.auth.sign_up
 
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -74,7 +77,14 @@ fun SignUpScreen(
             modifier = modifier.width(280.dp)
         ) {
 
-            Spacer(modifier = Modifier.padding(bottom = 30.dp))
+            Image(
+                painter = (painterResource(R.drawable.sign_up_logo)), contentDescription = stringResource(R.string.sign_up_image),
+                modifier = Modifier
+                    .size(256.dp)
+                    .align(Alignment.CenterHorizontally)
+
+            )
+            Spacer(modifier = Modifier.padding(bottom = 20.dp))
             TextField(
                 singleLine = true,
                 value = email.value,
@@ -134,7 +144,7 @@ fun SignUpScreen(
                     imeAction = if (isEnabled.value) ImeAction.Send else ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
-                    onSend = { viewModel.onSignUpClick (openAndPopUp) }
+                    onSend = { viewModel.onSignUpClick(openAndPopUp) }
                 )
             )
             if (confirmError.value != "") {
