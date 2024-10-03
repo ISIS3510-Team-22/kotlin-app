@@ -17,6 +17,7 @@ import com.example.compose.ExchangeAppTheme
 import com.example.exchangeapp.screens.navigation.NavigationScreen
 import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
 import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
+import com.example.exchangeapp.screens.splash.SplashScreen
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
