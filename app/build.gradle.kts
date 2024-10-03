@@ -96,6 +96,9 @@ dependencies {
     kapt(libs.hilt.compiler)
     annotationProcessor(libs.dagger.hilt.android)
 
+    implementation(libs.play.services.location)
+    implementation(libs.accompanist.permissions)
+
     implementation(libs.dotlottie.android)
 
 }

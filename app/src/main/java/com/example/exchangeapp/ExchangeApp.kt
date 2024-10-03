@@ -14,14 +14,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.ExchangeAppTheme
+import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
+import com.example.exchangeapp.screens.chat.ChatScreen
 import com.example.exchangeapp.screens.navigation.NavigationScreen
 import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
 import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
 import com.example.exchangeapp.screens.splash.SplashScreen
+import com.google.android.gms.location.FusedLocationProviderClient
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun ExchangeApp() {
+fun ExchangeApp(fusedLocationProviderClient: FusedLocationProviderClient){
     ExchangeAppTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
             val appState = rememberAppState()
@@ -29,7 +32,9 @@ fun ExchangeApp() {
             Scaffold { innerPaddingModifier ->
                 NavHost(
                     navController = appState.navController,
+
                     startDestination = SPLASH_SCREEN,
+
                     modifier = Modifier.padding(innerPaddingModifier)
                 ) {
                     exchangeGraph(appState)
@@ -49,7 +54,7 @@ fun rememberAppState(navController: NavHostController = rememberNavController())
 
 fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState){
     composable (NAVIGATION_SCREEN){
-        NavigationScreen()
+        NavigationScreen(appState)
     }
 
     composable(SIGN_IN_SCREEN) {
@@ -65,6 +70,17 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState){
     composable(SPLASH_SCREEN){
         SplashScreen(openAndPopUp = {route, popUp->appState.navigateAndPopUp(route, popUp)})
 
+    }
+
+    composable(CHAT_PREVIEW_SCREEN) {
+        ChatPreviewScreen { contactName ->
+            appState.navController.navigate("$CHAT_SCREEN/$contactName")
+        }
+    }
+
+    composable("$CHAT_SCREEN/{contactName}") { backStackEntry ->
+        val contactName = backStackEntry.arguments?.getString("contactName") ?: "Unknown"
+        ChatScreen(contactName = contactName)
     }
 
 
