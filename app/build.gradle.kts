@@ -96,4 +96,6 @@ dependencies {
     kapt(libs.hilt.compiler)
     annotationProcessor(libs.dagger.hilt.android)
 
+    implementation(libs.dotlottie.android)
+
 }

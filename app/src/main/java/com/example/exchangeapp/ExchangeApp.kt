@@ -15,21 +15,25 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.ExchangeAppTheme
 import com.example.exchangeapp.screens.navigation.NavigationScreen
-import com.example.exchangeapp.screens.sign_in.SignInScreen
+import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
+import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
+import com.example.exchangeapp.screens.splash.SplashScreen
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun ExchangeApp(){
+fun ExchangeApp() {
     ExchangeAppTheme {
-        Surface (color = MaterialTheme.colorScheme.background){
+        Surface(color = MaterialTheme.colorScheme.background) {
             val appState = rememberAppState()
 
             Scaffold { innerPaddingModifier ->
                 NavHost(
                     navController = appState.navController,
-                    startDestination = CHAT_PREVIEW_SCREEN,
+
+                    startDestination = SPLASH_SCREEN,
+
                     modifier = Modifier.padding(innerPaddingModifier)
-                ){
+                ) {
                     exchangeGraph(appState)
                 }
             }
@@ -44,21 +48,24 @@ fun rememberAppState(navController: NavHostController = rememberNavController())
         ExchangeAppState(navController)
     }
 
+
 fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState){
     composable (NAVIGATION_SCREEN){
         NavigationScreen()
     }
 
-    composable(SIGN_IN_SCREEN){
-        SignInScreen(openAndPopUp = {route, popUp->appState.navigateAndPopUp(route, popUp)})
+    composable(SIGN_IN_SCREEN) {
+        SignInScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }, open={route->appState.navigate(route)})
 
     }
 
-    composable(SIGN_UP_SCREEN){
+    composable(SIGN_UP_SCREEN) {
+        SignUpScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }, popUp = { appState.popUp() })
 
     }
 
     composable(SPLASH_SCREEN){
+        SplashScreen(openAndPopUp = {route, popUp->appState.navigateAndPopUp(route, popUp)})
 
     }
 
