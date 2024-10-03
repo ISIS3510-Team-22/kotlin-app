@@ -29,18 +29,22 @@ class SignUpViewModel @Inject constructor(
             } else {
                 ""
             }
+        updateEnabled()
 
     }
 
     fun updatePassword(newPassword: String) {
         password.value = newPassword
-        val regex = """^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@${'$'}%^&*-]).{6,}${'$'}""".toRegex()
+        val regex =
+            """^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@${'$'}%^&*-]).{6,}${'$'}""".toRegex()
         passwordError.value =
             if (!regex.containsMatchIn(password.value)) {
                 "Min 6 characters and special"
             } else {
                 ""
             }
+        updateEnabled()
+
     }
 
     fun updateConfirmPassword(newConfirmPassword: String) {
@@ -51,8 +55,12 @@ class SignUpViewModel @Inject constructor(
             } else {
                 ""
             }
+        updateEnabled()
+    }
 
-        isEnabled.value = passwordError.value.isEmpty() && confirmError.value.isEmpty()
+    fun updateEnabled() {
+        isEnabled.value =
+            passwordError.value.isEmpty() && confirmError.value.isEmpty() && emailError.value.isEmpty()
     }
 
     fun onSignUpClick(openAndPopUp: (String, String) -> Unit) {

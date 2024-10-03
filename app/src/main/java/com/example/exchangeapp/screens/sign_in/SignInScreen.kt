@@ -56,6 +56,9 @@ fun SignInScreen(
 
     val email = viewModel.email.collectAsState()
     val password = viewModel.password.collectAsState()
+    val emailError = viewModel.emailError.collectAsState()
+    val passwordError = viewModel.passwordError.collectAsState()
+    val isEnabled = viewModel.isEnabled.collectAsState()
 
     Column(
         modifier = modifier
@@ -67,7 +70,7 @@ fun SignInScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
 
         ) {
-        Column (modifier = Modifier.width(280.dp)){
+        Column(modifier = Modifier.width(280.dp)) {
 
 
             Image(
@@ -89,7 +92,16 @@ fun SignInScreen(
                     imeAction = ImeAction.Next
                 )
             )
-            Spacer(modifier = Modifier.padding(top = 20.dp))
+            if (emailError.value != "") {
+                Text(
+                    emailError.value,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.width(280.dp)
+                )
+                Spacer(modifier = Modifier.padding(top = 10.dp))
+            } else {
+                Spacer(modifier = Modifier.padding(top = 30.dp))
+            }
 
 
             TextField(
@@ -101,25 +113,35 @@ fun SignInScreen(
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Send
+                    imeAction = if(isEnabled.value) ImeAction.Send else ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
-                    onSend = { viewModel.onSignInClick (openAndPopUp) }
+                    onSend = { viewModel.onSignInClick(openAndPopUp) }
                 )
             )
 
-            Spacer(modifier = Modifier.padding(top = 70.dp))
+            if (passwordError.value != "") {
+                Text(
+                    passwordError.value,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.width(280.dp)
+                )
+                Spacer(modifier = Modifier.padding(top = 60.dp))
+            } else {
+                Spacer(modifier = Modifier.padding(top = 70.dp))
+            }
 
             Button(
+                enabled = isEnabled.value,
                 onClick = {
                     viewModel.onSignInClick(openAndPopUp)
                 },
                 shape = RoundedCornerShape(35),
                 colors = ButtonColors(
-                    MaterialTheme.colorScheme.onTertiaryContainer,
+                    MaterialTheme.colorScheme.onPrimaryContainer,
                     MaterialTheme.colorScheme.primaryContainer,
-                    MaterialTheme.colorScheme.secondary,
-                    MaterialTheme.colorScheme.secondary
+                    MaterialTheme.colorScheme.tertiary,
+                    MaterialTheme.colorScheme.onTertiary
                 ),
                 modifier = Modifier
                     .height(55.dp)

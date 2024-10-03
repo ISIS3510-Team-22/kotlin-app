@@ -20,24 +20,49 @@ class SignInViewModel @Inject constructor(
 ) : ExchangeAppViewModel() {
     val email = MutableStateFlow("")
     val password = MutableStateFlow("")
+    val emailError = MutableStateFlow("")
+    val passwordError = MutableStateFlow("")
+    val isEnabled = MutableStateFlow(false)
 
     fun updateEmail(newEmail: String) {
         email.value = newEmail
+        val regex = """^[\w-.]+@([\w-]+\.)+[\w-]{2,4}${'$'}""".toRegex()
+        emailError.value =
+            if (!regex.containsMatchIn(email.value)) {
+                "Invalid email"
+            } else {
+                ""
+            }
+        updateEnabled()
     }
 
     fun updatePassword(newPassword: String) {
         password.value = newPassword
+        val regex =
+            """^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@${'$'}%^&*-]).{6,}${'$'}""".toRegex()
+        passwordError.value =
+            if (!regex.containsMatchIn(password.value)) {
+                "Min 6 characters and special"
+            } else {
+                ""
+            }
+        updateEnabled()
+
     }
 
     fun onSignInClick(openAndPopUp: (String, String) -> Unit) {
         launchCatching {
-                accountService.signIn(email.value, password.value)
-                openAndPopUp(NAVIGATION_SCREEN, SIGN_IN_SCREEN)
-            }
+            accountService.signIn(email.value, password.value)
+            openAndPopUp(NAVIGATION_SCREEN, SIGN_IN_SCREEN)
+        }
     }
 
-    fun onSignUpClick(open: (String) -> Unit){
+    fun onSignUpClick(open: (String) -> Unit) {
         open(SIGN_UP_SCREEN)
+    }
+
+    fun updateEnabled() {
+        isEnabled.value = passwordError.value.isEmpty() && emailError.value.isEmpty()
     }
 
 }
