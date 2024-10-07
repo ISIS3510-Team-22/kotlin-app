@@ -8,6 +8,7 @@
     <string name="forgot_password">Forgot your password?</string>
     <string name="recover_text">"Please input your email to send you a recover link."</string>
     <string name="send_email_text">"Send"</string>
+    <string name="bad_credentials_message">"Incorrect credentials, please try again."</string>
 
 
 </resources>

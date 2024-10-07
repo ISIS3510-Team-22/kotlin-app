@@ -1,6 +1,7 @@
 package com.example.exchangeapp.screens.auth.sign_in
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,17 +66,36 @@ fun SignInScreen(
     val errorColor = Color("#e63022".toColorInt())
     val context = LocalContext.current
 
+
+    LaunchedEffect(viewModel.errorMessage.value) {
+        viewModel.errorMessage.value.let { message ->
+            if (message.isNotEmpty()) {
+                val showMsg =
+                    if (message == "The supplied auth credential is incorrect, malformed or has expired.") {
+                        "Incorrect credentials, please try again"
+                    } else {
+                        message
+                    }
+
+                Toast.makeText(context, showMsg, Toast.LENGTH_SHORT).show()
+                // Clear the error message after showing the toast
+                viewModel.errorMessage.value = ""
+
+            }
+        }
+    }
+
     Column(
-        modifier = modifier
+        modifier
             .fillMaxWidth()
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
             .imePadding()
             .background(Color("#0F3048".toColorInt())),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
+        Arrangement.Center,
+        Alignment.CenterHorizontally
 
-        ) {
+    ) {
         Column(modifier = Modifier.width(280.dp)) {
 
 
@@ -139,7 +160,7 @@ fun SignInScreen(
             Button(
                 enabled = isEnabled.value,
                 onClick = {
-                    Toast.makeText(context, "Logging in", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "Logging in", Toast.LENGTH_SHORT).show()
                     viewModel.onSignInClick(openAndPopUp)
                 },
                 shape = RoundedCornerShape(35),
@@ -178,7 +199,7 @@ fun SignInScreen(
             TextButton(
                 onClick = { viewModel.onForgotClick(open) },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
-            ){
+            ) {
                 Text(
                     textDecoration = TextDecoration.Underline,
                     color = Color.White,
@@ -186,5 +207,8 @@ fun SignInScreen(
                 )
             }
         }
+
     }
+
+
 }
