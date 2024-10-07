@@ -112,7 +112,7 @@ fun SignInScreen(
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction = if(isEnabled.value) ImeAction.Send else ImeAction.Done
+                    imeAction = if (isEnabled.value) ImeAction.Send else ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
                     onSend = { viewModel.onSignInClick(openAndPopUp) }
@@ -165,6 +165,17 @@ fun SignInScreen(
                     textDecoration = TextDecoration.Underline,
                     color = Color.White,
                     text = stringResource(R.string.sign_up_text)
+                )
+            }
+
+            TextButton(
+                onClick = { viewModel.onForgotClick(open) },
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            ){
+                Text(
+                    textDecoration = TextDecoration.Underline,
+                    color = Color.White,
+                    text = stringResource(R.string.forgot_password)
                 )
             }
         }
