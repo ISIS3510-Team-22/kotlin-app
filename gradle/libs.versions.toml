@@ -1,8 +1,8 @@
 [versions]
-
+accompanistPermissions = "0.35.0-alpha"
 activityComposeVersion = "1.9.2"
 agp = "8.7.0"
-composeBomVersion = "2024.09.02"
+composeBomVersion = "2024.09.03"
 coreKtxVersion = "1.13.1"
 firebaseAnalytics = "22.1.2"
 firebaseBom = "33.4.0"
@@ -17,16 +17,18 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.2"
-composeBom = "2024.09.02"
+composeBom = "2024.09.03"
 lifecycleRuntimeKtxVersion = "2.8.6"
-uiTextGoogleFonts = "1.7.2"
-navigationRuntimeKtx = "2.8.1"
-navigationCompose = "2.8.1"
+playServicesLocation = "21.3.0"
+uiTextGoogleFonts = "1.7.3"
+navigationRuntimeKtx = "2.8.2"
+navigationCompose = "2.8.2"
 firebaseFirestoreKtx = "25.1.0"
 dotlottieAndroid = "0.5.0"
 
 [libraries]
 
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-activity-compose-v172 = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
 androidx-compose-bom-v20221000 = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -61,6 +63,7 @@ androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navig
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 material3 = { module = "androidx.compose.material3:material3" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 ui = { module = "androidx.compose.ui:ui" }
 ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 

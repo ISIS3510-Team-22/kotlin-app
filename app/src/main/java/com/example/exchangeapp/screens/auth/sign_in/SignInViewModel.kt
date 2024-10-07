@@ -1,5 +1,6 @@
 package com.example.exchangeapp.screens.auth.sign_in
 
+import com.example.exchangeapp.FORGOT_PASSWORD_SCREEN
 import com.example.exchangeapp.NAVIGATION_SCREEN
 import com.example.exchangeapp.SIGN_IN_SCREEN
 import com.example.exchangeapp.SIGN_UP_SCREEN
@@ -42,6 +43,10 @@ class SignInViewModel @Inject constructor(
 
     fun onSignUpClick(open: (String) -> Unit) {
         open(SIGN_UP_SCREEN)
+    }
+
+    fun onForgotClick(open:(String)-> Unit){
+        open(FORGOT_PASSWORD_SCREEN)
     }
 
     fun updateEnabled() {

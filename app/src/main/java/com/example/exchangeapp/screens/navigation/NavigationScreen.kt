@@ -27,7 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.exchangeapp.CHAT_SCREEN
+import com.example.exchangeapp.ExchangeAppState
 import com.example.exchangeapp.R
+import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
 
 data class BottomNavItem(
     val title: String,
@@ -71,7 +74,7 @@ val items = listOf(
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun NavigationScreen() {
+fun NavigationScreen(appState: ExchangeAppState) {
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(0)
     }
@@ -109,7 +112,8 @@ fun NavigationScreen() {
         ) {
             when (selectedItemIndex) {
                 0 -> InfoScreen()
-                1 -> ChatScreen()
+                1 -> ChatPreviewScreen ( {contactName ->
+                    appState.navController.navigate("$CHAT_SCREEN/$contactName")} )
                 2 -> WorldScreen()
                 3 -> AIScreen()
             }
@@ -161,10 +165,6 @@ fun InfoScreen() {
     Text("Info Screen Content")
 }
 
-@Composable
-fun ChatScreen() {
-    Text("Chat Screen Content")
-}
 
 @Composable
 fun WorldScreen() {
