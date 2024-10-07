@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -56,6 +57,7 @@ fun SignUpScreen(
     }
 
     val email = viewModel.email.collectAsState()
+    val name = viewModel.name.collectAsState()
     val password = viewModel.password.collectAsState()
     val confirmPassword = viewModel.confirmPassword.collectAsState()
     val isEnabled = viewModel.isEnabled.collectAsState()
@@ -68,6 +70,7 @@ fun SignUpScreen(
             .fillMaxWidth()
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
+            .imePadding()
             .background(Color("#0F3048".toColorInt())),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -80,11 +83,22 @@ fun SignUpScreen(
             Image(
                 painter = (painterResource(R.drawable.sign_up_logo)), contentDescription = stringResource(R.string.sign_up_image),
                 modifier = Modifier
-                    .size(256.dp)
+                    .size(200.dp)
                     .align(Alignment.CenterHorizontally)
 
             )
-            Spacer(modifier = Modifier.padding(bottom = 20.dp))
+            TextField(
+                isError = false,
+                singleLine = true,
+                value = name.value,
+                onValueChange = { viewModel.updateName(it) },
+                placeholder = { Text("Name") },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                )
+            )
+
+            Spacer(modifier = Modifier.padding(bottom = 30.dp))
             TextField(
                 singleLine = true,
                 value = email.value,

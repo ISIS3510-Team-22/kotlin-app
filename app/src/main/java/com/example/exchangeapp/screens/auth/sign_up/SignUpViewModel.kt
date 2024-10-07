@@ -20,23 +20,28 @@ class SignUpViewModel @Inject constructor(
     val passwordError = MutableStateFlow("")
     val confirmError = MutableStateFlow("")
     val emailError = MutableStateFlow("")
+    val name = MutableStateFlow("")
 
     fun updateEmail(newEmail: String) {
-        email.value = newEmail
+        email.value = newEmail.filter { !it.isWhitespace() }
         emailError.value = ValidationUtils.validateEmail(newEmail)
         updateEnabled()
     }
 
     fun updatePassword(newPassword: String) {
-        password.value = newPassword
+        password.value = newPassword.filter { !it.isWhitespace() }
         passwordError.value = ValidationUtils.validatePassword(newPassword)
         updateEnabled()
     }
 
     fun updateConfirmPassword(newConfirmPassword: String) {
-        confirmPassword.value = newConfirmPassword
+        confirmPassword.value = newConfirmPassword.filter { !it.isWhitespace() }
         confirmError.value = ValidationUtils.validatePasswordsMatch(password.value, newConfirmPassword)
         updateEnabled()
+    }
+
+    fun updateName(newName: String){
+        name.value = newName
     }
 
     fun updateEnabled() {
