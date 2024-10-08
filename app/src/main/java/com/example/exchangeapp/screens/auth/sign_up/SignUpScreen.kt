@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -36,6 +35,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -43,11 +43,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.exchangeapp.R
+import com.example.exchangeapp.screens.CustomTextField
 
 @SuppressLint("NewApi")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -106,32 +108,26 @@ fun SignUpScreen(
                     .animateContentSize()
             )
 
-            TextField(
-                isError = false,
-                singleLine = true,
-                value = name.value,
-                onValueChange = { viewModel.updateName(it) },
-                placeholder = { Text("Name") },
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
-                )
+            CustomTextField(
+                name.value, { viewModel.updateName(it) },
+                ImeAction.Next,
+                "Name",
+                KeyboardType.Text
             )
 
             Spacer(modifier = Modifier.padding(bottom = 30.dp))
-            TextField(
-                singleLine = true,
-                value = email.value,
-                onValueChange = { viewModel.updateEmail(it) },
-                placeholder = { Text("Email") },
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
-                ),
+
+            CustomTextField(
+                email.value,
+                { viewModel.updateEmail(it) },
+                ImeAction.Next, "Email",
+                type = KeyboardType.Email
             )
             if (emailError.value != "") {
                 Text(
                     emailError.value,
                     color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.width(280.dp)
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
                 Spacer(modifier = Modifier.padding(top = 10.dp))
             } else {
@@ -139,24 +135,19 @@ fun SignUpScreen(
             }
 
 
-
-
-            TextField(
-                singleLine = true,
-                value = password.value,
-                onValueChange = { viewModel.updatePassword(it) },
-                visualTransformation = PasswordVisualTransformation(),
-                placeholder = { Text("Password") },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Next
-                )
+            CustomTextField(
+                password.value,
+                { viewModel.updatePassword(it) },
+                ImeAction.Next,
+                placeHolder = "Password",
+                type = KeyboardType.Password,
+                transformation = PasswordVisualTransformation()
             )
             if (passwordError.value != "") {
                 Text(
                     passwordError.value,
                     color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.width(280.dp)
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
                 Spacer(modifier = Modifier.padding(top = 10.dp))
             } else {
@@ -164,28 +155,20 @@ fun SignUpScreen(
             }
 
 
-
-
-            TextField(
-                singleLine = true,
+            CustomTextField(
                 value = confirmPassword.value,
-                onValueChange = { viewModel.updateConfirmPassword(it) },
-                visualTransformation = PasswordVisualTransformation(),
-                placeholder = { Text("Confirm Password") },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = if (isEnabled.value) ImeAction.Send else ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onSend = { viewModel.onSignUpClick(openAndPopUp) }
-                )
+                { viewModel.updateConfirmPassword(it) },
+                placeHolder = "Confirm Password",
+                type = KeyboardType.Password,
+                action = if (isEnabled.value) ImeAction.Send else ImeAction.Done,
+                onSend = { viewModel.onSignUpClick(openAndPopUp) },
+                transformation = PasswordVisualTransformation()
             )
             if (confirmError.value != "") {
-                Text(confirmError.value, color = MaterialTheme.colorScheme.error)
+                Text(confirmError.value,modifier=Modifier.align(Alignment.CenterHorizontally), color = MaterialTheme.colorScheme.error)
             }
 
             Spacer(modifier = Modifier.padding(top = 50.dp))
-
 
             Button(
                 onClick = {

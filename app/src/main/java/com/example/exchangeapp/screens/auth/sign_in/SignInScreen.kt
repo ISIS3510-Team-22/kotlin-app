@@ -21,8 +21,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -30,7 +28,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -52,6 +49,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.exchangeapp.R
+import com.example.exchangeapp.screens.CustomTextField
 
 @SuppressLint("NewApi")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -93,8 +91,12 @@ fun SignInScreen(
                 .imePadding()
         ) {
 
-            val size by animateDpAsState(targetValue = if (isKeyboardPresent) 80.dp else 150.dp)
-            val pad by animateDpAsState(targetValue = if (isKeyboardPresent) 40.dp else 0.dp)
+            val size by animateDpAsState(targetValue = if (isKeyboardPresent) 80.dp else 150.dp,
+                label = ""
+            )
+            val pad by animateDpAsState(targetValue = if (isKeyboardPresent) 40.dp else 0.dp,
+                label = ""
+            )
 
             Spacer(modifier = Modifier.padding(top = pad))
 
@@ -108,21 +110,17 @@ fun SignInScreen(
 
 
             Spacer(modifier = Modifier.padding(bottom = 40.dp))
-            TextField(
-                isError = false,
-                singleLine = true,
-                value = email.value,
-                onValueChange = { viewModel.updateEmail(it) },
-                placeholder = { Text("Email") },
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
-                )
+            CustomTextField(
+                email.value,
+                { viewModel.updateEmail(it) },
+                ImeAction.Next, "Email",
+                type = KeyboardType.Email
             )
             if (emailError.value != "") {
                 Text(
                     emailError.value,
                     color = errorColor,
-                    modifier = Modifier.width(280.dp)
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
                 Spacer(modifier = Modifier.padding(top = 10.dp))
             } else {
@@ -130,27 +128,21 @@ fun SignInScreen(
             }
 
 
-            TextField(
-                isError = false,
-                singleLine = true,
+            CustomTextField(
                 value = password.value,
-                onValueChange = { viewModel.updatePassword(it) },
-                placeholder = { Text("Password") },
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = if (isEnabled.value) ImeAction.Send else ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onSend = { viewModel.onSignInClick(openAndPopUp) }
-                )
+                { viewModel.updatePassword(it) },
+                placeHolder = "Confirm Password",
+                type = KeyboardType.Password,
+                action = if (isEnabled.value) ImeAction.Send else ImeAction.Done,
+                onSend = { viewModel.onSignInClick (openAndPopUp) },
+                transformation = PasswordVisualTransformation()
             )
 
             if (passwordError.value != "") {
                 Text(
                     passwordError.value,
                     color = errorColor,
-                    modifier = Modifier.width(280.dp)
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
 
                 Spacer(modifier = Modifier.padding(top = 10.dp))

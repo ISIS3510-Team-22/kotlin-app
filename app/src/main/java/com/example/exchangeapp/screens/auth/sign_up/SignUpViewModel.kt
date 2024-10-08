@@ -31,22 +31,30 @@ class SignUpViewModel @Inject constructor(
     fun updatePassword(newPassword: String) {
         password.value = newPassword.filter { !it.isWhitespace() }
         passwordError.value = ValidationUtils.validatePassword(newPassword)
+        if (confirmPassword.value.isNotEmpty()) {
+            confirmError.value =
+                ValidationUtils.validatePasswordsMatch(newPassword, confirmPassword.value)
+        }
         updateEnabled()
     }
 
     fun updateConfirmPassword(newConfirmPassword: String) {
         confirmPassword.value = newConfirmPassword.filter { !it.isWhitespace() }
-        confirmError.value = ValidationUtils.validatePasswordsMatch(password.value, newConfirmPassword)
+        confirmError.value =
+            ValidationUtils.validatePasswordsMatch(password.value, newConfirmPassword)
         updateEnabled()
     }
 
-    fun updateName(newName: String){
+    fun updateName(newName: String) {
         name.value = newName
     }
 
     fun updateEnabled() {
         isEnabled.value =
-            passwordError.value.isEmpty() && confirmError.value.isEmpty() && emailError.value.isEmpty()
+            passwordError.value.isEmpty() && confirmError.value.isEmpty() &&
+                    emailError.value.isEmpty() && password.value.isNotEmpty() &&
+                    email.value.isNotEmpty() && confirmPassword.value.isNotEmpty() &&
+                    name.value.isNotEmpty()
     }
 
     fun onSignUpClick(openAndPopUp: (String, String) -> Unit) {
