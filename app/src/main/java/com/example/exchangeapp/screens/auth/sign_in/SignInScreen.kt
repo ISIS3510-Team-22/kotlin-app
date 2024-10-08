@@ -91,10 +91,12 @@ fun SignInScreen(
                 .imePadding()
         ) {
 
-            val size by animateDpAsState(targetValue = if (isKeyboardPresent) 80.dp else 150.dp,
+            val size by animateDpAsState(
+                targetValue = if (isKeyboardPresent) 80.dp else 150.dp,
                 label = ""
             )
-            val pad by animateDpAsState(targetValue = if (isKeyboardPresent) 40.dp else 0.dp,
+            val pad by animateDpAsState(
+                targetValue = if (isKeyboardPresent) 40.dp else 0.dp,
                 label = ""
             )
 
@@ -128,13 +130,15 @@ fun SignInScreen(
             }
 
 
+            val actionPassword = getImeAction(isEnabled.value)
+
             CustomTextField(
                 value = password.value,
                 { viewModel.updatePassword(it) },
                 placeHolder = "Confirm Password",
                 type = KeyboardType.Password,
-                action = if (isEnabled.value) ImeAction.Send else ImeAction.Done,
-                onSend = { viewModel.onSignInClick (openAndPopUp) },
+                action = actionPassword,
+                onSend = { viewModel.onSignInClick(openAndPopUp) },
                 transformation = PasswordVisualTransformation()
             )
 
@@ -149,6 +153,7 @@ fun SignInScreen(
             } else {
                 Spacer(modifier = Modifier.padding(top = 30.dp))
             }
+
 
             Button(
                 enabled = isEnabled.value,
@@ -204,7 +209,7 @@ fun SignInScreen(
 }
 
 @Composable
-fun ToastListener(viewModel: SignInViewModel){
+fun ToastListener(viewModel: SignInViewModel) {
     val context = LocalContext.current
 
 
@@ -225,4 +230,9 @@ fun ToastListener(viewModel: SignInViewModel){
             }
         }
     }
+}
+
+
+fun getImeAction(isEnabled: Boolean): ImeAction {
+    return if (isEnabled) ImeAction.Send else ImeAction.Done
 }
