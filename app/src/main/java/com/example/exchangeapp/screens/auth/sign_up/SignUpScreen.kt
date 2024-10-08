@@ -2,15 +2,21 @@ package com.example.exchangeapp.screens.auth.sign_up
 
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -65,12 +72,17 @@ fun SignUpScreen(
     val confirmError = viewModel.confirmError.collectAsState()
     val emailError = viewModel.emailError.collectAsState()
 
+
+    val imeInsets = WindowInsets.ime
+    val isKeyboardPresent = imeInsets.asPaddingValues().calculateBottomPadding() != 0.0.dp
+
     Column(
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
             .imePadding()
+            .animateContentSize()
             .background(Color("#0F3048".toColorInt())),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -80,13 +92,20 @@ fun SignUpScreen(
             modifier = modifier.width(280.dp)
         ) {
 
-            Image(
-                painter = (painterResource(R.drawable.sign_up_logo)), contentDescription = stringResource(R.string.sign_up_image),
-                modifier = Modifier
-                    .size(200.dp)
-                    .align(Alignment.CenterHorizontally)
 
+            val size by animateDpAsState(targetValue = if (isKeyboardPresent) 100.dp else 200.dp)
+            val pad by animateDpAsState(targetValue = if (isKeyboardPresent) 40.dp else 0.dp)
+
+            Spacer(modifier = Modifier.padding(top = pad))
+            Image(
+                painter = painterResource(R.drawable.sign_up_logo),
+                contentDescription = stringResource(R.string.sign_up_image),
+                modifier = Modifier
+                    .size(size)
+                    .align(Alignment.CenterHorizontally)
+                    .animateContentSize()
             )
+
             TextField(
                 isError = false,
                 singleLine = true,

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -44,7 +45,7 @@ import com.example.exchangeapp.R
 fun ForgotPasswordScreen(
     popUp: () -> Unit,
     viewModel: ForgotPasswordViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val email = viewModel.email.collectAsState()
     val isEnabled = viewModel.isEnabled.collectAsState()
@@ -60,6 +61,7 @@ fun ForgotPasswordScreen(
             .fillMaxWidth()
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
+            .imePadding()
             .background(Color("#0F3048".toColorInt())),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,

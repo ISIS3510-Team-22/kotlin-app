@@ -1,16 +1,20 @@
 package com.example.exchangeapp.screens.auth.sign_in
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.widget.Toast
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,6 +34,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -64,48 +69,43 @@ fun SignInScreen(
     val passwordError = viewModel.passwordError.collectAsState()
     val isEnabled = viewModel.isEnabled.collectAsState()
     val errorColor = Color("#e63022".toColorInt())
-    val context = LocalContext.current
 
 
-    LaunchedEffect(viewModel.errorMessage.value) {
-        viewModel.errorMessage.value.let { message ->
-            if (message.isNotEmpty()) {
-                val showMsg =
-                    if (message == "The supplied auth credential is incorrect, malformed or has expired.") {
-                        "Incorrect credentials, please try again"
-                    } else {
-                        message
-                    }
+    ToastListener(viewModel)
 
-                Toast.makeText(context, showMsg, Toast.LENGTH_SHORT).show()
-                // Clear the error message after showing the toast
-                viewModel.errorMessage.value = ""
-
-            }
-        }
-    }
+    val imeInsets = WindowInsets.ime
+    val isKeyboardPresent = imeInsets.asPaddingValues().calculateBottomPadding() != 0.0.dp
 
     Column(
         modifier
             .fillMaxWidth()
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
-            .imePadding()
+            .animateContentSize()
             .background(Color("#0F3048".toColorInt())),
         Arrangement.Center,
         Alignment.CenterHorizontally
 
     ) {
-        Column(modifier = Modifier.width(280.dp)) {
+        Column(
+            modifier = Modifier
+                .width(280.dp)
+                .imePadding()
+        ) {
 
+            val size by animateDpAsState(targetValue = if (isKeyboardPresent) 80.dp else 150.dp)
+            val pad by animateDpAsState(targetValue = if (isKeyboardPresent) 40.dp else 0.dp)
+
+            Spacer(modifier = Modifier.padding(top = pad))
 
             Image(
-                painter = (painterResource(R.drawable.asset_1)), contentDescription = "",
+                painter = painterResource(R.drawable.asset_1),
+                contentDescription = "",
                 modifier = Modifier
-                    .size(128.dp)
+                    .size(size)
                     .align(Alignment.CenterHorizontally)
-
             )
+
 
             Spacer(modifier = Modifier.padding(bottom = 40.dp))
             TextField(
@@ -152,15 +152,15 @@ fun SignInScreen(
                     color = errorColor,
                     modifier = Modifier.width(280.dp)
                 )
-                Spacer(modifier = Modifier.padding(top = 60.dp))
+
+                Spacer(modifier = Modifier.padding(top = 10.dp))
             } else {
-                Spacer(modifier = Modifier.padding(top = 70.dp))
+                Spacer(modifier = Modifier.padding(top = 30.dp))
             }
 
             Button(
                 enabled = isEnabled.value,
                 onClick = {
-//                    Toast.makeText(context, "Logging in", Toast.LENGTH_SHORT).show()
                     viewModel.onSignInClick(openAndPopUp)
                 },
                 shape = RoundedCornerShape(35),
@@ -209,6 +209,28 @@ fun SignInScreen(
         }
 
     }
+}
+
+@Composable
+fun ToastListener(viewModel: SignInViewModel){
+    val context = LocalContext.current
 
 
+    LaunchedEffect(viewModel.errorMessage.value) {
+        viewModel.errorMessage.value.let { message ->
+            if (message.isNotEmpty()) {
+                val showMsg =
+                    if (message == "The supplied auth credential is incorrect, malformed or has expired.") {
+                        "Incorrect credentials, please try again"
+                    } else {
+                        message
+                    }
+
+                Toast.makeText(context, showMsg, Toast.LENGTH_SHORT).show()
+                // Clear the error message after showing the toast
+                viewModel.errorMessage.value = ""
+
+            }
+        }
+    }
 }
