@@ -1,48 +1,44 @@
 package com.example.exchangeapp.screens.chatpreview
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.example.exchangeapp.screens.chatpreview.ChatPreviewViewModel
 
 @Composable
-fun ChatPreviewScreen(onChatClick: (String) -> Unit) {
-    val contacts = listOf(
-        "John Doe",
-        "Jane Smith",
-        "Alice Johnson",
-        "Bob Lee"
-    )
+fun ChatPreviewScreen(
+    open: (String) -> Unit ,
+    viewModel: ChatPreviewViewModel = hiltViewModel()
+) {
+    val userNames by viewModel.userNames.collectAsState()
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        Text(
-            text = "Chats",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(16.dp)
-        )
+    LazyColumn {
+        items(userNames) { name ->
+            Text(
+                text = name,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .clickable {
 
-        LazyColumn {
-            items(contacts) { contact ->
-                ContactItem(contact = contact, onClick = { onChatClick(contact) })
-            }
+                        viewModel.getMessagesAndSetupChat(name, open)
+
+                    }
+            )
         }
     }
 }
 
-@Composable
-fun ContactItem(contact: String, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() }
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(text = contact, style = MaterialTheme.typography.bodyMedium)
-        Text(text = "Last message preview", style = MaterialTheme.typography.bodySmall)
-    }
-}

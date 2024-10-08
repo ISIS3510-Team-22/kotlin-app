@@ -2,6 +2,7 @@ package com.example.exchangeapp.screens.navigation
 
 //import androidx.compose.material.icons.outlined.Anchor
 import android.annotation.SuppressLint
+import android.provider.ContactsContract.Data
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -27,10 +28,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.example.exchangeapp.CHAT_SCREEN
 import com.example.exchangeapp.ExchangeAppState
 import com.example.exchangeapp.R
 import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
+import com.example.exchangeapp.screens.chatpreview.ChatPreviewViewModel
 
 data class BottomNavItem(
     val title: String,
@@ -112,8 +115,7 @@ fun NavigationScreen(appState: ExchangeAppState) {
         ) {
             when (selectedItemIndex) {
                 0 -> InfoScreen()
-                1 -> ChatPreviewScreen ( {contactName ->
-                    appState.navController.navigate("$CHAT_SCREEN/$contactName")} )
+                1 -> ChatPreviewScreen (open = {route -> appState.navigate(route)})
                 2 -> WorldScreen()
                 3 -> AIScreen()
             }
