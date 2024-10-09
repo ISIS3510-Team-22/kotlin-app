@@ -7,6 +7,7 @@ const val CHAT_SCREEN = "ChatScreen"
 const val CHAT_PREVIEW_SCREEN = "ChatPreviewScreen"
 const val NAVIGATION_SCREEN = "InformationScreen"
 const val FORGOT_PASSWORD_SCREEN = "ForgotPasswordScreen"
+const val INFO_SCREEN = "InfoScreen"
 
 const val LOCALHOST = ""
 const val AUTH_PORT = 9099

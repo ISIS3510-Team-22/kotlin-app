@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.ExchangeAppTheme
+import com.example.exchangeapp.screens.Information.InformationScreen
 import com.example.exchangeapp.screens.auth.forgot_password.ForgotPasswordScreen
 import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
 import com.example.exchangeapp.screens.chat.ChatScreen
@@ -98,6 +99,12 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
     composable(FORGOT_PASSWORD_SCREEN) {
         ForgotPasswordScreen(
             popUp = { appState.popUp() }
+        )
+    }
+
+    composable(INFO_SCREEN){
+        InformationScreen(
+            openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }
         )
     }
 }

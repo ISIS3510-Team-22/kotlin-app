@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.example.exchangeapp.CHAT_SCREEN
 import com.example.exchangeapp.ExchangeAppState
 import com.example.exchangeapp.R
+import com.example.exchangeapp.screens.Information.InformationScreen
 import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
 
 data class BottomNavItem(
@@ -111,7 +112,7 @@ fun NavigationScreen(appState: ExchangeAppState) {
             }
         ) {
             when (selectedItemIndex) {
-                0 -> InfoScreen()
+                0 -> InformationScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
                 1 -> ChatPreviewScreen ( {contactName ->
                     appState.navController.navigate("$CHAT_SCREEN/$contactName")} )
                 2 -> WorldScreen()
