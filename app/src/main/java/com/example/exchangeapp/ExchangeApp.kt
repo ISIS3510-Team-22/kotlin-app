@@ -24,6 +24,7 @@ import com.example.exchangeapp.screens.chat.ChatScreen
 import com.example.exchangeapp.screens.navigation.NavigationScreen
 import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
 import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
+import com.example.exchangeapp.screens.menu.MenuScreen
 import com.example.exchangeapp.screens.splash.SplashScreen
 import com.google.android.gms.location.FusedLocationProviderClient
 
@@ -106,5 +107,9 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
         InformationScreen(
             openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }
         )
+    }
+
+    composable(MENU_SCREEN){
+        MenuScreen(clearAndNavigate = { route -> appState.clearAndNavigate(route) })
     }
 }
