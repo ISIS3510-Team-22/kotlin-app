@@ -1,6 +1,7 @@
 package com.example.exchangeapp.screens.auth.sign_up
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
@@ -21,29 +22,27 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
@@ -78,6 +77,8 @@ fun SignUpScreen(
     val imeInsets = WindowInsets.ime
     val isKeyboardPresent = imeInsets.asPaddingValues().calculateBottomPadding() != 0.0.dp
 
+    ToastListener(viewModel)
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -95,8 +96,8 @@ fun SignUpScreen(
         ) {
 
 
-            val size by animateDpAsState(targetValue = if (isKeyboardPresent) 100.dp else 200.dp)
-            val pad by animateDpAsState(targetValue = if (isKeyboardPresent) 40.dp else 0.dp)
+            val size by animateDpAsState(getTargetValue(isKeyboardPresent, 100.dp, 200.dp))
+            val pad by animateDpAsState(getTargetValue(isKeyboardPresent, 0.dp, 40.dp))
 
             Spacer(modifier = Modifier.padding(top = pad))
             Image(
@@ -155,17 +156,22 @@ fun SignUpScreen(
             }
 
 
+            val actionConfirm = getImeAction(isEnabled.value)
             CustomTextField(
                 value = confirmPassword.value,
                 { viewModel.updateConfirmPassword(it) },
                 placeHolder = "Confirm Password",
                 type = KeyboardType.Password,
-                action = if (isEnabled.value) ImeAction.Send else ImeAction.Done,
+                action = actionConfirm,
                 onSend = { viewModel.onSignUpClick(openAndPopUp) },
                 transformation = PasswordVisualTransformation()
             )
             if (confirmError.value != "") {
-                Text(confirmError.value,modifier=Modifier.align(Alignment.CenterHorizontally), color = MaterialTheme.colorScheme.error)
+                Text(
+                    confirmError.value,
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    color = MaterialTheme.colorScheme.error
+                )
             }
 
             Spacer(modifier = Modifier.padding(top = 50.dp))
@@ -199,4 +205,31 @@ fun SignUpScreen(
 
     }
 
+}
+
+@Composable
+fun ToastListener(viewModel: SignUpViewModel) {
+    val context = LocalContext.current
+
+
+    LaunchedEffect(viewModel.errorMessage.value) {
+        viewModel.errorMessage.value.let { message ->
+            if (message.isNotEmpty()) {
+
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                // Clear the error message after showing the toast
+                viewModel.errorMessage.value = ""
+
+            }
+        }
+    }
+}
+
+fun getImeAction(isEnabled: Boolean): ImeAction {
+    return if (isEnabled) ImeAction.Send else ImeAction.Done
+}
+
+fun getTargetValue(condition: Boolean, option1: Dp, option2: Dp): Dp {
+    return if (condition) option1
+    else option2
 }
