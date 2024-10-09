@@ -122,6 +122,7 @@ fun SignInScreen(
                 Text(
                     emailError.value,
                     color = errorColor,
+                    fontSize = 12.sp,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
                 Spacer(modifier = Modifier.padding(top = 10.dp))
@@ -135,7 +136,7 @@ fun SignInScreen(
             CustomTextField(
                 value = password.value,
                 { viewModel.updatePassword(it) },
-                placeHolder = "Confirm Password",
+                placeHolder = "Password",
                 type = KeyboardType.Password,
                 action = actionPassword,
                 onSend = { viewModel.onSignInClick(openAndPopUp) },
@@ -146,7 +147,8 @@ fun SignInScreen(
                 Text(
                     passwordError.value,
                     color = errorColor,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    fontSize = 12.sp
                 )
 
                 Spacer(modifier = Modifier.padding(top = 10.dp))

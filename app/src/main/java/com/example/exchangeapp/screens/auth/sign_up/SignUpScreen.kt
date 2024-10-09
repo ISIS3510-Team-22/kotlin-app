@@ -72,6 +72,7 @@ fun SignUpScreen(
     val passwordError = viewModel.passwordError.collectAsState()
     val confirmError = viewModel.confirmError.collectAsState()
     val emailError = viewModel.emailError.collectAsState()
+    val errorColor = Color("#e63022".toColorInt())
 
 
     val imeInsets = WindowInsets.ime
@@ -84,7 +85,6 @@ fun SignUpScreen(
             .fillMaxWidth()
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
-            .imePadding()
             .animateContentSize()
             .background(Color("#0F3048".toColorInt())),
         verticalArrangement = Arrangement.Center,
@@ -92,7 +92,9 @@ fun SignUpScreen(
 
         ) {
         Column(
-            modifier = modifier.width(280.dp)
+            modifier = modifier
+                .width(280.dp)
+                .imePadding()
         ) {
 
 
@@ -127,7 +129,8 @@ fun SignUpScreen(
             if (emailError.value != "") {
                 Text(
                     emailError.value,
-                    color = MaterialTheme.colorScheme.error,
+                    color = errorColor,
+                    fontSize = 12.sp,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
                 Spacer(modifier = Modifier.padding(top = 10.dp))
@@ -147,7 +150,8 @@ fun SignUpScreen(
             if (passwordError.value != "") {
                 Text(
                     passwordError.value,
-                    color = MaterialTheme.colorScheme.error,
+                    color = errorColor,
+                    fontSize = 12.sp,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
                 Spacer(modifier = Modifier.padding(top = 10.dp))
@@ -170,7 +174,8 @@ fun SignUpScreen(
                 Text(
                     confirmError.value,
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    color = MaterialTheme.colorScheme.error
+                    color = errorColor,
+                    fontSize = 12.sp
                 )
             }
 
