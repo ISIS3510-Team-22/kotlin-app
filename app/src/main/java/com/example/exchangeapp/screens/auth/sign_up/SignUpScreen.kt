@@ -49,6 +49,7 @@ import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.exchangeapp.R
 import com.example.exchangeapp.screens.CustomTextField
+import com.example.exchangeapp.screens.EmailTextField
 
 @SuppressLint("NewApi")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -120,25 +121,15 @@ fun SignUpScreen(
 
             Spacer(modifier = Modifier.padding(bottom = 30.dp))
 
-            CustomTextField(
+            EmailTextField(
                 email.value,
                 { viewModel.updateEmail(it) },
-                ImeAction.Next, "Email",
-                type = KeyboardType.Email
-            )
-            if (emailError.value != "") {
-                Text(
-                    emailError.value,
-                    color = errorColor,
-                    fontSize = 12.sp,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                emailError.value,
+                errorColor,
+                modifier = Modifier.align(
+                    Alignment.CenterHorizontally
                 )
-                Spacer(modifier = Modifier.padding(top = 10.dp))
-            } else {
-                Spacer(modifier = Modifier.padding(top = 30.dp))
-            }
-
-
+            )
             CustomTextField(
                 password.value,
                 { viewModel.updatePassword(it) },
