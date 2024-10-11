@@ -41,7 +41,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -136,7 +135,7 @@ fun SignUpScreen(
                 ImeAction.Next,
                 placeHolder = "Password",
                 type = KeyboardType.Password,
-                transformation = PasswordVisualTransformation()
+                isPassword = true
             )
             if (passwordError.value != "") {
                 Text(
@@ -159,7 +158,7 @@ fun SignUpScreen(
                 type = KeyboardType.Password,
                 action = actionConfirm,
                 onSend = { viewModel.onSignUpClick(openAndPopUp) },
-                transformation = PasswordVisualTransformation()
+                isPassword = true
             )
             if (confirmError.value != "") {
                 Text(
