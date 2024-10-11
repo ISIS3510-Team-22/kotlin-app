@@ -9,15 +9,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class InformationViewModel @Inject constructor(): ExchangeAppViewModel() {
+class InformationViewModel @Inject constructor() : ExchangeAppViewModel() {
 
-    fun onChatClick(openAndPopUp : (String,String) -> Unit){
+    fun onChatClick(openAndPopUp: (String, String) -> Unit) {
         launchCatching {
             openAndPopUp(CHAT_SCREEN, NAVIGATION_SCREEN)
         }
     }
 
-    fun onMenuClick(openAndPopUp : (String,String) -> Unit){
+    fun onMenuClick(openAndPopUp: (String, String) -> Unit) {
         launchCatching {
             openAndPopUp(MENU_SCREEN, INFO_SCREEN)
         }
