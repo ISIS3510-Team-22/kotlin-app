@@ -4,13 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -45,6 +43,7 @@ fun InformationScreen(
         modifier = modifier
             .fillMaxSize()
             .background(Color("#0F3048".toColorInt()))
+            .padding(bottom = 88.dp)
     ){
         Row(
             verticalAlignment = Alignment.Top,
@@ -63,11 +62,11 @@ fun InformationScreen(
                         .size(60.dp)
                 )
             }
-            Spacer(modifier = modifier.width(60.dp))
+            //Spacer(modifier = modifier.width(60.dp))
 
             Text("INFORMATION", modifier = modifier.padding(vertical = 15.dp).align(Alignment.CenterVertically), style = MaterialTheme.typography.headlineLarge )
 
-            Spacer(modifier = modifier.width(65.dp))
+            //Spacer(modifier = modifier.width(65.dp))
 
             Icon(
                 imageVector = Icons.Filled.CalendarToday,
@@ -78,13 +77,14 @@ fun InformationScreen(
             )
         }
 
-        Spacer(Modifier.height(20.dp))
+        //Spacer(Modifier.height(20.dp))
 
         LazyColumn {
             items(buttontexts){ label ->
                 LabeledButtons(label, viewModel.onChatClick(openAndPopUp), modifier)
         }
         }
+
         }
     }
 
@@ -97,7 +97,7 @@ fun LabeledButtons(text : String, onClick : Unit, modifier: Modifier){
             modifier = modifier
                 .padding(horizontal = 20.dp, vertical = 15.dp)
                 .fillMaxWidth()
-                .height(120.dp),
+                .height(110.dp),
             colors = ButtonColors(
                 Color("#18354d".toColorInt()),
                 Color.White,
