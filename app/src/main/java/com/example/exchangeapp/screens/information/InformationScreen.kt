@@ -1,9 +1,10 @@
-package com.example.exchangeapp.screens.Information
+package com.example.exchangeapp.screens.information
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,33 +26,40 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.exchangeapp.R
 
 @Composable
 fun InformationScreen(
     openAndPopUp: (String, String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: InformationViewModel = hiltViewModel()
-){
-    val buttontexts = listOf("Cooking & recipes while abroad", "Mental Health", "Adapting to a new city", "Universities info", "Current exchanges available")
+) {
+    val buttontexts = listOf(
+        "Cooking & recipes while abroad",
+        "Mental Health",
+        "Adapting to a new city",
+        "Universities info",
+        "Current exchanges available"
+    )
 
-    Column (
+    Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color("#0F3048".toColorInt()))
-            .padding(bottom = 88.dp)
-    ){
+            .background(Color(0xFF0F3048))
+            .padding(bottom = 108.dp)
+    ) {
         Row(
-            verticalAlignment = Alignment.Top,
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
-        ){
+        ) {
             IconButton(
-                onClick = {viewModel.onMenuClick(openAndPopUp)},
-                modifier =modifier
+                onClick = { viewModel.onMenuClick(openAndPopUp) },
+                modifier = modifier
                     .size(100.dp)
                     .padding(25.dp)
             ) {
@@ -59,52 +67,64 @@ fun InformationScreen(
                     imageVector = Icons.Filled.Menu, // Using the built-in menu icon
                     contentDescription = "",
                     modifier = modifier
-                        .size(60.dp)
+                        .size(60.dp),
+                    tint = Color.White
+
                 )
             }
-            //Spacer(modifier = modifier.width(60.dp))
 
-            Text("INFORMATION", modifier = modifier.padding(vertical = 15.dp).align(Alignment.CenterVertically), style = MaterialTheme.typography.headlineLarge )
+            Text(
+                stringResource(R.string.info_title),
+                modifier = modifier
+                    .padding(vertical = 15.dp)
+                    .align(Alignment.CenterVertically),
+                style = MaterialTheme.typography.headlineLarge,
+                color = Color.White
+            )
 
-            //Spacer(modifier = modifier.width(65.dp))
 
+            Spacer(Modifier.padding(end = 25.dp))
             Icon(
                 imageVector = Icons.Filled.CalendarToday,
                 contentDescription = "",
                 modifier = modifier
-                    .size(80.dp)
-                    .padding(vertical = 15.dp)
+                    .size(70.dp)
+                    .padding(vertical = 15.dp),
+                tint = Color.White
             )
         }
 
-        //Spacer(Modifier.height(20.dp))
 
         LazyColumn {
-            items(buttontexts){ label ->
+            items(buttontexts) { label ->
                 LabeledButtons(label, viewModel.onChatClick(openAndPopUp), modifier)
-        }
-        }
-
+            }
         }
     }
+}
 
 
 @Composable
-fun LabeledButtons(text : String, onClick : Unit, modifier: Modifier){
-        Button(
-            onClick = {onClick},
-            shape = RoundedCornerShape(35),
-            modifier = modifier
-                .padding(horizontal = 20.dp, vertical = 15.dp)
-                .fillMaxWidth()
-                .height(110.dp),
-            colors = ButtonColors(
-                Color("#18354d".toColorInt()),
-                Color.White,
-                MaterialTheme.colorScheme.tertiary,
-                MaterialTheme.colorScheme.onTertiary
-            )
-        ) {
-            Text(text = text, fontSize = 20.sp, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
-        }
+fun LabeledButtons(text: String, onClick: Unit, modifier: Modifier) {
+    Button(
+        onClick = { onClick },
+        shape = RoundedCornerShape(35),
+        modifier = modifier
+            .padding(horizontal = 20.dp, vertical = 15.dp)
+            .fillMaxWidth()
+            .height(110.dp),
+        colors = ButtonColors(
+            Color(0xFF18354d),
+            Color.White,
+            MaterialTheme.colorScheme.tertiary,
+            MaterialTheme.colorScheme.onTertiary
+        )
+    ) {
+        Text(
+            text = text,
+            fontSize = 20.sp,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold
+        )
+    }
 }

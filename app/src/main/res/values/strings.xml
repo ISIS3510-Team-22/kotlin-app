@@ -12,6 +12,8 @@
     <string name="log_out">"LOG OUT"</string>
     <string name="options">"OPTIONS"</string>
     <string name="profile">"PROFILE"</string>
+    <string name="info_title">"INFORMATION"</string>
+
 
 
 </resources>

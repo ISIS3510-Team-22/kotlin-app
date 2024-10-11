@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.example.exchangeapp.CHAT_SCREEN
 import com.example.exchangeapp.ExchangeAppState
 import com.example.exchangeapp.R
-import com.example.exchangeapp.screens.Information.InformationScreen
+import com.example.exchangeapp.screens.information.InformationScreen
 import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
 
 data class BottomNavItem(

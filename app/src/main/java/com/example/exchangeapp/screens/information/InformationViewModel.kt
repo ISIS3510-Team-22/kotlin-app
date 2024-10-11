@@ -1,4 +1,4 @@
-package com.example.exchangeapp.screens.Information
+package com.example.exchangeapp.screens.information
 
 import com.example.exchangeapp.CHAT_SCREEN
 import com.example.exchangeapp.INFO_SCREEN
