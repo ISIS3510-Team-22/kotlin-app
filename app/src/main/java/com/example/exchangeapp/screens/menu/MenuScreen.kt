@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,13 +36,12 @@ fun MenuScreen(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(Color(0xFF0F3048)),
-        //verticalArrangement = Arrangement.Center
+            .background(Color(0xFF0F3048))
     ) {
-        Row (verticalAlignment = Alignment.Top) {
+        Row(verticalAlignment = Alignment.Top) {
             IconButton(
                 onClick = {},
-                modifier =Modifier
+                modifier = Modifier
                     .size(100.dp)
                     .padding(25.dp)
             ) {
@@ -54,9 +54,12 @@ fun MenuScreen(
             }
         }
 
-        Column (
-            Modifier.fillMaxWidth().padding(vertical = 20.dp),
-            verticalArrangement = Arrangement.Center) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(bottom = 150.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
             TextButton(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = { viewModel.logOut(clearAndNavigate) },
