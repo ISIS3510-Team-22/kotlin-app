@@ -53,11 +53,11 @@ class AccountServiceImpl @Inject constructor() : AccountService {
         }
     }
 
-    override suspend fun signUp(email: String, password: String) {
+    override suspend fun signUp(name:String, email: String, password: String) {
 
        val authResult = Firebase.auth.createUserWithEmailAndPassword(email, password).await()
         authResult.user?.let {firebaseUser ->
-            val newUser = User(id = firebaseUser.uid, name = firebaseUser.email ?: "No name", lat = 0.0, long = 0.0)
+            val newUser = User(id = firebaseUser.uid, email = firebaseUser.email ?: "No email", name = name, lat = 0.0, long = 0.0)
             saveUserInFirestore(newUser)
         }
     }
