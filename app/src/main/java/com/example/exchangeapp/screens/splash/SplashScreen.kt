@@ -12,7 +12,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lottiefiles.dotlottie.core.compose.ui.DotLottieAnimation
 import com.lottiefiles.dotlottie.core.util.DotLottieSource
@@ -31,12 +30,11 @@ fun SplashScreen(
         modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .background(color = Color("#0F3048".toColorInt()))
+            .background(color = Color(0xFF0F3048))
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-//        CircularProgressIndicator(color = MaterialTheme.colorScheme.onBackground)
         DotLottieAnimation(
             source = DotLottieSource.Url("https://lottie.host/bf2158b1-53bb-42b9-931d-c75bdb9fd78c/5hpZnRlEx3.lottie"), // from url .lottie / .json
 
@@ -44,8 +42,6 @@ fun SplashScreen(
             loop = false,
             speed = 2f,
             useFrameInterpolation = false,
-//            playMode = Mode.FORWARD,
-            //modifier = Modifier.background(Color.LightGray)
         )
     }
 
