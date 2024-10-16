@@ -24,7 +24,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -32,12 +32,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.toColorInt
-import com.example.exchangeapp.CHAT_SCREEN
 import com.example.exchangeapp.ExchangeAppState
 import com.example.exchangeapp.R
-import com.example.exchangeapp.screens.information.InformationScreen
 import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
+import com.example.exchangeapp.screens.information.InformationScreen
 
 data class BottomNavItem(
     val title: String,
@@ -48,7 +46,7 @@ data class BottomNavItem(
     val hasNews: Boolean = false,
     val badgeCount: Int? = null
 )
-
+val colorBg = Color(0xFF0F3048)
 
 val items = listOf(
     BottomNavItem(
@@ -81,8 +79,9 @@ val items = listOf(
 @Composable
 fun NavigationScreen(appState: ExchangeAppState) {
     var selectedItemIndex by rememberSaveable {
-        mutableStateOf(0)
+        mutableIntStateOf(0)
     }
+
 
     Surface {
         Scaffold(
@@ -98,8 +97,8 @@ fun NavigationScreen(appState: ExchangeAppState) {
                         NavigationBarItem(
                             colors = NavigationBarItemDefaults.colors(
                                 selectedIconColor = Color.White,
-                                selectedTextColor = Color("#0F3048".toColorInt()),
-                                indicatorColor = Color("#0F3048".toColorInt())
+                                selectedTextColor = colorBg,
+                                indicatorColor = colorBg
                             ),
                             selected = selectedItemIndex == index,
                             onClick = {
@@ -123,9 +122,14 @@ fun NavigationScreen(appState: ExchangeAppState) {
             }
         ) {
             when (selectedItemIndex) {
-                0 -> InformationScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
-                1 -> ChatPreviewScreen ( {contactName ->
-                    appState.navController.navigate("$CHAT_SCREEN/$contactName")} )
+                0 -> InformationScreen(openAndPopUp = { route, popUp ->
+                    appState.navigateAndPopUp(
+                        route,
+                        popUp
+                    )
+                })
+
+                1 -> ChatPreviewScreen(open = { route -> appState.navigate(route) })
                 2 -> WorldScreen()
                 3 -> AIScreen()
             }
@@ -173,27 +177,13 @@ fun MyIcon(selectedItemIndex: Int, index: Int, item: BottomNavItem, iconSize: Fl
 }
 
 @Composable
-fun InfoScreen(
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color("#0F3048".toColorInt())),
-    ) {
-        Text("Info screen", color = Color.White)
-    }
-}
-
-
-@Composable
 fun WorldScreen(
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color("#0F3048".toColorInt())),
+            .background(colorBg),
     ) {
         Text("World screen", color = Color.White)
     }
@@ -206,7 +196,7 @@ fun AIScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color("#0F3048".toColorInt())),
+            .background(colorBg),
     ) {
         Text("AI screen", color = Color.White)
     }
