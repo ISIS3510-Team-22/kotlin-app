@@ -36,6 +36,7 @@ import com.example.exchangeapp.ExchangeAppState
 import com.example.exchangeapp.R
 import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
 import com.example.exchangeapp.screens.information.InformationScreen
+import com.example.exchangeapp.screens.wait.WaitScreen
 
 data class BottomNavItem(
     val title: String,
@@ -130,8 +131,8 @@ fun NavigationScreen(appState: ExchangeAppState) {
                 })
 
                 1 -> ChatPreviewScreen(open = { route -> appState.navigate(route) })
-                2 -> WorldScreen()
-                3 -> AIScreen()
+                2 -> WaitScreen()
+                3 -> WaitScreen()
             }
 
         }
