@@ -51,7 +51,7 @@ fun ChatScreen(
 
         LazyColumn(
             modifier = Modifier.weight(1f),
-            reverseLayout = true
+
         ) {
             items(messages) { message ->
                 MessageBubble(

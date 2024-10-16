@@ -10,4 +10,10 @@ class UserRepository @Inject constructor(
     fun getUserNames(): Flow<List<String>> {
         return userService.getUserNames()
     }
+
+    fun getUsers(): Flow<List<User>> {
+        return userService.getUsers()
+    }
+
+
 }

@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +34,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.exchangeapp.model.service.User
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -41,6 +45,8 @@ fun ChatPreviewScreen(
     viewModel: ChatPreviewViewModel = hiltViewModel()
 ) {
     val userNames by viewModel.userNames.collectAsState()
+    val users by viewModel.users.collectAsState()
+    var usuarios by remember { mutableStateOf<List<User>>(emptyList()) }
     val locationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -54,6 +60,18 @@ fun ChatPreviewScreen(
     }
     var currentLocation by remember {mutableStateOf<Location?>(null)}
 
+    LaunchedEffect(Unit){
+        locationPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        Log.d("PERMISSION", "Apenas se abre")
+    }
+
+    LaunchedEffect(users) {
+        // Solo copia users a usuarios en el primer renderizado o cuando se necesite
+        if (usuarios.isEmpty()) {
+            usuarios = users.toList()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -65,13 +83,10 @@ fun ChatPreviewScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Button(onClick = {
-                viewModel.fetchCurrentLocation { location ->
-                    currentLocation = location // Almacena la ubicación obtenida
-                    if (location != null) {
-                        Log.d("PERMISSION", "Ubicación obtenida Screen: ${location.latitude}, ${location.longitude}")
-                    }
+                Log.d("USUARIOS", users.toString())
+                usuarios = viewModel.updateUserDistances(users)
+                Log.d("USUARIOS", usuarios.toString())
 
-                }
             }) {
                 Text("Get Current Location")
             }
@@ -88,7 +103,26 @@ fun ChatPreviewScreen(
 
             // Botón de ubicación con ícono
             IconButton(
-                onClick = {locationPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)}, // Acción a realizar cuando se presiona el botón
+                onClick = {viewModel.fetchCurrentLocation { location ->
+                    currentLocation = location // Almacena la ubicación obtenida
+                    if (location != null) {
+                        Log.d("PERMISSION", "Ubicación obtenida Screen: ${location.latitude}, ${location.longitude}")
+                    }
+
+                    viewModel.viewModelScope.launch{
+                        try{
+
+                            viewModel.updateUserLocationInFirestore()
+                            usuarios = viewModel.updateUserDistances(users).sortedBy { it.dis }
+                            Log.d("USUARIOS", usuarios.toString())
+
+                        } catch (e: Exception){
+                            Log.e("PERMISSION", "Error al actualizar la ubicación", e)
+                        }
+                    }
+
+
+                }}, // Acción a realizar cuando se presiona el botón
                 modifier = Modifier.padding(start = 8.dp)
             ) {
                 Icon(
@@ -103,9 +137,9 @@ fun ChatPreviewScreen(
         // Lista de chats
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(1.dp) // Espacio entre los elementos
+            verticalArrangement = Arrangement.spacedBy(3.dp) // Espacio entre los elementos
         ) {
-            items(userNames) { name ->
+            items(usuarios) { user ->
                 // Caja para cada usuario
                 Box(
                     modifier = Modifier
@@ -113,13 +147,13 @@ fun ChatPreviewScreen(
                         .height(60.dp)
                         .background(Color(0xFF3A506B)) // Fondo de cada caja
                         .clickable {
-                            viewModel.getMessagesAndSetupChat(name, open)
+                            viewModel.getMessagesAndSetupChat(user.name, open)
                         }
                         .padding(16.dp), // Espaciado interno
                     contentAlignment = Alignment.Center // Centra el texto dentro de la caja
                 ) {
                     Text(
-                        text = name,
+                        text = user.name,
                         style = MaterialTheme.typography.bodyLarge,
                         color = Color.White,
                         textAlign = TextAlign.Center
