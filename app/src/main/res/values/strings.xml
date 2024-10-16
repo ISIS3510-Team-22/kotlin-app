@@ -5,5 +5,15 @@
     <string name="sign_up_text">Don\'t have an account? Sign up!</string>
     <string name="sign_up">Sign up!</string>
     <string name="sign_up_image">Sign up image</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="recover_text">"Please input your email to send you a recover link."</string>
+    <string name="send_email_text">"Send"</string>
+    <string name="bad_credentials_message">"Incorrect credentials, please try again."</string>
+    <string name="log_out">"LOG OUT"</string>
+    <string name="options">"OPTIONS"</string>
+    <string name="profile">"PROFILE"</string>
+    <string name="info_title">"INFORMATION"</string>
+
+
 
 </resources>

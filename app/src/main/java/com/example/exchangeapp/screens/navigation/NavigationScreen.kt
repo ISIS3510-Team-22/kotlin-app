@@ -6,6 +6,9 @@ import android.provider.ContactsContract.Data
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.StickyNote2
@@ -16,6 +19,7 @@ import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,13 +29,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
+import androidx.core.graphics.toColorInt
 import com.example.exchangeapp.CHAT_SCREEN
 import com.example.exchangeapp.ExchangeAppState
 import com.example.exchangeapp.R
+import com.example.exchangeapp.screens.information.InformationScreen
 import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
 import com.example.exchangeapp.screens.chatpreview.ChatPreviewViewModel
 
@@ -70,8 +77,6 @@ val items = listOf(
     )
 
 
-
-
 )
 
 
@@ -85,13 +90,20 @@ fun NavigationScreen(appState: ExchangeAppState) {
     Surface {
         Scaffold(
             bottomBar = {
-                NavigationBar {
+                NavigationBar(
+                    containerColor = Color.White
+                ) {
                     items.forEachIndexed { index, item ->
                         val iconSize by animateFloatAsState(
                             targetValue = if (selectedItemIndex == index) 30f else 24f,
                             animationSpec = tween(durationMillis = 200)
                         )
                         NavigationBarItem(
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = Color.White,
+                                selectedTextColor = Color("#0F3048".toColorInt()),
+                                indicatorColor = Color("#0F3048".toColorInt())
+                            ),
                             selected = selectedItemIndex == index,
                             onClick = {
                                 selectedItemIndex = index
@@ -126,7 +138,7 @@ fun NavigationScreen(appState: ExchangeAppState) {
 }
 
 @Composable
-fun MyIcon(selectedItemIndex: Int, index: Int, item: BottomNavItem, iconSize: Float){
+fun MyIcon(selectedItemIndex: Int, index: Int, item: BottomNavItem, iconSize: Float) {
     if (selectedItemIndex == index) {
         // Load selected drawable resource or vector icon
         if (item.selectedIconRes != null) {
@@ -163,17 +175,41 @@ fun MyIcon(selectedItemIndex: Int, index: Int, item: BottomNavItem, iconSize: Fl
 }
 
 @Composable
-fun InfoScreen() {
-    Text("Info Screen Content")
+fun InfoScreen(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color("#0F3048".toColorInt())),
+    ) {
+        Text("Info screen", color = Color.White)
+    }
 }
 
 
 @Composable
-fun WorldScreen() {
-    Text("World screen")
+fun WorldScreen(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color("#0F3048".toColorInt())),
+    ) {
+        Text("World screen", color = Color.White)
+    }
 }
 
 @Composable
-fun AIScreen() {
-    Text("AI Screen")
+fun AIScreen(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color("#0F3048".toColorInt())),
+    ) {
+        Text("AI screen", color = Color.White)
+    }
 }

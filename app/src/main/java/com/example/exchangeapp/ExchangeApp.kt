@@ -1,5 +1,7 @@
 package com.example.exchangeapp
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -14,19 +16,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.ExchangeAppTheme
+import com.example.exchangeapp.screens.information.InformationScreen
+import com.example.exchangeapp.screens.auth.forgot_password.ForgotPasswordScreen
 import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
 import com.example.exchangeapp.screens.chat.ChatScreen
 import com.example.exchangeapp.screens.navigation.NavigationScreen
 import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
 import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
+import com.example.exchangeapp.screens.menu.MenuScreen
 import com.example.exchangeapp.screens.splash.SplashScreen
 import com.google.android.gms.location.FusedLocationProviderClient
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun ExchangeApp(fusedLocationProviderClient: FusedLocationProviderClient){
 
-
+fun ExchangeApp(fusedLocationProviderClient: FusedLocationProviderClient) {
     ExchangeAppTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
             val appState = rememberAppState()
@@ -37,6 +41,10 @@ fun ExchangeApp(fusedLocationProviderClient: FusedLocationProviderClient){
                     navController = appState.navController,
 
                     startDestination = SPLASH_SCREEN,
+
+                    enterTransition = { EnterTransition.None },
+
+                    exitTransition = { ExitTransition.None },
 
                     modifier = Modifier.padding(innerPaddingModifier)
                 ) {
@@ -55,26 +63,27 @@ fun rememberAppState(navController: NavHostController = rememberNavController())
     }
 
 
-fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState){
-
-
-
-    composable (NAVIGATION_SCREEN){
+fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
+    composable(NAVIGATION_SCREEN) {
         NavigationScreen(appState)
     }
 
     composable(SIGN_IN_SCREEN) {
-        SignInScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }, open={route->appState.navigate(route)})
+        SignInScreen(
+            openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) },
+            open = { route -> appState.navigate(route) })
 
     }
 
     composable(SIGN_UP_SCREEN) {
-        SignUpScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }, popUp = { appState.popUp() })
+        SignUpScreen(
+            openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) },
+            popUp = { appState.popUp() })
 
     }
 
-    composable(SPLASH_SCREEN){
-        SplashScreen(openAndPopUp = {route, popUp->appState.navigateAndPopUp(route, popUp)})
+    composable(SPLASH_SCREEN) {
+        SplashScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
 
     }
 
@@ -87,5 +96,19 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState){
         ChatScreen(receiverName = userName)
     }
 
+    composable(FORGOT_PASSWORD_SCREEN) {
+        ForgotPasswordScreen(
+            popUp = { appState.popUp() }
+        )
+    }
 
+    composable(INFO_SCREEN){
+        InformationScreen(
+            openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }
+        )
+    }
+
+    composable(MENU_SCREEN){
+        MenuScreen(clearAndNavigate = { route -> appState.clearAndNavigate(route) })
+    }
 }

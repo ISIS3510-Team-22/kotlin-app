@@ -14,7 +14,7 @@ object ValidationUtils {
 
     fun validatePassword(password: String): String {
         return if (!passwordRegex.containsMatchIn(password)) {
-            "Min 6 characters and special"
+            "Use 6+ chars, 1 uppercase, 1 special"
         } else {
             ""
         }

@@ -1,5 +1,6 @@
 package com.example.exchangeapp.screens.auth.sign_in
 
+import com.example.exchangeapp.FORGOT_PASSWORD_SCREEN
 import com.example.exchangeapp.NAVIGATION_SCREEN
 import com.example.exchangeapp.SIGN_IN_SCREEN
 import com.example.exchangeapp.SIGN_UP_SCREEN
@@ -19,15 +20,17 @@ class SignInViewModel @Inject constructor(
     val emailError = MutableStateFlow("")
     val passwordError = MutableStateFlow("")
     val isEnabled = MutableStateFlow(false)
+    val name = MutableStateFlow("")
 
     fun updateEmail(newEmail: String) {
-        email.value = newEmail
+        email.value = newEmail.filter { !it.isWhitespace() }
         emailError.value = ValidationUtils.validateEmail(newEmail)
         updateEnabled()
     }
 
+
     fun updatePassword(newPassword: String) {
-        password.value = newPassword
+        password.value = newPassword.filter { !it.isWhitespace() }
         passwordError.value = ValidationUtils.validatePassword(newPassword)
         updateEnabled()
 
@@ -44,8 +47,13 @@ class SignInViewModel @Inject constructor(
         open(SIGN_UP_SCREEN)
     }
 
+    fun onForgotClick(open: (String) -> Unit) {
+        open(FORGOT_PASSWORD_SCREEN)
+    }
+
     fun updateEnabled() {
-        isEnabled.value = passwordError.value.isEmpty() && emailError.value.isEmpty()
+        isEnabled.value = passwordError.value.isEmpty() && emailError.value.isEmpty() &&
+                password.value.isNotEmpty() && email.value.isNotEmpty()
     }
 
 }
