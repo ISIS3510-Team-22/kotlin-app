@@ -26,8 +26,10 @@ class ChatPreviewViewModel @Inject constructor(
     private val _userNames = MutableStateFlow<List<String>>(emptyList())
     val userNames: StateFlow<List<String>> = _userNames.asStateFlow()
     private val _messages = MutableStateFlow<List<Message>>(emptyList())
-    val messages: StateFlow<List<Message>> = _messages.asStateFlow()
+    var messages: StateFlow<List<Message>> = _messages.asStateFlow()
     val currentUserId = accountService.currentUserId
+    var chatId = ""
+
 
     init {
         fetchUserNames()
@@ -43,10 +45,7 @@ class ChatPreviewViewModel @Inject constructor(
     }
 
 
-
-
-
-    fun getMessagesAndSetupChat(userName: String, onChatCreated:(String)->Unit) {
+    fun getMessagesAndSetupChat(userName: String, onChatCreated: (String) -> Unit) {
         viewModelScope.launch {
             // Obtiene el userId de la persona con la que se va a chatear
             val otherUserId = chatService.getUserIdByName(userName)
@@ -54,18 +53,14 @@ class ChatPreviewViewModel @Inject constructor(
             Log.d("DINOSAURIO", otherUserId.toString())
             if (currentUserId != null && otherUserId != null) {
                 chatService.createChat(otherUserId, onChatCreated, userName, currentUserId)
-                val chatId = chatService.getChatId(otherUserId)
-                getMessages(chatId)
-            }
-                }
-    }
+                chatId =
+                    if (currentUserId!! < otherUserId) "$currentUserId-$otherUserId" else "$otherUserId-$currentUserId"
 
-    private fun getMessages(chatId: String) {
-        viewModelScope.launch {
-            chatService.getMessages(chatId).collect { chatMessages ->
-                _messages.value = chatMessages
             }
         }
     }
+
+
+
 }
 

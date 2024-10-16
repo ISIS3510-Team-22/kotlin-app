@@ -36,7 +36,10 @@ class ChatViewModel @Inject constructor(
 
 
             if (currentUserId != null && receiverId != null) {
-                val chatId = currentUserId?.let { chatService.getChatId(it) }
+                val chatId = if (currentUserId!! < receiverId) "$currentUserId-$receiverId" else "$receiverId-$currentUserId"
+                if (chatId != null) {
+                    Log.d("CHAT", chatId)
+                }
                 val message = Message(
                     senderId = currentUserId!!,
                     receiverId = receiverId,
@@ -44,9 +47,23 @@ class ChatViewModel @Inject constructor(
                     timestamp = System.currentTimeMillis()
                 )
                 if (chatId != null) {
-                    Log.d("TREX", receiverId)
+                    Log.d("TREX", currentUserId)
+                    Log.d("TREX",receiverId)
                     chatService.sendMessage(chatId, message)
                 }
+            }
+        }
+    }
+
+    fun getMessages(name: String) {
+        viewModelScope.launch {
+            val receiverId = chatService.getUserIdByName(name)
+            val currentUserId = currentUserId
+            val chatId = if (currentUserId!! < receiverId.toString()) "$currentUserId-$receiverId" else "$receiverId-$currentUserId"
+            chatService.getMessages(chatId).collect { chatMessages ->
+                _messages.value = chatMessages
+
+                //Recupero los obj mensajes totalmente
             }
         }
     }

@@ -36,6 +36,7 @@ fun ChatPreviewScreen(
 
                         viewModel.getMessagesAndSetupChat(name, open)
 
+
                     }
             )
         }
