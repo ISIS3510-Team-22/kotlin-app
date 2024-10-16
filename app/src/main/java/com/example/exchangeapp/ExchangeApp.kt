@@ -109,6 +109,6 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
     }
 
     composable(MENU_SCREEN){
-        MenuScreen(clearAndNavigate = { route -> appState.clearAndNavigate(route) })
+        MenuScreen(popUp = { appState.popUp() }, clearAndNavigate = { route -> appState.clearAndNavigate(route) })
     }
 }
