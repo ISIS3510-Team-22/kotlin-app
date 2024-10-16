@@ -3,18 +3,16 @@ package com.example.exchangeapp.screens.chatpreview
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.exchangeapp.CHAT_SCREEN
-import com.example.exchangeapp.SIGN_UP_SCREEN
 import com.example.exchangeapp.model.service.AccountService
+import com.example.exchangeapp.model.service.UserRepository
+import com.example.exchangeapp.model.service.impl.ChatService
+import com.example.exchangeapp.model.service.module.Message
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import com.example.exchangeapp.model.service.UserRepository
 import javax.inject.Inject
-import com.example.exchangeapp.model.service.impl.ChatService
-import com.example.exchangeapp.model.service.module.Message
 
 @HiltViewModel
 class ChatPreviewViewModel @Inject constructor(
@@ -59,7 +57,6 @@ class ChatPreviewViewModel @Inject constructor(
             }
         }
     }
-
 
 
 }

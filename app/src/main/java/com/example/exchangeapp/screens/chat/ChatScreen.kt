@@ -3,9 +3,9 @@ package com.example.exchangeapp.screens.chat
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,20 +17,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.exchangeapp.model.service.module.Message
-import com.example.exchangeapp.screens.chatpreview.ChatPreviewViewModel
 
 @Composable
 fun ChatScreen(
     receiverName: String,
-    viewModel: ChatViewModel = hiltViewModel(),
-    viewModel2: ChatPreviewViewModel = hiltViewModel()
+    viewModel: ChatViewModel = hiltViewModel()
 ) {
     val messages by viewModel.messages.collectAsState()
     val currentUserId = viewModel.currentUserId
     var currentMessage by remember { mutableStateOf("") }
     viewModel.getMessages(receiverName)
 
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp)) {
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(messages) { message ->
                 MessageBubble(

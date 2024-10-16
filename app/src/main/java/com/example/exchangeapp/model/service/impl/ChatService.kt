@@ -2,12 +2,9 @@ package com.example.exchangeapp.model.service.impl
 
 import android.util.Log
 import com.example.exchangeapp.CHAT_SCREEN
-import com.example.exchangeapp.model.service.AccountService
 import com.example.exchangeapp.model.service.module.Message
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -78,7 +75,7 @@ class ChatService @Inject constructor(
 
     fun createChat(user2: String, open: (String) -> Unit, userName: String, currentUserId: String) {
         val user1 = currentUserId
-        val chatId = if (user1!! < user2) "$user1-$user2" else "$user2-$user1"
+        val chatId = if (user1 < user2) "$user1-$user2" else "$user2-$user1"
         val chatRef = firestore.collection("chats").document(chatId)
 
         chatRef.get().addOnSuccessListener { document ->
