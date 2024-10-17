@@ -116,7 +116,8 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
             clearAndNavigate = { route -> appState.clearAndNavigate(route) })
     }
 
-    composable(INFO_SUB_SCREEN1){
-        BasicScreen( )
+    composable("$INFO_SUB_SCREEN1/{name}"){ backStackEntry ->
+        var name = backStackEntry.arguments?.getString("name") ?: "Unknown"
+        BasicScreen(name = name )
     }
 }

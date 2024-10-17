@@ -40,6 +40,13 @@ fun InformationScreen(
         "Current exchanges available"
     )
 
+    val labels = mapOf(
+        "Cooking & recipes while abroad" to "recipes",
+        "Mental Health" to "mental_health",
+        "Adapting to a new city" to "adapting_tips"
+    )
+
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -52,7 +59,10 @@ fun InformationScreen(
         LazyColumn(modifier = Modifier.padding(bottom = 68.dp)) {
             items(buttontexts) { label ->
                 Spacer(Modifier.padding(15.dp))
-                InfoButton(text = label, onButtonClick = { viewModel.onSubViewClick(open) })
+                InfoButton(text = label, onButtonClick = { labels[label]?.let {
+                    viewModel.onSubViewClick(
+                        it,open)
+                } })
             }
         }
     }

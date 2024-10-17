@@ -30,7 +30,6 @@ class BasicScreenViewModel @Inject constructor() : ExchangeAppViewModel() {
         var docRef = db.collection("adapting_tips").document("E7t32f5jyCijoZQXIJsf")
 
         docRef.get().addOnSuccessListener { document ->
-            Log.d("getSuccess", "Entro al get")
             if (document != null) {
                 // Accessing the title field
                 var title = document.getString("title")
@@ -38,7 +37,6 @@ class BasicScreenViewModel @Inject constructor() : ExchangeAppViewModel() {
                 if (title != null && description != null) {
                         onDataReceived(title,description)
                 }
-                Log.d("GetTest", "info retrieved with $title and $description")
             } else {
                 println("No such document!")
             }
@@ -47,8 +45,8 @@ class BasicScreenViewModel @Inject constructor() : ExchangeAppViewModel() {
         }
     }
 
-    fun getDocumentsData(onDataReceived: (List<Map<String, Any>>) -> Unit) {
-        val collectionRef = db.collection("yourCollection")
+    fun getDocumentsData(collection : String,onDataReceived: (List<Map<String, Any>>) -> Unit) {
+        val collectionRef = db.collection(collection)
 
         collectionRef.get().addOnSuccessListener { documents ->
             val dataList = mutableListOf<Map<String, Any>>()
