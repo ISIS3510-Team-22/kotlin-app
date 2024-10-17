@@ -1,13 +1,8 @@
 package com.example.exchangeapp.screens.navigation
 
-//import androidx.compose.material.icons.outlined.Anchor
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.StickyNote2
@@ -145,7 +140,7 @@ fun MyIcon(selectedItemIndex: Int, index: Int, item: BottomNavItem, iconSize: Fl
     if (selectedItemIndex == index) {
         // Load selected drawable resource or vector icon
         if (item.selectedIconRes != null) {
-            Image(
+            Icon(
                 painter = painterResource(id = item.selectedIconRes),
                 contentDescription = item.title,
                 modifier = Modifier.size(iconSize.dp)
@@ -161,7 +156,7 @@ fun MyIcon(selectedItemIndex: Int, index: Int, item: BottomNavItem, iconSize: Fl
     } else {
         // Load unselected drawable resource or vector icon
         if (item.unselectedIconRes != null) {
-            Image(
+            Icon(
                 painter = painterResource(id = item.unselectedIconRes),
                 contentDescription = item.title,
                 modifier = Modifier.size(iconSize.dp)
@@ -174,31 +169,5 @@ fun MyIcon(selectedItemIndex: Int, index: Int, item: BottomNavItem, iconSize: Fl
                 modifier = Modifier.size(iconSize.dp)
             )
         }
-    }
-}
-
-@Composable
-fun WorldScreen(
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(colorBg),
-    ) {
-        Text("World screen", color = Color.White)
-    }
-}
-
-@Composable
-fun AIScreen(
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(colorBg),
-    ) {
-        Text("AI screen", color = Color.White)
     }
 }
