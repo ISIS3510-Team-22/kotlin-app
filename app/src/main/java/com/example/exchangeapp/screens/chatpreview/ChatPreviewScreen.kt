@@ -50,13 +50,7 @@ fun ChatPreviewScreen(
     val locationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
-        if (isGranted) {
-            // Si se otorgan los permisos, obtenemos la ubicación
-            Log.d("PERMISSION", "Hay permiso")
-        } else {
-            // Manejo en caso de que el permiso sea denegado
-            Log.d("PERMISSION", "Permiso de ubicación denegado")
-        }
+        Log.d("PERMISSION", if (isGranted) "Hay permiso" else "Permiso de ubicación denegado")
     }
     var currentLocation by remember {mutableStateOf<Location?>(null)}
 
