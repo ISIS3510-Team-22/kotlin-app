@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.lottiefiles.dotlottie.core.compose.ui.DotLottieAnimation
 import com.lottiefiles.dotlottie.core.util.DotLottieSource
 import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 private const val SPLASH_TIMEOUT = 1000L
 
@@ -25,6 +26,7 @@ fun SplashScreen(
     modifier: Modifier = Modifier,
     viewModel: SplashViewModel = hiltViewModel()
 ) {
+    val useAsset =  if (Random.nextDouble()>0.55) "plane_loading.lottie" else "cat_loader.lottie"
     Column(
         modifier =
         modifier
@@ -36,12 +38,11 @@ fun SplashScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         DotLottieAnimation(
-            source = DotLottieSource.Url("https://lottie.host/bf2158b1-53bb-42b9-931d-c75bdb9fd78c/5hpZnRlEx3.lottie"), // from url .lottie / .json
-
+            source = DotLottieSource.Asset(useAsset),
             autoplay = true,
             loop = false,
             speed = 2f,
-            useFrameInterpolation = false,
+            useFrameInterpolation = false
         )
     }
 

@@ -17,12 +17,12 @@ import androidx.compose.ui.unit.dp
 import com.lottiefiles.dotlottie.core.compose.ui.DotLottieAnimation
 import com.lottiefiles.dotlottie.core.util.DotLottieSource
 
-private const val SPLASH_TIMEOUT = 1000L
 
 @Composable
 fun WaitScreen(
     modifier: Modifier = Modifier
 ) {
+
     Column(
         modifier =
         modifier
@@ -37,15 +37,12 @@ fun WaitScreen(
         Text("Wait for us!", color = Color.White)
 
         Text("We're going as fast as possible :3", color = Color.White)
-//        CircularProgressIndicator(color = MaterialTheme.colorScheme.onBackground)
         DotLottieAnimation(
-            source = DotLottieSource.Url("https://lottie.host/2765e08b-17f6-4f7c-91e2-af3558a8ce63/5qovvttg2B.lottie"), // from url .lottie / .json
+            source = DotLottieSource.Asset("cat_animation.lottie"), // from url .lottie / .json
             autoplay = true,
             loop = true,
             speed = 5f,
             useFrameInterpolation = true,
-//            playMode = Mode.FORWARD,
-            //modifier = Modifier.background(Color.LightGray)
         )
     }
 }
