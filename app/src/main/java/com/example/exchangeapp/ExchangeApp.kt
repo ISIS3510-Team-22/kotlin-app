@@ -16,14 +16,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.ExchangeAppTheme
-import com.example.exchangeapp.screens.information.InformationScreen
 import com.example.exchangeapp.screens.auth.forgot_password.ForgotPasswordScreen
-import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
-import com.example.exchangeapp.screens.chat.ChatScreen
-import com.example.exchangeapp.screens.navigation.NavigationScreen
 import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
 import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
+import com.example.exchangeapp.screens.chat.ChatScreen
+import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
+import com.example.exchangeapp.screens.information.InformationScreen
+import com.example.exchangeapp.screens.information.subview1.BasicScreen
 import com.example.exchangeapp.screens.menu.MenuScreen
+import com.example.exchangeapp.screens.navigation.NavigationScreen
 import com.example.exchangeapp.screens.splash.SplashScreen
 import com.google.android.gms.location.FusedLocationProviderClient
 
@@ -110,5 +111,9 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
 
     composable(MENU_SCREEN){
         MenuScreen(clearAndNavigate = { route -> appState.clearAndNavigate(route) })
+    }
+
+    composable(INFO_SUB_SCREEN1){
+        BasicScreen( )
     }
 }

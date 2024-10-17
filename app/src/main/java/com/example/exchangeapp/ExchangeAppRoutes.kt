@@ -9,6 +9,8 @@ const val NAVIGATION_SCREEN = "InformationScreen"
 const val FORGOT_PASSWORD_SCREEN = "ForgotPasswordScreen"
 const val INFO_SCREEN = "InfoScreen"
 const val MENU_SCREEN = "MenuScreen"
+const val INFO_SUB_SCREEN1 = "BasicScreen"
+const val INFO_SUB_SCREEN2 = "SearchBarScreen"
 
 const val LOCALHOST = ""
 const val AUTH_PORT = 9099

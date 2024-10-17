@@ -97,7 +97,7 @@ fun InformationScreen(
 
         LazyColumn {
             items(buttontexts) { label ->
-                LabeledButtons(label, viewModel.onChatClick(openAndPopUp), modifier)
+                LabeledButtons(label, viewModel.onSubViewClick(openAndPopUp), modifier)
             }
         }
     }
