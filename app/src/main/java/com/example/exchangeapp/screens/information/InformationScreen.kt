@@ -47,6 +47,8 @@ fun InformationScreen(
         "Current exchanges available"
     )
 
+    //var showDetails by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -97,7 +99,28 @@ fun InformationScreen(
 
         LazyColumn {
             items(buttontexts) { label ->
-                LabeledButtons(label, viewModel.onSubViewClick(openAndPopUp), modifier)
+                //LabeledButtons(label, onButtonClick, modifier)
+                Button(
+                    onClick = { viewModel.onSubViewClick(openAndPopUp) },
+                    shape = RoundedCornerShape(35),
+                    modifier = modifier
+                        .padding(horizontal = 20.dp, vertical = 15.dp)
+                        .fillMaxWidth()
+                        .height(110.dp),
+                    colors = ButtonColors(
+                        Color(0xFF18354d),
+                        Color.White,
+                        MaterialTheme.colorScheme.tertiary,
+                        MaterialTheme.colorScheme.onTertiary
+                    )
+                ) {
+                    Text(
+                        text = label,
+                        fontSize = 20.sp,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }
@@ -105,9 +128,9 @@ fun InformationScreen(
 
 
 @Composable
-fun LabeledButtons(text: String, onClick: Unit, modifier: Modifier) {
+fun LabeledButtons(text: String, onButtonClick: Unit, modifier: Modifier) {
     Button(
-        onClick = { onClick },
+        onClick = { onButtonClick },
         shape = RoundedCornerShape(35),
         modifier = modifier
             .padding(horizontal = 20.dp, vertical = 15.dp)
