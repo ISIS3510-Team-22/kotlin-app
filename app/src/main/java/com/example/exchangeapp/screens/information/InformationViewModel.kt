@@ -17,9 +17,9 @@ class InformationViewModel @Inject constructor() : ExchangeAppViewModel() {
         }
     }
 
-    fun onMenuClick(openAndPopUp: (String, String) -> Unit) {
+    fun onMenuClick(open: (String) -> Unit) {
         launchCatching {
-            openAndPopUp(MENU_SCREEN, INFO_SCREEN)
+            open(MENU_SCREEN)
         }
     }
 }
