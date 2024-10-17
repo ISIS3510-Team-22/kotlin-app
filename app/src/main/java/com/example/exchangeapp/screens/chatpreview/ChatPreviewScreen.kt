@@ -5,20 +5,23 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,9 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.exchangeapp.model.service.User
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -46,112 +47,112 @@ fun ChatPreviewScreen(
 ) {
     val userNames by viewModel.userNames.collectAsState()
     val users by viewModel.users.collectAsState()
-    var usuarios by remember { mutableStateOf<List<User>>(emptyList()) }
+    var userList by remember { mutableStateOf<List<User>>(emptyList()) }
     val locationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
-        Log.d("PERMISSION", if (isGranted) "Hay permiso" else "Permiso de ubicación denegado")
+        Log.d("PERMISSION", if (isGranted) "Got permission" else "Permission denied")
     }
-    var currentLocation by remember {mutableStateOf<Location?>(null)}
+    var currentLocation by remember { mutableStateOf<Location?>(null) }
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         locationPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
-        Log.d("PERMISSION", "Apenas se abre")
+        Log.d("PERMISSION", "Launched permission overlay")
     }
 
     LaunchedEffect(users) {
-        // Solo copia users a usuarios en el primer renderizado o cuando se necesite
-        if (usuarios.isEmpty()) {
-            usuarios = users.toList()
+
+        if (userList.isEmpty()) {
+            userList = users.toList()
         }
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF0F3048)) // Fondo más oscuro
+            .background(Color(0xFF0F3048))
             .padding(16.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(onClick = {
-                Log.d("USUARIOS", users.toString())
-                usuarios = viewModel.updateUserDistances(users)
-                Log.d("USUARIOS", usuarios.toString())
-
-            }) {
-                Text("Get Current Location")
+            IconButton(
+                onClick = { viewModel.onMenuClick(open) },
+                modifier = Modifier.size(60.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Menu,
+                    contentDescription = "",
+                    modifier = Modifier.size(60.dp),
+                    tint = Color.White
+                )
             }
-            // Título "Chats"
             Text(
-                text = "Chats",
-                fontSize = 28.sp,
+                text = "CHAT",
                 color = Color.White,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(vertical = 16.dp),
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center
             )
 
-            // Botón de ubicación con ícono
             IconButton(
-                onClick = {viewModel.fetchCurrentLocation { location ->
-                    currentLocation = location // Almacena la ubicación obtenida
-                    if (location != null) {
-                        Log.d("PERMISSION", "Ubicación obtenida Screen: ${location.latitude}, ${location.longitude}")
+                onClick = {
+                    viewModel.handleLocationUpdate(users) { updatedUsers ->
+                        userList = updatedUsers
                     }
-
-                    viewModel.viewModelScope.launch{
-                        try{
-
-                            viewModel.updateUserLocationInFirestore()
-                            usuarios = viewModel.updateUserDistances(users).sortedBy { it.dis }
-                            Log.d("USUARIOS", usuarios.toString())
-
-                        } catch (e: Exception){
-                            Log.e("PERMISSION", "Error al actualizar la ubicación", e)
-                        }
-                    }
-
-
-                }}, // Acción a realizar cuando se presiona el botón
+                },
                 modifier = Modifier.padding(start = 8.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.LocationOn,
-                    contentDescription = "Ubicación",
-                    tint = Color.White, // Color blanco para el icono
+                    contentDescription = "Location",
+                    tint = Color.White,
                     modifier = Modifier.size(36.dp)
                 )
             }
         }
 
-        // Lista de chats
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(3.dp) // Espacio entre los elementos
-        ) {
-            items(usuarios) { user ->
-                // Caja para cada usuario
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(60.dp)
-                        .background(Color(0xFF3A506B)) // Fondo de cada caja
-                        .clickable {
-                            viewModel.getMessagesAndSetupChat(user.name, open)
-                        }
-                        .padding(16.dp), // Espaciado interno
-                    contentAlignment = Alignment.Center // Centra el texto dentro de la caja
-                ) {
-                    Text(
-                        text = user.name,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.White,
-                        textAlign = TextAlign.Center
-                    )
+        if (userNames.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .background(Color(0xFF0F3048))
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = Color.White
+                )
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier.padding(bottom = 92.dp, top = 20.dp)
+            ) {
+                items(userList) { user ->
+                    Card(
+                        onClick = { viewModel.getMessagesAndSetupChat(user.name, open) },
+                        elevation = CardDefaults.cardElevation(5.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color(0xFF18354d)
+                        ),
+                        modifier = Modifier.wrapContentHeight(),
+                        shape = RoundedCornerShape(20.dp)
+                    ) {
+                        Text(
+                            text = user.name,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 20.sp,
+                            modifier = Modifier
+                                .height(70.dp)
+                                .wrapContentHeight()
+                                .fillMaxWidth(),
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                    Spacer(Modifier.padding(10.dp))
+
                 }
             }
         }

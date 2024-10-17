@@ -4,11 +4,15 @@ import android.location.Location
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.exchangeapp.INFO_SCREEN
+import com.example.exchangeapp.MENU_SCREEN
+import com.example.exchangeapp.SIGN_UP_SCREEN
 import com.example.exchangeapp.model.service.AccountService
 import com.example.exchangeapp.model.service.User
 import com.example.exchangeapp.model.service.UserRepository
 import com.example.exchangeapp.model.service.impl.ChatService
 import com.example.exchangeapp.model.service.impl.LocationService
+import com.example.exchangeapp.screens.ExchangeAppViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +32,7 @@ class ChatPreviewViewModel @Inject constructor(
     private val accountService: AccountService,
     private val locationService: LocationService,
     private val firestore: FirebaseFirestore
-) : ViewModel() {
+) : ExchangeAppViewModel() {
 
     private val _userNames = MutableStateFlow<List<String>>(emptyList())
     val userNames: StateFlow<List<String>> = _userNames.asStateFlow()
@@ -36,9 +40,6 @@ class ChatPreviewViewModel @Inject constructor(
     val users: StateFlow<List<User>> = _users.asStateFlow()
     val currentUserId = accountService.currentUserId
     var chatId = ""
-
-
-
 
     init {
         fetchUserNames()
@@ -110,8 +111,6 @@ class ChatPreviewViewModel @Inject constructor(
         viewModelScope.launch {
             // Obtiene el userId de la persona con la que se va a chatear
             val otherUserId = chatService.getUserIdByName(userName)
-            Log.d("DINOSAURIO", currentUserId)
-            Log.d("DINOSAURIO", otherUserId.toString())
             if (otherUserId != null) {
                 chatService.createChat(otherUserId, onChatCreated, userName, currentUserId)
                 chatId =
@@ -161,6 +160,34 @@ class ChatPreviewViewModel @Inject constructor(
                 Log.e("Location", "Ubicación o ID de usuario no disponible")
             }
         }
+    }
+
+    fun handleLocationUpdate(users: List<User>, onLocationUpdated: (List<User>) -> Unit) {
+        fetchCurrentLocation { location ->
+            if (location != null) {
+                Log.d(
+                    "PERMISSION",
+                    "Location obtained ViewModel: ${location.latitude}, ${location.longitude}"
+                )
+            }
+
+            viewModelScope.launch {
+                try {
+                    updateUserLocationInFirestore()
+                    val updatedUsers = updateUserDistances(users).sortedBy { it.dis }
+                    onLocationUpdated(updatedUsers)
+                    Log.d("USERS", updatedUsers.toString())
+
+                } catch (e: Exception) {
+                    Log.e("PERMISSION", "Error updating location", e)
+                }
+            }
+        }
+    }
+
+
+    fun onMenuClick(open: (String) -> Unit){
+        open(MENU_SCREEN)
     }
 }
 
