@@ -1,4 +1,4 @@
-package com.example.exchangeapp.screens.information.subview2
+package com.example.exchangeapp.screens.information.subviews
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -19,12 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBarScreen(
     name : String,
     modifier: Modifier = Modifier,
-    viewModel: SearchBarScreenViewModel = hiltViewModel(),
+    viewModel: BasicScreenViewModel = hiltViewModel(),
     popUp : () -> Unit
 ){
 

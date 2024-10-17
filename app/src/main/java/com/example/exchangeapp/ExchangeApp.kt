@@ -22,8 +22,8 @@ import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
 import com.example.exchangeapp.screens.chat.ChatScreen
 import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
 import com.example.exchangeapp.screens.information.InformationScreen
-import com.example.exchangeapp.screens.information.subview1.BasicScreen
-import com.example.exchangeapp.screens.information.subview2.SearchBarScreen
+import com.example.exchangeapp.screens.information.subviews.BasicScreen
+import com.example.exchangeapp.screens.information.subviews.SearchBarScreen
 import com.example.exchangeapp.screens.menu.MenuScreen
 import com.example.exchangeapp.screens.navigation.NavigationScreen
 import com.example.exchangeapp.screens.splash.SplashScreen

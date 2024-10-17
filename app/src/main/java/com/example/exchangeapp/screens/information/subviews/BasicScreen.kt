@@ -1,4 +1,4 @@
-package com.example.exchangeapp.screens.information.subview1
+package com.example.exchangeapp.screens.information.subviews
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
