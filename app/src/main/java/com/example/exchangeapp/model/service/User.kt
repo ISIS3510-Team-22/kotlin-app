@@ -6,6 +6,7 @@ data class User(
     val email: String  = "",
     val profilePictureUrl: String? = null,
     val lat: Double? = 0.0,
-    val long: Double? = 0.0
+    val long: Double? = 0.0,
+    var dis: Double? = 0.0
 
 )
