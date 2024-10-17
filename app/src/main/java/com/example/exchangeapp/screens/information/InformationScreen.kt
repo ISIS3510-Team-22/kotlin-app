@@ -55,7 +55,7 @@ fun InformationScreen(
             .padding(16.dp)
     ) {
        TopBar(onMenuClick = { viewModel.onMenuClick(open) }, screenTitle = "INFORMATION",
-           icon = Icons.Default.CalendarToday, iconDescription = "Calendar")
+           icon = Icons.Default.CalendarToday, iconDescription = "Calendar", iconAction = {})
 
         LazyColumn (modifier= Modifier.padding(bottom = 68.dp)){
             items(buttontexts) { label ->

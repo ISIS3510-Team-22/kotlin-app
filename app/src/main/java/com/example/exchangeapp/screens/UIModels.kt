@@ -112,7 +112,8 @@ fun EmailTextField(
 
 
 @Composable
-fun TopBar(onMenuClick: () -> Unit, screenTitle: String, icon: ImageVector, iconDescription: String) {
+fun TopBar(onMenuClick: () -> Unit, screenTitle: String, icon: ImageVector, iconDescription: String,
+           iconAction:()->Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -137,7 +138,7 @@ fun TopBar(onMenuClick: () -> Unit, screenTitle: String, icon: ImageVector, icon
         )
 
         IconButton(
-            onClick = {},
+            onClick = iconAction,
             modifier = Modifier.padding(start = 8.dp)
         ) {
             Icon(

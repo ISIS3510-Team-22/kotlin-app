@@ -76,7 +76,9 @@ fun ChatPreviewScreen(
             .padding(16.dp)
     ) {
         TopBar(onMenuClick = { viewModel.onMenuClick(open) }, screenTitle = "CHAT",
-            icon = Icons.Default.LocationOn, iconDescription = "Location")
+            icon = Icons.Default.LocationOn, iconDescription = "Location", iconAction = { viewModel.handleLocationUpdate(users) { updatedUsers ->
+                userList = updatedUsers
+            }})
 
         if (userNames.isEmpty()) {
             Box(
