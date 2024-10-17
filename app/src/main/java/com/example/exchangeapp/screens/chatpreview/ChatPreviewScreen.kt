@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.exchangeapp.model.service.User
+import com.example.exchangeapp.screens.TopBar
 
 
 @Composable
@@ -73,45 +75,8 @@ fun ChatPreviewScreen(
             .background(Color(0xFF0F3048))
             .padding(16.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(
-                onClick = { viewModel.onMenuClick(open) },
-                modifier = Modifier.size(60.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = "",
-                    modifier = Modifier.size(60.dp),
-                    tint = Color.White
-                )
-            }
-            Text(
-                text = "CHAT",
-                color = Color.White,
-                style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center
-            )
-
-            IconButton(
-                onClick = {
-                    viewModel.handleLocationUpdate(users) { updatedUsers ->
-                        userList = updatedUsers
-                    }
-                },
-                modifier = Modifier.padding(start = 8.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.LocationOn,
-                    contentDescription = "Location",
-                    tint = Color.White,
-                    modifier = Modifier.size(36.dp)
-                )
-            }
-        }
+        TopBar(onMenuClick = { viewModel.onMenuClick(open) }, screenTitle = "CHAT",
+            icon = Icons.Default.LocationOn, iconDescription = "Location")
 
         if (userNames.isEmpty()) {
             Box(

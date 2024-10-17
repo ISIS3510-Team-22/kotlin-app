@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.exchangeapp.screens.TopBar
 
 @Composable
 fun InformationScreen(
@@ -53,42 +54,8 @@ fun InformationScreen(
             .background(Color(0xFF0F3048))
             .padding(16.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(
-                onClick = { viewModel.onMenuClick(open) },
-                modifier = Modifier.size(60.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = "",
-                    modifier = Modifier.size(60.dp),
-                    tint = Color.White
-                )
-            }
-            Text(
-                text = "INFORMATION",
-                color = Color.White,
-                style = MaterialTheme.typography.headlineLarge,
-                modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center
-            )
-
-            IconButton(
-                onClick = {},
-                modifier = Modifier.padding(start = 8.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.CalendarToday,
-                    contentDescription = "Calendar",
-                    tint = Color.White,
-                    modifier = Modifier.size(36.dp)
-                )
-            }
-        }
-
+       TopBar(onMenuClick = { viewModel.onMenuClick(open) }, screenTitle = "INFORMATION",
+           icon = Icons.Default.CalendarToday, iconDescription = "Calendar")
 
         LazyColumn (modifier= Modifier.padding(bottom = 68.dp)){
             items(buttontexts) { label ->
