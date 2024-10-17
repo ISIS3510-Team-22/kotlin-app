@@ -23,6 +23,7 @@ import com.example.exchangeapp.screens.chat.ChatScreen
 import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
 import com.example.exchangeapp.screens.information.InformationScreen
 import com.example.exchangeapp.screens.information.subview1.BasicScreen
+import com.example.exchangeapp.screens.information.subview2.SearchBarScreen
 import com.example.exchangeapp.screens.menu.MenuScreen
 import com.example.exchangeapp.screens.navigation.NavigationScreen
 import com.example.exchangeapp.screens.splash.SplashScreen
@@ -118,6 +119,11 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
 
     composable("$INFO_SUB_SCREEN1/{name}"){ backStackEntry ->
         var name = backStackEntry.arguments?.getString("name") ?: "Unknown"
-        BasicScreen(name = name )
+        BasicScreen(name = name , popUp = { appState.popUp() })
+    }
+
+    composable("$INFO_SUB_SCREEN2/{name}"){ backStackEntry ->
+        var name = backStackEntry.arguments?.getString("name") ?: "Unknown"
+        SearchBarScreen(name = name , popUp = { appState.popUp() })
     }
 }

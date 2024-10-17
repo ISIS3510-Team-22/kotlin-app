@@ -43,7 +43,8 @@ fun InformationScreen(
     val labels = mapOf(
         "Cooking & recipes while abroad" to "recipes",
         "Mental Health" to "mental_health",
-        "Adapting to a new city" to "adapting_tips"
+        "Adapting to a new city" to "adapting_tips",
+        "Universities info" to "universities"
     )
 
 

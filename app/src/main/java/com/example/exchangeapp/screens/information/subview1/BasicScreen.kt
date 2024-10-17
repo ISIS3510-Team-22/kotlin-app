@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -32,10 +34,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 fun BasicScreen(
     name: String,
     modifier: Modifier = Modifier,
-    viewModel: BasicScreenViewModel = hiltViewModel()
+    viewModel: BasicScreenViewModel = hiltViewModel(),
+    popUp : () -> Unit
 ) {
-
-    var expanded by remember { mutableStateOf(false) }
 
     var documentDataList by remember { mutableStateOf(emptyList<Map<String, Any>>()) }
 
@@ -56,7 +57,20 @@ fun BasicScreen(
             .background(Color(0xFF0F3048))
             .padding(16.dp)
     ) {
-        Text(labels[name].toString(), style = MaterialTheme.typography.headlineMedium)
+        Row {
+            IconButton(
+                onClick = {popUp() }
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                    "",
+                    modifier = Modifier
+                        .size(60.dp),
+                    tint = Color.White
+                )
+            }
+            Text(labels[name].toString(), style = MaterialTheme.typography.headlineMedium)
+        }
         Spacer(modifier = Modifier.height(16.dp))
         documentDataList.forEach { documentData ->
             Card (
@@ -78,13 +92,13 @@ fun BasicScreen(
 
 @Composable
 fun DisplayDocumentData(documentData: Map<String, Any>) {
-    // State to track whether the details are expanded
+
     var isExpanded by remember { mutableStateOf(false) }
 
     // Extract the title from the document data
     val titleOrName = documentData["title"]?.toString() ?: documentData["name"]?.toString() ?: "No Title or Name"
 
-    // Extract the remaining details, excluding the title and name
+
     val details = documentData.filterKeys { it !in listOf("title", "name") }
 
     Column(
@@ -92,7 +106,6 @@ fun DisplayDocumentData(documentData: Map<String, Any>) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        // Render the title in a Row with an expandable button
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -105,14 +118,12 @@ fun DisplayDocumentData(documentData: Map<String, Any>) {
                 modifier = Modifier.weight(1f)
             )
 
-            // Expandable button
             expandableButton(
                 expanded = isExpanded,
                 onClick = { isExpanded = !isExpanded } // Toggle the state
             )
         }
 
-        // Conditionally render the details only if the section is expanded
         if (isExpanded) {
             Column(
                 modifier = Modifier

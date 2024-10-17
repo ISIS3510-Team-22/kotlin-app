@@ -1,7 +1,5 @@
 package com.example.exchangeapp.screens.information.subview1
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import com.example.exchangeapp.screens.ExchangeAppViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,19 +9,6 @@ import javax.inject.Inject
 class BasicScreenViewModel @Inject constructor() : ExchangeAppViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
-
-    fun getContent(colname : String){
-        var docs = db.collection(colname)
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d(TAG, "${document.id} => ${document.data}")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "Error getting documents: ", exception)
-            }
-    }
 
     fun getDocument(onDataReceived: (String, String) -> Unit){
 
