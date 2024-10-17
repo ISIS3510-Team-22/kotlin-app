@@ -127,7 +127,7 @@ fun ChatPreviewScreen(
             }
         } else {
             LazyColumn(
-                modifier = Modifier.padding(bottom = 92.dp, top = 20.dp)
+                modifier = Modifier.padding(bottom = 65.dp, top = 10.dp)
             ) {
                 items(userList) { user ->
                     Card(

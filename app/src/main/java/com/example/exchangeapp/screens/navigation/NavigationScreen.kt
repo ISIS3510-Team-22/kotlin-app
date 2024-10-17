@@ -42,6 +42,7 @@ data class BottomNavItem(
     val hasNews: Boolean = false,
     val badgeCount: Int? = null
 )
+
 val colorBg = Color(0xFF0F3048)
 
 val items = listOf(
@@ -118,12 +119,14 @@ fun NavigationScreen(appState: ExchangeAppState) {
             }
         ) {
             when (selectedItemIndex) {
-                0 -> InformationScreen(openAndPopUp = { route, popUp ->
-                    appState.navigateAndPopUp(
-                        route,
-                        popUp
-                    )
-                })
+                0 -> InformationScreen(
+                    open = { route -> appState.navigate(route) },
+                    openAndPopUp = { route, popUp ->
+                        appState.navigateAndPopUp(
+                            route,
+                            popUp
+                        )
+                    })
 
                 1 -> ChatPreviewScreen(open = { route -> appState.navigate(route) })
                 2 -> WaitScreen()

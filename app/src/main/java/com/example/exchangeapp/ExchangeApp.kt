@@ -16,14 +16,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.ExchangeAppTheme
-import com.example.exchangeapp.screens.information.InformationScreen
 import com.example.exchangeapp.screens.auth.forgot_password.ForgotPasswordScreen
-import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
-import com.example.exchangeapp.screens.chat.ChatScreen
-import com.example.exchangeapp.screens.navigation.NavigationScreen
 import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
 import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
+import com.example.exchangeapp.screens.chat.ChatScreen
+import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
+import com.example.exchangeapp.screens.information.InformationScreen
 import com.example.exchangeapp.screens.menu.MenuScreen
+import com.example.exchangeapp.screens.navigation.NavigationScreen
 import com.example.exchangeapp.screens.splash.SplashScreen
 import com.google.android.gms.location.FusedLocationProviderClient
 
@@ -88,7 +88,7 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
     }
 
     composable(CHAT_PREVIEW_SCREEN) {
-        ChatPreviewScreen(open = {route -> appState.navigate(route)})
+        ChatPreviewScreen(open = { route -> appState.navigate(route) })
     }
 
     composable("$CHAT_SCREEN/{userName}") { backStackEntry ->
@@ -102,13 +102,16 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
         )
     }
 
-    composable(INFO_SCREEN){
+    composable(INFO_SCREEN) {
         InformationScreen(
+            open = { route -> appState.navigate(route) },
             openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }
         )
     }
 
-    composable(MENU_SCREEN){
-        MenuScreen(popUp = { appState.popUp() }, clearAndNavigate = { route -> appState.clearAndNavigate(route) })
+    composable(MENU_SCREEN) {
+        MenuScreen(
+            popUp = { appState.popUp() },
+            clearAndNavigate = { route -> appState.clearAndNavigate(route) })
     }
 }
