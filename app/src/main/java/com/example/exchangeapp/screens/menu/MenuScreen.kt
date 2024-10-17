@@ -30,6 +30,7 @@ import com.example.exchangeapp.R
 @Composable
 fun MenuScreen(
     clearAndNavigate: (String) -> Unit,
+    popUp: ()->Unit,
     viewModel: MenuViewModel = hiltViewModel()
 ) {
     Column(
@@ -40,7 +41,7 @@ fun MenuScreen(
     ) {
         Row(verticalAlignment = Alignment.Top) {
             IconButton(
-                onClick = {},
+                onClick = {popUp()},
                 modifier = Modifier
                     .size(100.dp)
                     .padding(25.dp)
@@ -49,7 +50,8 @@ fun MenuScreen(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "",
                     modifier = Modifier
-                        .size(60.dp)
+                        .size(60.dp),
+                    tint = Color.White
                 )
             }
         }

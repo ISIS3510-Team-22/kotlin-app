@@ -30,10 +30,12 @@ import com.google.android.gms.location.FusedLocationProviderClient
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
+
 fun ExchangeApp(fusedLocationProviderClient: FusedLocationProviderClient) {
     ExchangeAppTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
             val appState = rememberAppState()
+
 
             Scaffold { innerPaddingModifier ->
                 NavHost(
@@ -87,14 +89,12 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
     }
 
     composable(CHAT_PREVIEW_SCREEN) {
-        ChatPreviewScreen { contactName ->
-            appState.navController.navigate("$CHAT_SCREEN/$contactName")
-        }
+        ChatPreviewScreen(open = { route -> appState.navigate(route) })
     }
 
-    composable("$CHAT_SCREEN/{contactName}") { backStackEntry ->
-        val contactName = backStackEntry.arguments?.getString("contactName") ?: "Unknown"
-        ChatScreen(contactName = contactName)
+    composable("$CHAT_SCREEN/{userName}") { backStackEntry ->
+        val userName = backStackEntry.arguments?.getString("userName") ?: "Unknown"
+        ChatScreen(receiverName = userName)
     }
 
     composable(FORGOT_PASSWORD_SCREEN) {
@@ -103,14 +103,17 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
         )
     }
 
-    composable(INFO_SCREEN){
+    composable(INFO_SCREEN) {
         InformationScreen(
+            open = { route -> appState.navigate(route) },
             openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) }
         )
     }
 
-    composable(MENU_SCREEN){
-        MenuScreen(clearAndNavigate = { route -> appState.clearAndNavigate(route) })
+    composable(MENU_SCREEN) {
+        MenuScreen(
+            popUp = { appState.popUp() },
+            clearAndNavigate = { route -> appState.clearAndNavigate(route) })
     }
 
     composable(INFO_SUB_SCREEN1){
