@@ -46,35 +46,13 @@ fun InformationScreen(
             .background(Color(0xFF0F3048))
             .padding(16.dp)
     ) {
-       TopBar(onMenuClick = { viewModel.onMenuClick(open) }, screenTitle = "INFORMATION",
-           icon = Icons.Default.CalendarToday, iconDescription = "Calendar", iconAction = {})
+        TopBar(onMenuClick = { viewModel.onMenuClick(open) }, screenTitle = "INFORMATION",
+            icon = Icons.Default.CalendarToday, iconDescription = "Calendar", iconAction = {})
 
-        LazyColumn (modifier= Modifier.padding(bottom = 68.dp)){
+        LazyColumn(modifier = Modifier.padding(bottom = 68.dp)) {
             items(buttontexts) { label ->
-                LabeledButtons(label, viewModel.onChatClick(openAndPopUp), modifier)
                 Spacer(Modifier.padding(15.dp))
-                //LabeledButtons(label, onButtonClick, modifier)
-                Button(
-                    onClick = { viewModel.onSubViewClick(openAndPopUp) },
-                    shape = RoundedCornerShape(35),
-                    modifier = modifier
-                        .padding(horizontal = 20.dp, vertical = 15.dp)
-                        .fillMaxWidth()
-                        .height(110.dp),
-                    colors = ButtonColors(
-                        Color(0xFF18354d),
-                        Color.White,
-                        MaterialTheme.colorScheme.tertiary,
-                        MaterialTheme.colorScheme.onTertiary
-                    )
-                ) {
-                    Text(
-                        text = label,
-                        fontSize = 20.sp,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                InfoButton(text = label, onButtonClick = { viewModel.onSubViewClick(open) })
             }
         }
     }
@@ -82,12 +60,12 @@ fun InformationScreen(
 
 
 @Composable
-fun LabeledButtons(text: String, onButtonClick: Unit, modifier: Modifier) {
+fun InfoButton(text: String, onButtonClick:()-> Unit, modifier: Modifier = Modifier) {
     Button(
-        onClick = { onButtonClick },
+        onClick = onButtonClick,
         shape = RoundedCornerShape(35),
         modifier = modifier
-            .padding()
+            .padding(horizontal = 20.dp, vertical = 15.dp)
             .fillMaxWidth()
             .height(110.dp),
         colors = ButtonColors(

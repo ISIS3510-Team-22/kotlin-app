@@ -12,21 +12,14 @@ import javax.inject.Inject
 @HiltViewModel
 class InformationViewModel @Inject constructor() : ExchangeAppViewModel() {
 
-    fun onChatClick(openAndPopUp: (String, String) -> Unit) {
-        launchCatching {
-            openAndPopUp(CHAT_SCREEN, NAVIGATION_SCREEN)
-        }
-    }
-
     fun onMenuClick(open: (String) -> Unit) {
         launchCatching {
             open(MENU_SCREEN)
         }
     }
 
-    fun onSubViewClick(openAndPopUp: (String, String) -> Unit){
-        launchCatching {
-            openAndPopUp(INFO_SUB_SCREEN1, INFO_SCREEN)
-        }
+    fun onSubViewClick(open: (String) -> Unit){
+            open(INFO_SUB_SCREEN1)
+
     }
 }
