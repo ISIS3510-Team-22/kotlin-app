@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.filled.ExpandMore
@@ -81,7 +82,8 @@ fun BasicScreen(
                     Color.White,
                     MaterialTheme.colorScheme.tertiary,
                     MaterialTheme.colorScheme.onTertiary
-                )
+                ),
+                shape = RoundedCornerShape(30)
             ) {
                 DisplayDocumentData( documentData = documentData)
             }
@@ -118,7 +120,7 @@ fun DisplayDocumentData(documentData: Map<String, Any>) {
                 modifier = Modifier.weight(1f)
             )
 
-            expandableButton(
+            ExpandableButton(
                 expanded = isExpanded,
                 onClick = { isExpanded = !isExpanded } // Toggle the state
             )
@@ -140,7 +142,7 @@ fun DisplayDocumentData(documentData: Map<String, Any>) {
 }
 
 @Composable
-private fun expandableButton(
+private fun ExpandableButton(
     expanded: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
