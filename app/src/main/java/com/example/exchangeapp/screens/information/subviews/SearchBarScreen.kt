@@ -75,7 +75,7 @@ fun SearchBarScreen(
                     tint = Color.White
                 )
             }
-            Text(labels[name].toString(), style = MaterialTheme.typography.headlineMedium)
+            Text(labels[name].toString(), style = MaterialTheme.typography.headlineMedium, color = Color.White)
         }
         SearchBar(
             modifier = modifier

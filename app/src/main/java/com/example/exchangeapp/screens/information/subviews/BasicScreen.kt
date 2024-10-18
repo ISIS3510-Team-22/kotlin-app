@@ -73,7 +73,7 @@ fun BasicScreen(
                     tint = Color.White
                 )
             }
-            Text(labels[name].toString(), style = MaterialTheme.typography.headlineMedium)
+            Text(labels[name].toString(), style = MaterialTheme.typography.headlineMedium, color = Color.White)
         }
         Spacer(modifier = Modifier.height(16.dp))
         documentDataList.forEach { documentData ->
