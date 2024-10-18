@@ -4,11 +4,17 @@ import com.example.exchangeapp.INFO_SUB_SCREEN1
 import com.example.exchangeapp.INFO_SUB_SCREEN2
 import com.example.exchangeapp.MENU_SCREEN
 import com.example.exchangeapp.screens.ExchangeAppViewModel
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class InformationViewModel @Inject constructor() : ExchangeAppViewModel() {
+
+    init {
+        Firebase.analytics.logEvent("Info_Screen",null)
+    }
 
     fun onMenuClick(open: (String) -> Unit) {
         launchCatching {

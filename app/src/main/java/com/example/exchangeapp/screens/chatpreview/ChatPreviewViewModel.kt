@@ -24,6 +24,9 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 
 @HiltViewModel
 class ChatPreviewViewModel @Inject constructor(
@@ -42,6 +45,7 @@ class ChatPreviewViewModel @Inject constructor(
     var chatId = ""
 
     init {
+        Firebase.analytics.logEvent("Chat_Prev_Screen",null)
         fetchUserNames()
         fetchUsers()
 
