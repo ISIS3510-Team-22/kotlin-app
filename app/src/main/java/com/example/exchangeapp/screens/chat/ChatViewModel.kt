@@ -1,6 +1,10 @@
 package com.example.exchangeapp.screens.chat
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exchangeapp.model.service.AccountService
@@ -10,8 +14,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.text.filter
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
@@ -22,6 +28,8 @@ class ChatViewModel @Inject constructor(
     val currentUserId = accountService.currentUserId
     private val _messages = MutableStateFlow<List<Message>>(emptyList())
     val messages: StateFlow<List<Message>> = _messages.asStateFlow()
+    var currentMessage = MutableStateFlow("")
+    var isEnabled = MutableStateFlow(false)
 
 
     // Enviar un mensaje
@@ -49,7 +57,7 @@ class ChatViewModel @Inject constructor(
                 Log.d("TREX", currentUserId)
                 Log.d("TREX", receiverId)
                 chatService.sendMessage(chatId, message)
-
+                updateCurrentMessage("")
             }
         }
     }
@@ -67,4 +75,10 @@ class ChatViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateCurrentMessage(newMessage: String) {
+        currentMessage.value = newMessage
+        isEnabled.value = currentMessage.value.filter { !it.isWhitespace() }.isNotEmpty()
+    }
+
 }
