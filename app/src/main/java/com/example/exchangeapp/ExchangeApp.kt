@@ -15,7 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.compose.ExchangeAppTheme
+import com.example.exchangeapp.ui.theme.ExchangeAppTheme
 import com.example.exchangeapp.screens.auth.forgot_password.ForgotPasswordScreen
 import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
 import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
@@ -95,7 +95,7 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
 
     composable("$CHAT_SCREEN/{userName}") { backStackEntry ->
         val userName = backStackEntry.arguments?.getString("userName") ?: "Unknown"
-        ChatScreen(receiverName = userName)
+        ChatScreen(popUp = { appState.popUp() }, receiverName = userName)
     }
 
     composable(FORGOT_PASSWORD_SCREEN) {
