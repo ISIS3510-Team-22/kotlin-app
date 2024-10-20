@@ -59,7 +59,7 @@ fun InformationScreen(
 
         LazyColumn(modifier = Modifier.padding(bottom = 68.dp)) {
             items(buttontexts) { label ->
-                Spacer(Modifier.padding(15.dp))
+                Spacer(Modifier.padding(5.dp))
                 InfoButton(text = label, onButtonClick = { labels[label]?.let {
                     viewModel.onSubViewClick(
                         it,open)
@@ -74,9 +74,9 @@ fun InformationScreen(
 fun InfoButton(text: String, onButtonClick:()-> Unit, modifier: Modifier = Modifier) {
     Button(
         onClick = onButtonClick,
-        shape = RoundedCornerShape(35),
+        shape = RoundedCornerShape(25),
         modifier = modifier
-            .padding(horizontal = 20.dp, vertical = 15.dp)
+            .padding(horizontal = 10.dp, vertical = 10.dp)
             .fillMaxWidth()
             .height(110.dp),
         colors = ButtonColors(
