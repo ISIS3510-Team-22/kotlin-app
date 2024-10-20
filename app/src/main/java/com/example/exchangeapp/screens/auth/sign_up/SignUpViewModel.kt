@@ -23,8 +23,7 @@ class SignUpViewModel @Inject constructor(
     val confirmError = MutableStateFlow("")
     val emailError = MutableStateFlow("")
     val name = MutableStateFlow("")
-    val db = Firebase.firestore
-    val currentUserId = accountService.currentUserId
+
 
 
     fun updateEmail(newEmail: String) {
@@ -51,8 +50,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     fun updateName(newName: String) {
-        name.value = newName.filter { !it.isWhitespace() }
-
+        name.value = newName.trimStart()
     }
 
     fun updateEnabled() {
