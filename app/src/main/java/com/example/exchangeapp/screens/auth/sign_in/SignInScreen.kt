@@ -64,7 +64,6 @@ fun SignInScreen(
     val email = viewModel.email.collectAsState()
     val password = viewModel.password.collectAsState()
     val emailError = viewModel.emailError.collectAsState()
-    val passwordError = viewModel.passwordError.collectAsState()
     val isEnabled = viewModel.isEnabled.collectAsState()
     val errorColor = Color("#e63022".toColorInt())
 
