@@ -1,11 +1,13 @@
-package com.example.ui.theme
+package com.example.exchangeapp.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.FontFamily
-
-import androidx.compose.ui.text.googlefonts.GoogleFont
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
+import androidx.compose.ui.text.googlefonts.GoogleFont
 import com.example.exchangeapp.R
+
+const val WORK_SANS = "Work Sans"
 
 val provider = GoogleFont.Provider(
     providerAuthority = "com.google.android.gms.fonts",
@@ -15,8 +17,19 @@ val provider = GoogleFont.Provider(
 
 val bodyFontFamily = FontFamily(
     Font(
-        googleFont = GoogleFont("Work Sans"),
+        googleFont = GoogleFont(WORK_SANS),
         fontProvider = provider,
+        weight = FontWeight.Normal
+    ),
+    Font(
+        googleFont = GoogleFont(WORK_SANS),
+        fontProvider = provider,
+        weight = FontWeight.Bold
+    ),
+    Font(
+        googleFont = GoogleFont(WORK_SANS),
+        fontProvider = provider,
+        weight = FontWeight.ExtraBold
     )
 )
 

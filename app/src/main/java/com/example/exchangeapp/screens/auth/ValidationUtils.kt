@@ -2,7 +2,8 @@ package com.example.exchangeapp.screens.auth
 
 object ValidationUtils {
     private val emailRegex = """^[\w-.]+@([\w-]+\.)+[\w-]{2,4}${'$'}""".toRegex()
-    private val passwordRegex = """^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@${'$'}%^&*-]).{6,}${'$'}""".toRegex()
+    private val passwordRegex =
+        """^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@${'$'}%^&*-]).{6,}${'$'}""".toRegex()
 
     fun validateEmail(email: String): String {
         return if (!emailRegex.containsMatchIn(email)) {
@@ -14,7 +15,7 @@ object ValidationUtils {
 
     fun validatePassword(password: String): String {
         return if (!passwordRegex.containsMatchIn(password)) {
-            "Use 6+ chars, 1 uppercase, 1 special"
+            "6+ chars, 1 uppercase, 1 special, 1 number"
         } else {
             ""
         }
