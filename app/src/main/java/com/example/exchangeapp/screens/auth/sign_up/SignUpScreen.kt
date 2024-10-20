@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
@@ -178,8 +179,8 @@ fun SignUpScreen(
                 enabled = isEnabled.value,
                 shape = RoundedCornerShape(20),
                 colors = ButtonColors(
-                    MaterialTheme.colorScheme.onPrimaryContainer,
-                    MaterialTheme.colorScheme.primaryContainer,
+                    Color(0xFF01397D),
+                    MaterialTheme.colorScheme.onPrimary,
                     MaterialTheme.colorScheme.tertiary,
                     MaterialTheme.colorScheme.onTertiary
                 ),
@@ -192,7 +193,8 @@ fun SignUpScreen(
                 Text(
                     stringResource(R.string.sign_up),
                     fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.ExtraBold
                 )
 
             }

@@ -51,7 +51,8 @@ class SignUpViewModel @Inject constructor(
     }
 
     fun updateName(newName: String) {
-        name.value = newName
+        name.value = newName.filter { !it.isWhitespace() }
+
     }
 
     fun updateEnabled() {
