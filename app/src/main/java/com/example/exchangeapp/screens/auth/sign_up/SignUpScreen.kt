@@ -73,7 +73,7 @@ fun SignUpScreen(
     val passwordError = viewModel.passwordError.collectAsState()
     val confirmError = viewModel.confirmError.collectAsState()
     val emailError = viewModel.emailError.collectAsState()
-    val errorColor = Color("#e63022".toColorInt())
+    val errorColor = Color(0xFFE63022)
 
 
     val imeInsets = WindowInsets.ime
@@ -87,7 +87,7 @@ fun SignUpScreen(
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
             .animateContentSize()
-            .background(Color("#0F3048".toColorInt())),
+            .background(Color(0xFF0F3048)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
 
