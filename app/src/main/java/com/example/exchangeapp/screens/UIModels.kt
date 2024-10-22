@@ -9,7 +9,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -53,11 +52,11 @@ fun CustomTextField(
         trailingIcon = {
             if (isPassword && !showField.value) {
                 IconButton(onClick = { showField.value = !showField.value }) {
-                    Icon(Icons.Filled.Visibility, "")
+                    Icon(Icons.Filled.VisibilityOff, "")
                 }
             } else if (isPassword && showField.value) {
                 IconButton(onClick = { showField.value = !showField.value }) {
-                    Icon(Icons.Filled.VisibilityOff, "")
+                    Icon(Icons.Filled.Visibility, "", tint = Color(0xFF0F3048))
                 }
             }
 
@@ -112,8 +111,10 @@ fun EmailTextField(
 
 
 @Composable
-fun TopBar(onMenuClick: () -> Unit, screenTitle: String, icon: ImageVector, iconDescription: String,
-           iconAction:()->Unit) {
+fun TopBar(
+    onMenuClick: () -> Unit, screenTitle: String, icon: ImageVector, iconDescription: String,
+    iconAction: () -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically

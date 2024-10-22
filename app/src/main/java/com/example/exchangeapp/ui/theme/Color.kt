@@ -1,7 +1,8 @@
-package com.example.compose
+package com.example.exchangeapp.ui.theme
+
 import androidx.compose.ui.graphics.Color
 
-val primaryLight = Color(0xFF35618E)
+val primaryLight = Color(0xFF0F3048)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFD1E4FF)
 val onPrimaryContainerLight = Color(0xFF001D35)
@@ -109,7 +110,7 @@ val surfaceContainerLightHighContrast = Color(0xFFECEEF4)
 val surfaceContainerHighLightHighContrast = Color(0xFFE6E8EE)
 val surfaceContainerHighestLightHighContrast = Color(0xFFE1E2E8)
 
-val primaryDark = Color(0xFF9FCAFD)
+val primaryDark = Color(0xFF0F3048)
 val onPrimaryDark = Color(0xFF003257)
 val primaryContainerDark = Color(0xFF184974)
 val onPrimaryContainerDark = Color(0xFFD1E4FF)

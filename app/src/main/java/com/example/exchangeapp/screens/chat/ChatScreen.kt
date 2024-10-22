@@ -1,17 +1,21 @@
 package com.example.exchangeapp.screens.chat
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,37 +26,63 @@ import com.example.exchangeapp.model.service.module.Message
 
 @Composable
 fun ChatScreen(
+    popUp: () -> Unit,
     receiverName: String,
     viewModel: ChatViewModel = hiltViewModel()
 ) {
     val messages by viewModel.messages.collectAsState()
     val currentUserId = viewModel.currentUserId
-    var currentMessage by remember { mutableStateOf("") }
+    val currentMessage = viewModel.currentMessage.collectAsState()
+    val isEnabled = viewModel.isEnabled.collectAsState()
+
+
     viewModel.getMessages(receiverName)
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(Color(0xFF0F3048))
-        .padding(16.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF0F3048))
+            .imePadding()
+            .padding(horizontal = 20.dp)
     ) {
 
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            IconButton(
+                onClick = { popUp() },
+                modifier = Modifier.size(36.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "",
+                    tint = Color.White,
+                    modifier = Modifier.size(36.dp)
+                )
+            }
 
+            Spacer(modifier = Modifier.weight(1f))
 
-        Text(
-            text = receiverName,
-            color = Color.White,
-            fontSize = 26.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            textAlign = TextAlign.Center
-        )
+            Text(
+                text = receiverName,
+                color = Color.White,
+                fontSize = 26.sp,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.padding(end = 36.dp))
+
+        }
+
 
         LazyColumn(
             modifier = Modifier.weight(1f),
 
-        ) {
+            ) {
             items(messages) { message ->
                 MessageBubble(
                     message = message,
@@ -64,17 +94,17 @@ fun ChatScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding( bottom = 5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             OutlinedTextField(
-                value = currentMessage,
-                onValueChange = { currentMessage = it },
+                value = currentMessage.value,
+                onValueChange = { viewModel.updateCurrentMessage(it) },
                 modifier = Modifier
                     .weight(1f)
-                    .padding(8.dp),
-                shape = MaterialTheme.shapes.large, // Bordes circulares
-                placeholder = { Text("Write a message...") },
+                    .padding(end = 8.dp),
+                shape = MaterialTheme.shapes.large,
+                placeholder = { Text("Write a message...", color = Color(0xFFE8E8E8)) },
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Color.White,
                     unfocusedTextColor = Color.White,
@@ -82,27 +112,30 @@ fun ChatScreen(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
                     focusedIndicatorColor = Color.White,
-                    unfocusedIndicatorColor = Color.Gray
+                    unfocusedIndicatorColor = Color.Gray,
+                    selectionColors = TextSelectionColors(
+                        handleColor = Color.White,
+                        backgroundColor = Color.LightGray
+                    )
                 )
             )
-            Button(
-                onClick = {
-                    viewModel.sendMessage(receiverName, currentMessage)
-                    currentMessage = ""
-                    viewModel.getMessages(receiverName)
-                    Log.d("CHAT", "Pantalla Chat")
-                    Log.d("CHAT", messages.toString())
-                },
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .height(56.dp)
-                    .width(90.dp),
-            ) {
-                Text(
-                    text = "Send",
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Bold)
+            Box(modifier = Modifier
+                .clip(RoundedCornerShape(50))
+                .background(Color(0xFFFFFFFF))) {
+                IconButton(
+                    onClick = {
+                        viewModel.sendMessage(receiverName, currentMessage.value)
+                        viewModel.getMessages(receiverName)
+                    },
+                    enabled = isEnabled.value) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.Send,
+                        "Send button",
+                        tint = if (isEnabled.value) Color(0xFF0F3048) else Color.Gray
+                    )
+                }
             }
+
         }
     }
 }
@@ -117,7 +150,7 @@ fun MessageBubble(message: Message, isSentByCurrentUser: Boolean) {
     ) {
         Text(
             text = message.message,
-            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.bodyLarge.copy(),
             color = if (isSentByCurrentUser) Color.White else Color.Black,
             textAlign = TextAlign.Start,
             modifier = Modifier
