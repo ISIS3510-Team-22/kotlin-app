@@ -50,7 +50,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     fun updateName(newName: String) {
-        name.value = newName.trimStart()
+        name.value = newName.trimStart().replace("  ", " ")
     }
 
     fun updateEnabled() {
@@ -66,7 +66,7 @@ class SignUpViewModel @Inject constructor(
             if (password.value != confirmPassword.value) {
                 throw Exception("Passwords do not match")
             }
-            accountService.signUp(name.value, email.value, password.value)
+            accountService.signUp(name.value.trimEnd(), email.value, password.value)
             openAndPopUp(NAVIGATION_SCREEN, SIGN_UP_SCREEN)
         }
     }
