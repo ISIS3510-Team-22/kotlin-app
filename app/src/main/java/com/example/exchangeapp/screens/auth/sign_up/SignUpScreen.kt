@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
@@ -72,7 +73,7 @@ fun SignUpScreen(
     val passwordError = viewModel.passwordError.collectAsState()
     val confirmError = viewModel.confirmError.collectAsState()
     val emailError = viewModel.emailError.collectAsState()
-    val errorColor = Color("#e63022".toColorInt())
+    val errorColor = Color(0xFFE63022)
 
 
     val imeInsets = WindowInsets.ime
@@ -86,7 +87,7 @@ fun SignUpScreen(
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
             .animateContentSize()
-            .background(Color("#0F3048".toColorInt())),
+            .background(Color(0xFF0F3048)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
 
@@ -178,8 +179,8 @@ fun SignUpScreen(
                 enabled = isEnabled.value,
                 shape = RoundedCornerShape(20),
                 colors = ButtonColors(
-                    MaterialTheme.colorScheme.onPrimaryContainer,
-                    MaterialTheme.colorScheme.primaryContainer,
+                    Color(0xFF01397D),
+                    MaterialTheme.colorScheme.onPrimary,
                     MaterialTheme.colorScheme.tertiary,
                     MaterialTheme.colorScheme.onTertiary
                 ),
@@ -192,7 +193,8 @@ fun SignUpScreen(
                 Text(
                     stringResource(R.string.sign_up),
                     fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.ExtraBold
                 )
 
             }

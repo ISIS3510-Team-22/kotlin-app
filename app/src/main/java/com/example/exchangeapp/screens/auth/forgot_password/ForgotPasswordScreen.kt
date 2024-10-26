@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -32,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
@@ -68,16 +68,15 @@ fun ForgotPasswordScreen(
 
         ) {
 
-        Box(
-            modifier = Modifier.width(290.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.recover_text),
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                color = Color.White
-            )
-        }
+
+        Text(
+            text = stringResource(R.string.recover_text),
+            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.width(290.dp)
+        )
+
 
 
         Spacer(Modifier.padding(20.dp))
@@ -88,12 +87,14 @@ fun ForgotPasswordScreen(
             placeHolder = "Email",
             type = KeyboardType.Email,
             action = if (isEnabled.value) ImeAction.Send else ImeAction.Done,
-            onSend = { viewModel.onSendClick () },
+            onSend = { viewModel.onSendClick() },
         )
         if (emailError.value != "") {
             Text(
                 emailError.value,
                 color = errorColor,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Normal,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.padding(top = 10.dp))
@@ -101,6 +102,7 @@ fun ForgotPasswordScreen(
             Spacer(modifier = Modifier.padding(top = 30.dp))
         }
 
+        Spacer(Modifier.padding(20.dp))
 
 
         Button(
@@ -125,7 +127,7 @@ fun ForgotPasswordScreen(
             Text(
                 stringResource(R.string.send_email_text),
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.ExtraBold
             )
 
         }

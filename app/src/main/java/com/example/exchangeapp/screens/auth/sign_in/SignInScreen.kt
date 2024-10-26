@@ -64,7 +64,6 @@ fun SignInScreen(
     val email = viewModel.email.collectAsState()
     val password = viewModel.password.collectAsState()
     val emailError = viewModel.emailError.collectAsState()
-    val passwordError = viewModel.passwordError.collectAsState()
     val isEnabled = viewModel.isEnabled.collectAsState()
     val errorColor = Color("#e63022".toColorInt())
 
@@ -80,7 +79,7 @@ fun SignInScreen(
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
             .animateContentSize()
-            .background(Color("#0F3048".toColorInt())),
+            .background(Color(0xFF0F3048)),
         Arrangement.Center,
         Alignment.CenterHorizontally
 
@@ -133,22 +132,10 @@ fun SignInScreen(
                 type = KeyboardType.Password,
                 action = actionPassword,
                 onSend = { viewModel.onSignInClick(openAndPopUp) },
-                isPassword = true
+                isPassword = true,
             )
 
-            if (passwordError.value != "") {
-                Text(
-                    passwordError.value,
-                    color = errorColor,
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    fontSize = 12.sp
-                )
-
-                Spacer(modifier = Modifier.padding(top = 10.dp))
-            } else {
-                Spacer(modifier = Modifier.padding(top = 30.dp))
-            }
-
+            Spacer(modifier = Modifier.padding(top = 30.dp))
 
             Button(
                 enabled = isEnabled.value,
@@ -157,8 +144,8 @@ fun SignInScreen(
                 },
                 shape = RoundedCornerShape(35),
                 colors = ButtonColors(
-                    MaterialTheme.colorScheme.onPrimaryContainer,
-                    MaterialTheme.colorScheme.primaryContainer,
+                    Color(0xFF01397D),
+                    MaterialTheme.colorScheme.onPrimary,
                     MaterialTheme.colorScheme.tertiary,
                     MaterialTheme.colorScheme.onTertiary
                 ),
@@ -171,22 +158,12 @@ fun SignInScreen(
                 Text(
                     stringResource(R.string.sign_in_text),
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.ExtraBold,
+                    style = MaterialTheme.typography.bodyMedium
                 )
 
             }
-            Spacer(modifier = Modifier.padding(top = 10.dp))
-
-            TextButton(
-                onClick = { viewModel.onSignUpClick(open) },
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            ) {
-                Text(
-                    textDecoration = TextDecoration.Underline,
-                    color = Color.White,
-                    text = stringResource(R.string.sign_up_text)
-                )
-            }
+            Spacer(modifier = Modifier.padding(top = 20.dp))
 
             TextButton(
                 onClick = { viewModel.onForgotClick(open) },
@@ -196,6 +173,17 @@ fun SignInScreen(
                     textDecoration = TextDecoration.Underline,
                     color = Color.White,
                     text = stringResource(R.string.forgot_password)
+                )
+            }
+
+            TextButton(
+                onClick = { viewModel.onSignUpClick(open) },
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            ) {
+                Text(
+                    textDecoration = TextDecoration.Underline,
+                    color = Color.White,
+                    text = stringResource(R.string.sign_up_text)
                 )
             }
         }
