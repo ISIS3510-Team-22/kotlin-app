@@ -2,11 +2,17 @@ package com.example.exchangeapp.screens.auth.sign_in
 
 import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -32,6 +38,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -48,8 +55,21 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.exchangeapp.R
+import com.example.exchangeapp.model.service.module.ConnectionStatus
+import com.example.exchangeapp.model.service.module.currentConnectivityStatus
+import com.example.exchangeapp.model.service.module.observeConnectivityAsFlow
 import com.example.exchangeapp.screens.CustomTextField
 import com.example.exchangeapp.screens.EmailTextField
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import com.example.exchangeapp.screens.ConnectionBackBox
+import com.example.exchangeapp.screens.NoInternetBox
+import com.example.exchangeapp.screens.connectivityStatus
+import kotlinx.coroutines.delay
+
 
 @SuppressLint("NewApi")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,11 +87,23 @@ fun SignInScreen(
     val isEnabled = viewModel.isEnabled.collectAsState()
     val errorColor = Color("#e63022".toColorInt())
 
+    val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
 
     ToastListener(viewModel)
 
     val imeInsets = WindowInsets.ime
     val isKeyboardPresent = imeInsets.asPaddingValues().calculateBottomPadding() != 0.0.dp
+
+
+    var showConnectionRestored = remember { mutableStateOf(false) }
+
+    LaunchedEffect(connectionAvailable) {
+        if (connectionAvailable) {
+            showConnectionRestored.value = true
+            delay(2000)
+            showConnectionRestored.value = false
+        }
+    }
 
     Column(
         modifier
@@ -80,10 +112,13 @@ fun SignInScreen(
             .verticalScroll(rememberScrollState())
             .animateContentSize()
             .background(Color(0xFF0F3048)),
-        Arrangement.Center,
+        Arrangement.Top,
         Alignment.CenterHorizontally
 
     ) {
+        NoInternetBox(connectionAvailable)
+        ConnectionBackBox(showConnectionRestored.value)
+        Spacer(Modifier.weight(1f))
         Column(
             modifier = Modifier
                 .width(280.dp)
@@ -98,6 +133,9 @@ fun SignInScreen(
                 targetValue = if (isKeyboardPresent) 40.dp else 0.dp,
                 label = ""
             )
+
+
+
 
             Spacer(modifier = Modifier.padding(top = pad))
 
@@ -123,7 +161,7 @@ fun SignInScreen(
             )
 
 
-            val actionPassword = getImeAction(isEnabled.value)
+            val actionPassword = getImeAction(isEnabled.value && connectionAvailable)
 
             CustomTextField(
                 value = password.value,
@@ -138,7 +176,7 @@ fun SignInScreen(
             Spacer(modifier = Modifier.padding(top = 30.dp))
 
             Button(
-                enabled = isEnabled.value,
+                enabled = isEnabled.value && connectionAvailable,
                 onClick = {
                     viewModel.onSignInClick(openAndPopUp)
                 },
@@ -146,7 +184,7 @@ fun SignInScreen(
                 colors = ButtonColors(
                     Color(0xFF01397D),
                     MaterialTheme.colorScheme.onPrimary,
-                    MaterialTheme.colorScheme.tertiary,
+                    Color.Gray,
                     MaterialTheme.colorScheme.onTertiary
                 ),
                 modifier = Modifier
@@ -187,8 +225,9 @@ fun SignInScreen(
                 )
             }
         }
-
+        Spacer(Modifier.weight(1f))
     }
+
 }
 
 @Composable
