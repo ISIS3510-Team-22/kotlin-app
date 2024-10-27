@@ -2,17 +2,11 @@ package com.example.exchangeapp.screens.auth.sign_in
 
 import android.annotation.SuppressLint
 import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -38,7 +32,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -56,16 +51,9 @@ import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.exchangeapp.R
 import com.example.exchangeapp.model.service.module.ConnectionStatus
-import com.example.exchangeapp.model.service.module.currentConnectivityStatus
-import com.example.exchangeapp.model.service.module.observeConnectivityAsFlow
+import com.example.exchangeapp.screens.ConnectionBackBox
 import com.example.exchangeapp.screens.CustomTextField
 import com.example.exchangeapp.screens.EmailTextField
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
-import androidx.compose.runtime.remember
-import com.example.exchangeapp.screens.ConnectionBackBox
 import com.example.exchangeapp.screens.NoInternetBox
 import com.example.exchangeapp.screens.connectivityStatus
 import kotlinx.coroutines.delay
