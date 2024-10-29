@@ -1,5 +1,8 @@
 package com.example.exchangeapp.screens.information
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.example.exchangeapp.INFO_SUB_SCREEN1
 import com.example.exchangeapp.INFO_SUB_SCREEN2
 import com.example.exchangeapp.MENU_SCREEN
@@ -33,5 +36,14 @@ class InformationViewModel @Inject constructor() : ExchangeAppViewModel() {
         else
             open("$INFO_SUB_SCREEN2/$name")
 
+    }
+
+    var clickCounter by mutableStateOf(mutableMapOf<String, Int>())
+        private set
+
+    fun updateButtonClick(label: String) {
+        clickCounter = clickCounter.toMutableMap().apply {
+            this[label] = this.getOrDefault(label, 0) + 1
+        }
     }
 }

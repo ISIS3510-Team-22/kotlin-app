@@ -17,6 +17,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -32,13 +33,6 @@ fun InformationScreen(
     modifier: Modifier = Modifier,
     viewModel: InformationViewModel = hiltViewModel()
 ) {
-    val buttontexts = listOf(
-        "Cooking & recipes while abroad",
-        "Mental Health",
-        "Adapting to a new city",
-        "Universities info",
-        "Current exchanges available"
-    )
 
     val labels = mapOf(
         "Cooking & recipes while abroad" to "recipes",
@@ -47,6 +41,19 @@ fun InformationScreen(
         "Universities info" to "universities"
     )
 
+    val buttontexts = listOf(
+                "Cooking & recipes while abroad",
+                "Mental Health",
+                "Adapting to a new city",
+                "Universities info",
+                "Current exchanges available"
+            )
+
+    val sortedButtonInfo :List<Pair<String, Int>> = remember(viewModel.clickCounter) {
+        buttontexts.map { label ->
+            label to (viewModel.clickCounter[label] ?: 0)
+        }.sortedByDescending { it.second }
+    }
 
     Column(
         modifier = modifier
@@ -58,11 +65,15 @@ fun InformationScreen(
             icon = Icons.Default.CalendarToday, iconDescription = "Calendar", iconAction = {})
 
         LazyColumn(modifier = Modifier.padding(bottom = 68.dp)) {
-            items(buttontexts) { label ->
+            items(sortedButtonInfo) { item ->
+
+                val label = item.first
+                val count = item.second
+
                 Spacer(Modifier.padding(5.dp))
                 InfoButton(text = label, onButtonClick = { labels[label]?.let {
-                    viewModel.onSubViewClick(
-                        it,open)
+                    viewModel.updateButtonClick(label)
+                    viewModel.onSubViewClick(it,open)
                 } })
             }
         }
