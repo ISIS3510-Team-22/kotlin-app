@@ -113,9 +113,9 @@ fun ForgotPasswordScreen(
             },
             shape = RoundedCornerShape(35),
             colors = ButtonColors(
-                MaterialTheme.colorScheme.onPrimaryContainer,
+                Color(0xFF01397D),
                 MaterialTheme.colorScheme.primaryContainer,
-                MaterialTheme.colorScheme.tertiary,
+                Color.Gray,
                 MaterialTheme.colorScheme.onTertiary
             ),
             modifier = Modifier

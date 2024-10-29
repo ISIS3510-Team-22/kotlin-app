@@ -32,6 +32,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -45,11 +47,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.exchangeapp.R
+import com.example.exchangeapp.model.service.module.ConnectionStatus
+import com.example.exchangeapp.screens.ConnectionBackBox
 import com.example.exchangeapp.screens.CustomTextField
 import com.example.exchangeapp.screens.EmailTextField
+import com.example.exchangeapp.screens.NoInternetBox
+import com.example.exchangeapp.screens.connectivityStatus
+import kotlinx.coroutines.delay
 
 @SuppressLint("NewApi")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,11 +81,23 @@ fun SignUpScreen(
     val emailError = viewModel.emailError.collectAsState()
     val errorColor = Color(0xFFE63022)
 
+    val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
 
     val imeInsets = WindowInsets.ime
     val isKeyboardPresent = imeInsets.asPaddingValues().calculateBottomPadding() != 0.0.dp
 
     ToastListener(viewModel)
+
+
+    var showConnectionRestored = remember { mutableStateOf(false) }
+
+    LaunchedEffect(connectionAvailable) {
+        if (connectionAvailable) {
+            showConnectionRestored.value = true
+            delay(2000)
+            showConnectionRestored.value = false
+        }
+    }
 
     Column(
         modifier = modifier
@@ -88,10 +106,14 @@ fun SignUpScreen(
             .verticalScroll(rememberScrollState())
             .animateContentSize()
             .background(Color(0xFF0F3048)),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
 
         ) {
+        NoInternetBox(connectionAvailable)
+        ConnectionBackBox(showConnectionRestored.value)
+
+        Spacer(modifier = Modifier.weight(1f))
         Column(
             modifier = modifier
                 .width(280.dp)
@@ -100,9 +122,7 @@ fun SignUpScreen(
 
 
             val size by animateDpAsState(getTargetValue(isKeyboardPresent, 100.dp, 200.dp))
-            val pad by animateDpAsState(getTargetValue(isKeyboardPresent, 0.dp, 40.dp))
 
-            Spacer(modifier = Modifier.padding(top = pad))
             Image(
                 painter = painterResource(R.drawable.sign_up_logo),
                 contentDescription = stringResource(R.string.sign_up_image),
@@ -151,7 +171,7 @@ fun SignUpScreen(
             }
 
 
-            val actionConfirm = getImeAction(isEnabled.value)
+            val actionConfirm = getImeAction(isEnabled.value && connectionAvailable)
             CustomTextField(
                 value = confirmPassword.value,
                 { viewModel.updateConfirmPassword(it) },
@@ -176,12 +196,12 @@ fun SignUpScreen(
                 onClick = {
                     viewModel.onSignUpClick(openAndPopUp)
                 },
-                enabled = isEnabled.value,
+                enabled = isEnabled.value && connectionAvailable,
                 shape = RoundedCornerShape(20),
                 colors = ButtonColors(
                     Color(0xFF01397D),
                     MaterialTheme.colorScheme.onPrimary,
-                    MaterialTheme.colorScheme.tertiary,
+                    Color.Gray,
                     MaterialTheme.colorScheme.onTertiary
                 ),
                 modifier = Modifier
@@ -199,6 +219,7 @@ fun SignUpScreen(
 
             }
         }
+        Spacer(modifier = Modifier.weight(1f))
 
     }
 
