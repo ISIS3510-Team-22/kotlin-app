@@ -1,10 +1,6 @@
 package com.example.exchangeapp.screens.chat
 
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exchangeapp.model.service.AccountService
@@ -14,7 +10,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.text.filter
@@ -56,7 +51,7 @@ class ChatViewModel @Inject constructor(
                 )
                 Log.d("TREX", currentUserId)
                 Log.d("TREX", receiverId)
-                chatService.sendMessage(chatId, message)
+                chatService.sendMessage(chatId, message, "chats")
                 updateCurrentMessage("")
             }
         }
@@ -68,7 +63,7 @@ class ChatViewModel @Inject constructor(
             val currentUserId = currentUserId
             val chatId =
                 if (currentUserId < receiverId.toString()) "$currentUserId-$receiverId" else "$receiverId-$currentUserId"
-            chatService.getMessages(chatId).collect { chatMessages ->
+            chatService.getMessages(chatId, "chats").collect { chatMessages ->
                 _messages.value = chatMessages
 
                 //Recupero los obj mensajes totalmente

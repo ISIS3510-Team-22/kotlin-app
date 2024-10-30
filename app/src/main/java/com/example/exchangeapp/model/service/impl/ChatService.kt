@@ -39,9 +39,9 @@ class ChatService @Inject constructor(
     }
 
     // Obtener los mensajes del chat
-    fun getMessages(chatId: String): Flow<List<Message>> = flow {
+    fun getMessages(chatId: String, collectionName: String): Flow<List<Message>> = flow {
         val messages = mutableListOf<Message>()
-        val querySnapshot = firestore.collection("chats")
+        val querySnapshot = firestore.collection(collectionName)
             .document(chatId)
             .collection("messages")
             .orderBy("timestamp")
@@ -58,9 +58,9 @@ class ChatService @Inject constructor(
     }
 
     // Enviar un mensaje
-    suspend fun sendMessage(chatId: String, message: Message) {
+    suspend fun sendMessage(chatId: String, message: Message, collectionName: String) {
         Log.d("DINOSAURIO", message.message)
-        firestore.collection("chats")
+        firestore.collection(collectionName)
             .document(chatId)
             .collection("messages")
             .add(message)
@@ -71,6 +71,17 @@ class ChatService @Inject constructor(
         val user1 = getCurrentUserId()
         val chatId = if (user1!! < user2) "$user1-$user2" else "$user2-$user1"
         return chatId
+    }
+
+    fun resetMessages(chatId: String, collectionName: String) {
+        firestore.collection(collectionName)
+            .document(chatId)
+            .collection("messages")
+            .get().addOnSuccessListener { querySnapshot ->
+                for (document in querySnapshot.documents) {
+                    document.reference.delete()
+                }
+            }
     }
 
     fun createChat(user2: String, open: (String) -> Unit, userName: String, currentUserId: String) {

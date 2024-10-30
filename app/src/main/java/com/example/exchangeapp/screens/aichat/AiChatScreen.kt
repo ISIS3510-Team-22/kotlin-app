@@ -8,12 +8,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -32,8 +37,10 @@ fun AiChatScreen(
     val currentMessage = viewModel.currentMessage.collectAsState()
     val isEnabled = viewModel.isEnabled.collectAsState()
     val imeVisible = WindowInsets.isImeVisible
-    val sentMessage = viewModel.sentMessage.collectAsState()
-    val aiResponse = viewModel.aiResponse.collectAsState()
+    val messages by viewModel.messages.collectAsState()
+    val currentUserId = viewModel.currentUserId
+
+    viewModel.getMessages()
 
     Column(
         modifier = Modifier
@@ -51,39 +58,24 @@ fun AiChatScreen(
             icon = Icons.Default.CleaningServices, iconDescription = "Location", iconAction = {
                 viewModel.resetMessages()
             })
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState()).weight(1f)
-        ) {
-            MessageBubble(
-                message = Message(
-                    message = "Hello, I am AI ChatBot. How can I help you?",
-                    senderId = "AI",
-                    receiverId = "User",
-                    timestamp = System.currentTimeMillis()
-                ),
-                isSentByCurrentUser = false
-            )
-            if (sentMessage.value.isNotEmpty()) {
-                MessageBubble(
-                    message = Message(
-                        message = sentMessage.value,
-                        senderId = "User",
-                        receiverId = "AI",
-                        timestamp = System.currentTimeMillis()
-                    ),
-                    isSentByCurrentUser = true
-                )
+
+        val listState = rememberLazyListState()
+
+        LaunchedEffect(messages) {
+            if (messages.isNotEmpty()) {
+                listState.scrollToItem(messages.size - 1)
             }
-            if (aiResponse.value.isNotEmpty()) {
+        }
+
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            state = listState
+
+            ) {
+            items(messages) { message ->
                 MessageBubble(
-                    message = Message(
-                        message = aiResponse.value.toString(),
-                        senderId = "AI",
-                        receiverId = "User",
-                        timestamp = System.currentTimeMillis()
-                    ),
-                    isSentByCurrentUser = false
+                    message = message,
+                    isSentByCurrentUser = message.senderId == currentUserId
                 )
             }
         }
@@ -94,7 +86,8 @@ fun AiChatScreen(
             updateMsgFun = { viewModel.updateCurrentMessage(it) },
             isEnabled = isEnabled.value,
             isAiChat = true,
-            sendMsgFunAI = { viewModel.sendMessage(it) }
+            sendMsgFunAI = { viewModel.sendMessage(it)
+            viewModel.getMessages()}
         )
     }
 }
