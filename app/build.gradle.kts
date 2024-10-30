@@ -103,4 +103,5 @@ dependencies {
 
     implementation (libs.okhttp)
 
+    implementation(libs.dotenv.vault.kotlin)
 }
