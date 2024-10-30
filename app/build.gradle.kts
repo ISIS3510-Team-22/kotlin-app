@@ -101,4 +101,6 @@ dependencies {
 
     implementation(libs.dotlottie.android)
 
+    implementation (libs.okhttp)
+
 }
