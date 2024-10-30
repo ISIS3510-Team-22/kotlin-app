@@ -5,7 +5,8 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
-}
+    id("org.jetbrains.kotlin.plugin.serialization")
+ }
 
 android {
     namespace = "com.example.exchangeapp"
@@ -100,5 +101,6 @@ dependencies {
     implementation(libs.accompanist.permissions)
 
     implementation(libs.dotlottie.android)
+    implementation(libs.kotlin.serialization.json)
 
 }

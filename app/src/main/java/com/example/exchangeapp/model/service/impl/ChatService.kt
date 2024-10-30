@@ -38,6 +38,8 @@ class ChatService @Inject constructor(
         }
     }
 
+
+
     // Obtener los mensajes del chat
     fun getMessages(chatId: String): Flow<List<Message>> = flow {
         val messages = mutableListOf<Message>()
@@ -57,6 +59,7 @@ class ChatService @Inject constructor(
         emit(mutableListOf())
     }
 
+
     // Enviar un mensaje
     suspend fun sendMessage(chatId: String, message: Message) {
         Log.d("DINOSAURIO", message.message)
@@ -72,6 +75,8 @@ class ChatService @Inject constructor(
         val chatId = if (user1!! < user2) "$user1-$user2" else "$user2-$user1"
         return chatId
     }
+
+
 
     fun createChat(user2: String, open: (String) -> Unit, userName: String, currentUserId: String) {
         val user1 = currentUserId

@@ -1,12 +1,10 @@
 package com.example.exchangeapp.screens.chatpreview
 
+import android.content.Context
 import android.location.Location
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.exchangeapp.INFO_SCREEN
 import com.example.exchangeapp.MENU_SCREEN
-import com.example.exchangeapp.SIGN_UP_SCREEN
 import com.example.exchangeapp.model.service.AccountService
 import com.example.exchangeapp.model.service.User
 import com.example.exchangeapp.model.service.UserRepository
@@ -27,6 +25,10 @@ import kotlin.math.sqrt
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.io.File
 
 @HiltViewModel
 class ChatPreviewViewModel @Inject constructor(
@@ -44,13 +46,29 @@ class ChatPreviewViewModel @Inject constructor(
     val currentUserId = accountService.currentUserId
     var chatId = ""
 
+
     init {
         Firebase.analytics.logEvent("Chat_Prev_Screen",null)
-        fetchUserNames()
-        fetchUsers()
 
 
     }
+
+
+
+    fun updateInfo(internet: Boolean){
+        if (internet){
+            fetchUserNames()
+            fetchUsers()
+        }
+        else{
+            errorMessage.value = "No hay conexión a internet"
+        }
+    }
+
+
+
+
+
 
     private fun fetchUserNames() {
         viewModelScope.launch {
@@ -67,6 +85,27 @@ class ChatPreviewViewModel @Inject constructor(
                 .collect { users ->
                     _users.value = users
                 }
+        }
+    }
+
+    fun saveSnapshotToCache(context: Context) {
+        viewModelScope.launch {
+            // Usa la lista de usuarios en el ViewModel
+            val users = firestore.collection("users").get().await()
+            val chats = firestore.collection("chats").get().await()
+
+
+            // Serializa la lista de usuarios a JSON
+            val jsonStringUsers = Json.encodeToString(users)
+            val jsonStringChats = Json.encodeToString(chats)
+
+            // Escribe el JSON en un archivo en el directorio de caché
+            val cacheDir = context.cacheDir
+            val fileUsers = File(cacheDir, "user_snapshot.json")
+            val fileChats = File(cacheDir, "chat_snapshot.json")
+
+            fileUsers.writeText(jsonStringUsers)
+            fileChats.writeText(jsonStringChats)
         }
     }
 

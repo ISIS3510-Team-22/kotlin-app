@@ -2,6 +2,7 @@ package com.example.exchangeapp.screens.chatpreview
 
 import android.location.Location
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -19,7 +20,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -31,14 +35,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.exchangeapp.model.service.User
+import com.example.exchangeapp.model.service.module.ConnectionStatus
 import com.example.exchangeapp.screens.TopBar
+import com.example.exchangeapp.screens.connectivityStatus
 import com.lottiefiles.dotlottie.core.compose.ui.DotLottieAnimation
 import com.lottiefiles.dotlottie.core.util.DotLottieSource
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -55,6 +63,12 @@ fun ChatPreviewScreen(
         Log.d("PERMISSION", if (isGranted) "Got permission" else "Permission denied")
     }
     var currentLocation by remember { mutableStateOf<Location?>(null) }
+    val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
+    val context = LocalContext.current
+    var showConnectionRestored = remember { mutableStateOf(false) }
+
+
+    ToastListener(viewModel)
 
     LaunchedEffect(Unit) {
         locationPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -66,6 +80,17 @@ fun ChatPreviewScreen(
         if (userList.isEmpty()) {
             userList = users.toList()
         }
+    }
+
+
+    LaunchedEffect(connectionAvailable) {
+        if (connectionAvailable) {
+            showConnectionRestored.value = true
+            delay(2000)
+            showConnectionRestored.value = false
+        }
+
+
     }
 
     Column(
@@ -80,6 +105,10 @@ fun ChatPreviewScreen(
                     userList = updatedUsers
                 }
             })
+
+        viewModel.updateInfo(connectionAvailable)
+
+
 
         if (userNames.isEmpty()) {
             Column(
@@ -129,6 +158,25 @@ fun ChatPreviewScreen(
                     Spacer(Modifier.padding(10.dp))
 
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun ToastListener(viewModel: ChatPreviewViewModel) {
+    val context = LocalContext.current
+
+
+    LaunchedEffect(viewModel.errorMessage.value) {
+        viewModel.errorMessage.value.let { message ->
+            if (message.isNotEmpty()) {
+
+
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                // Clear the error message after showing the toast
+                viewModel.errorMessage.value = ""
+
             }
         }
     }
