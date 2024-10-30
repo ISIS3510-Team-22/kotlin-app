@@ -23,7 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.exchangeapp.model.service.module.Message
+import com.example.exchangeapp.screens.MessageBox
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ChatScreen(
     popUp: () -> Unit,
@@ -38,12 +40,14 @@ fun ChatScreen(
 
     viewModel.getMessages(receiverName)
 
+    val imeVisible = WindowInsets.isImeVisible
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF0F3048))
             .imePadding()
-            .padding(horizontal = 20.dp)
+            .padding(start = 20.dp, end = 20.dp, bottom = if (!imeVisible) 5.dp else 0.dp)
     ) {
 
         Row(
@@ -93,50 +97,16 @@ fun ChatScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth().padding( bottom = 5.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            OutlinedTextField(
-                value = currentMessage.value,
-                onValueChange = { viewModel.updateCurrentMessage(it) },
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 8.dp),
-                shape = MaterialTheme.shapes.large,
-                placeholder = { Text("Write a message...", color = Color(0xFFE8E8E8)) },
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    cursorColor = Color.White,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.White,
-                    unfocusedIndicatorColor = Color.Gray,
-                    selectionColors = TextSelectionColors(
-                        handleColor = Color.White,
-                        backgroundColor = Color.LightGray
-                    )
-                )
-            )
-            Box(modifier = Modifier
-                .clip(RoundedCornerShape(50))
-                .background(Color(0xFFFFFFFF))) {
-                IconButton(
-                    onClick = {
-                        viewModel.sendMessage(receiverName, currentMessage.value)
-                        viewModel.getMessages(receiverName)
-                    },
-                    enabled = isEnabled.value) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.Send,
-                        "Send button",
-                        tint = if (isEnabled.value) Color(0xFF0F3048) else Color.Gray
-                    )
-                }
-            }
-
-        }
+        MessageBox(
+            currentMessage = currentMessage.value,
+            updateMsgFun = { viewModel.updateCurrentMessage(it) },
+            isEnabled = isEnabled.value,
+            sendMsgFun = {receiverName, currentMessage ->
+                viewModel.sendMessage(receiverName, currentMessage)
+                viewModel.getMessages(receiverName)
+            },
+            receiverName = receiverName
+        )
     }
 }
 
