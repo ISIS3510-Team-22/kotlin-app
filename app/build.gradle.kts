@@ -84,6 +84,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.dagger.hilt.android)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.storage)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -101,8 +102,9 @@ dependencies {
     implementation(libs.accompanist.permissions)
 
     implementation(libs.dotlottie.android)
-    implementation(libs.kotlin.serialization.json)
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.coil.compose)
+
 
 
 }
