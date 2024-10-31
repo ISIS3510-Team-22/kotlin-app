@@ -106,11 +106,15 @@ fun ChatPreviewScreen(
                 }
             })
 
-        viewModel.updateInfo(connectionAvailable)
+        viewModel.updateInfo(connectionAvailable, context)
+        Log.d("TREX", "Connection status: $connectionAvailable")
+        if (connectionAvailable){
+            viewModel.saveSnapshotToCache(context)
+        }
 
 
 
-        if (userNames.isEmpty()) {
+        if (users.isEmpty()) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
