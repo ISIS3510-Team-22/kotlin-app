@@ -51,7 +51,7 @@ fun InformationScreen(
 
     val sortedButtonInfo :List<Pair<String, Int>> = remember(viewModel.clickCounter) {
         buttontexts.map { label ->
-            label to (viewModel.clickCounter[label] ?: 0)
+            label to (viewModel.clickCounter.value[label] ?: 0)
         }.sortedByDescending { it.second }
     }
 
