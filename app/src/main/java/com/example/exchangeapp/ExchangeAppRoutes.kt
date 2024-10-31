@@ -12,6 +12,9 @@ const val MENU_SCREEN = "MenuScreen"
 const val INFO_SUB_SCREEN1 = "BasicScreen"
 const val INFO_SUB_SCREEN2 = "SearchBarScreen"
 
+
+const val NEWS__SCREEN = "NewsScreen"
+
 const val LOCALHOST = ""
 const val AUTH_PORT = 9099
 const val FIRESTORE_PORT = 8080

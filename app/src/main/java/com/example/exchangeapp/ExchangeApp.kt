@@ -15,7 +15,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.exchangeapp.ui.theme.ExchangeAppTheme
 import com.example.exchangeapp.screens.auth.forgot_password.ForgotPasswordScreen
 import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
 import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
@@ -26,7 +25,9 @@ import com.example.exchangeapp.screens.information.subviews.BasicScreen
 import com.example.exchangeapp.screens.information.subviews.SearchBarScreen
 import com.example.exchangeapp.screens.menu.MenuScreen
 import com.example.exchangeapp.screens.navigation.NavigationScreen
+import com.example.exchangeapp.screens.news.NewsScreen
 import com.example.exchangeapp.screens.splash.SplashScreen
+import com.example.exchangeapp.ui.theme.ExchangeAppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 
 @Composable
@@ -125,5 +126,11 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
     composable("$INFO_SUB_SCREEN2/{name}"){ backStackEntry ->
         var name = backStackEntry.arguments?.getString("name") ?: "Unknown"
         SearchBarScreen(name = name , popUp = { appState.popUp() })
+    }
+
+    composable(NEWS__SCREEN){
+        NewsScreen(
+            open = { route -> appState.navigate(route)}
+        )
     }
 }
