@@ -102,6 +102,7 @@ dependencies {
 
     implementation(libs.dotlottie.android)
     implementation(libs.kotlin.serialization.json)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
 
 
 }

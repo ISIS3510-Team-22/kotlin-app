@@ -31,6 +31,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 
+
 @HiltViewModel
 class ChatPreviewViewModel @Inject constructor(
     private val userRepository: UserRepository,
