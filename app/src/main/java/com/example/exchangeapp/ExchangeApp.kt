@@ -27,8 +27,10 @@ import com.example.exchangeapp.screens.information.subviews.BasicScreen
 import com.example.exchangeapp.screens.information.subviews.SearchBarScreen
 import com.example.exchangeapp.screens.menu.MenuScreen
 import com.example.exchangeapp.screens.navigation.NavigationScreen
+import com.example.exchangeapp.screens.news.NewsScreen
 import com.example.exchangeapp.screens.profile.ProfileScreen
 import com.example.exchangeapp.screens.splash.SplashScreen
+import com.example.exchangeapp.ui.theme.ExchangeAppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 
 @Composable
@@ -121,21 +123,26 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
         )
     }
 
-    composable("$INFO_SUB_SCREEN1/{name}"){ backStackEntry ->
+    composable("$INFO_SUB_SCREEN1/{name}") { backStackEntry ->
         var name = backStackEntry.arguments?.getString("name") ?: "Unknown"
-        BasicScreen(name = name , popUp = { appState.popUp() })
+        BasicScreen(name = name, popUp = { appState.popUp() })
     }
 
-    composable("$INFO_SUB_SCREEN2/{name}"){ backStackEntry ->
+    composable("$INFO_SUB_SCREEN2/{name}") { backStackEntry ->
         var name = backStackEntry.arguments?.getString("name") ?: "Unknown"
-        SearchBarScreen(name = name , popUp = { appState.popUp() })
+        SearchBarScreen(name = name, popUp = { appState.popUp() })
     }
 
     composable(AI_CHAT_SCREEN){
         AiChatScreen(open = { route -> appState.navigate(route) })
     }
 
-    composable(PROFILE_SCREEN){
+    composable(NEWS__SCREEN) {
+        NewsScreen(
+            open = { route -> appState.navigate(route) }
+        )
+    }
+    composable(PROFILE_SCREEN) {
         ProfileScreen()
     }
 }
