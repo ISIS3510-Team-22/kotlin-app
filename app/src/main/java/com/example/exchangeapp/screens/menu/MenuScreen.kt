@@ -31,7 +31,8 @@ import com.example.exchangeapp.R
 fun MenuScreen(
     clearAndNavigate: (String) -> Unit,
     popUp: ()->Unit,
-    viewModel: MenuViewModel = hiltViewModel()
+    viewModel: MenuViewModel = hiltViewModel(),
+    open: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -92,7 +93,7 @@ fun MenuScreen(
 
             TextButton(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = { /*TODO()*/ },
+                onClick = { viewModel.onProfileClick(open)},
             ) {
                 Text(
                     stringResource(R.string.profile),

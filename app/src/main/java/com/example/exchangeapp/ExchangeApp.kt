@@ -26,6 +26,7 @@ import com.example.exchangeapp.screens.information.subviews.BasicScreen
 import com.example.exchangeapp.screens.information.subviews.SearchBarScreen
 import com.example.exchangeapp.screens.menu.MenuScreen
 import com.example.exchangeapp.screens.navigation.NavigationScreen
+import com.example.exchangeapp.screens.profile.ProfileScreen
 import com.example.exchangeapp.screens.splash.SplashScreen
 import com.google.android.gms.location.FusedLocationProviderClient
 
@@ -114,7 +115,9 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
     composable(MENU_SCREEN) {
         MenuScreen(
             popUp = { appState.popUp() },
-            clearAndNavigate = { route -> appState.clearAndNavigate(route) })
+            clearAndNavigate = { route -> appState.clearAndNavigate(route) },
+            open = { route -> appState.navigate(route) }
+        )
     }
 
     composable("$INFO_SUB_SCREEN1/{name}"){ backStackEntry ->
@@ -125,5 +128,9 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
     composable("$INFO_SUB_SCREEN2/{name}"){ backStackEntry ->
         var name = backStackEntry.arguments?.getString("name") ?: "Unknown"
         SearchBarScreen(name = name , popUp = { appState.popUp() })
+    }
+
+    composable(PROFILE_SCREEN){
+        ProfileScreen()
     }
 }
