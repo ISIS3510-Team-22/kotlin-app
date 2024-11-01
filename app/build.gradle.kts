@@ -5,16 +5,17 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("com.google.gms.google-services")
-}
+    id("org.jetbrains.kotlin.plugin.serialization")
+ }
 
 android {
     namespace = "com.example.exchangeapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.exchangeapp"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -83,9 +84,10 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.dagger.hilt.android)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.storage)
 
     //Gson to manage JSON
-    implementation("com.google.code.gson:gson:2.11.0")
+    implementation(libs.gson)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -97,12 +99,14 @@ dependencies {
 
 
     kapt(libs.hilt.compiler)
-    annotationProcessor(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.android)
 
     implementation(libs.play.services.location)
     implementation(libs.accompanist.permissions)
 
     implementation(libs.dotlottie.android)
+    implementation(libs.jetbrains.kotlinx.serialization.json)
+    implementation(libs.coil.compose)
 
     implementation (libs.okhttp)
 

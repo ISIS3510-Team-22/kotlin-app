@@ -15,5 +15,9 @@ class UserRepository @Inject constructor(
         return userService.getUsers()
     }
 
+    fun getCurrentUser(userId: String): Flow<User> {
+        return userService.getCurrentUser(userId)
+    }
+
 
 }

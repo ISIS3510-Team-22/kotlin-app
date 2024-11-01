@@ -1,5 +1,6 @@
 package com.example.exchangeapp.screens.chat
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,13 +14,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.exchangeapp.screens.MessageBox
-import com.example.exchangeapp.screens.MessageBubble
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -32,9 +32,30 @@ fun ChatScreen(
     val currentUserId = viewModel.currentUserId
     val currentMessage = viewModel.currentMessage.collectAsState()
     val isEnabled = viewModel.isEnabled.collectAsState()
+    val context = LocalContext.current
+    val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
+    var showConnectionRestored = remember { mutableStateOf(false) }
+
+    ToastListener(viewModel)
+
+    LaunchedEffect(connectionAvailable) {
+        if (connectionAvailable) {
+            showConnectionRestored.value = true
+            delay(2000)
+            showConnectionRestored.value = false
+        }
 
 
-    viewModel.getMessages(receiverName)
+    }
+
+    if (connectionAvailable){
+        viewModel.getMessages(receiverName)
+    }
+    else {
+        viewModel.getMessagesFromCache(context, receiverName)
+    }
+
+
 
     val imeVisible = WindowInsets.isImeVisible
 
@@ -106,3 +127,22 @@ fun ChatScreen(
     }
 }
 
+
+@Composable
+fun ToastListener(viewModel: ChatViewModel) {
+    val context = LocalContext.current
+
+
+    LaunchedEffect(viewModel.errorMessage.value) {
+        viewModel.errorMessage.value.let { message ->
+            if (message.isNotEmpty()) {
+
+
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                // Clear the error message after showing the toast
+                viewModel.errorMessage.value = ""
+
+            }
+        }
+    }
+}

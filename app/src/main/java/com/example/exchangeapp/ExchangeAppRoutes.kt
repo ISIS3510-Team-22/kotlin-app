@@ -12,6 +12,7 @@ const val MENU_SCREEN = "MenuScreen"
 const val INFO_SUB_SCREEN1 = "BasicScreen"
 const val INFO_SUB_SCREEN2 = "SearchBarScreen"
 const val AI_CHAT_SCREEN = "AiChatScreen"
+const val PROFILE_SCREEN = "ProfileScreen"
 
 const val LOCALHOST = ""
 const val AUTH_PORT = 9099
