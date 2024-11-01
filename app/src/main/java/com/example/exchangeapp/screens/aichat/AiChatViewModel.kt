@@ -9,13 +9,9 @@ import com.example.exchangeapp.model.service.impl.ChatService
 import com.example.exchangeapp.model.service.module.Message
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.cdimascio.dotenv.dotenv
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import okhttp3.Call
 import okhttp3.Callback
@@ -25,7 +21,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import java.io.IOException
-import java.lang.Thread.sleep
+import javax.inject.Inject
 
 @HiltViewModel
 class AiChatViewModel @Inject constructor(
