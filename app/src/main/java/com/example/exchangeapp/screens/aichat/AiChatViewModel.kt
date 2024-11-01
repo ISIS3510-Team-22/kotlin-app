@@ -9,10 +9,13 @@ import com.example.exchangeapp.model.service.impl.ChatService
 import com.example.exchangeapp.model.service.module.Message
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.cdimascio.dotenv.dotenv
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import okhttp3.Call
 import okhttp3.Callback
@@ -22,6 +25,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import java.io.IOException
+import java.lang.Thread.sleep
 
 @HiltViewModel
 class AiChatViewModel @Inject constructor(
@@ -42,6 +46,27 @@ class AiChatViewModel @Inject constructor(
 
     private val _messages = MutableStateFlow<List<Message>>(emptyList())
     val messages: StateFlow<List<Message>> = _messages.asStateFlow()
+    val aiID = "AI"
+
+
+    init {
+        viewModelScope.launch {
+            chatService.getMessages(currentUserId, "ai_chats").collect { chatMessages ->
+                if (chatMessages.isEmpty()) {
+                    sendMsg(
+                        currentUserId,
+                        Message(
+                            senderId = aiID,
+                            receiverId = currentUserId,
+                            message = "Hi, I am AI ChatBot. How can I help you?",
+                            timestamp = System.currentTimeMillis()
+                        )
+                    )
+                }
+            }
+        }
+    }
+
 
     fun updateCurrentMessage(newMessage: String) {
         currentMessage.value = newMessage
@@ -50,8 +75,6 @@ class AiChatViewModel @Inject constructor(
 
     fun sendMessage(message: String) {
 
-        val aiID = "AI"
-        val currentUserId = currentUserId
 
         val chatId = currentUserId
 
@@ -82,7 +105,7 @@ class AiChatViewModel @Inject constructor(
                 val message = Message(
                     senderId = aiID,
                     receiverId = currentUserId,
-                    message = body,
+                    message = body.substring(1, body.length - 1),
                     timestamp = System.currentTimeMillis()
                 )
                 sendMsg(chatId, message)
@@ -128,6 +151,7 @@ class AiChatViewModel @Inject constructor(
             val chatId = currentUserId
             chatService.getMessages(chatId, "ai_chats").collect { chatMessages ->
                 _messages.value = chatMessages
+
             }
         }
     }
