@@ -87,7 +87,7 @@ dependencies {
     implementation(libs.androidx.storage)
 
     //Gson to manage JSON
-    implementation("com.google.code.gson:gson:2.11.0")
+    implementation(libs.gson)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -99,15 +99,13 @@ dependencies {
 
 
     kapt(libs.hilt.compiler)
-    annotationProcessor(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.android)
 
     implementation(libs.play.services.location)
     implementation(libs.accompanist.permissions)
 
     implementation(libs.dotlottie.android)
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.jetbrains.kotlinx.serialization.json)
     implementation(libs.coil.compose)
-
-
 
 }
