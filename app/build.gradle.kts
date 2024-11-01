@@ -108,4 +108,7 @@ dependencies {
     implementation(libs.jetbrains.kotlinx.serialization.json)
     implementation(libs.coil.compose)
 
+    implementation (libs.okhttp)
+
+    implementation(libs.dotenv.vault.kotlin)
 }

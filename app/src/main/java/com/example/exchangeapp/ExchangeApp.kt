@@ -15,6 +15,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.exchangeapp.screens.aichat.AiChatScreen
+import com.example.exchangeapp.ui.theme.ExchangeAppTheme
 import com.example.exchangeapp.screens.auth.forgot_password.ForgotPasswordScreen
 import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
 import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
@@ -131,6 +133,9 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
         SearchBarScreen(name = name, popUp = { appState.popUp() })
     }
 
+    composable(AI_CHAT_SCREEN){
+        AiChatScreen(open = { route -> appState.navigate(route) })
+    }
 
     composable(NEWS__SCREEN) {
         NewsScreen(

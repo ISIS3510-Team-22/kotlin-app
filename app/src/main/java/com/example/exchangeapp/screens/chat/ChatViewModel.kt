@@ -2,6 +2,7 @@ package com.example.exchangeapp.screens.chat
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.exchangeapp.model.service.AccountService
 import com.example.exchangeapp.model.service.impl.ChatService
@@ -12,10 +13,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import java.io.File
 import javax.inject.Inject
+import kotlin.text.filter
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
@@ -57,13 +60,11 @@ class ChatViewModel @Inject constructor(
                 )
                 Log.d("TREX", currentUserId)
                 Log.d("TREX", receiverId)
-                chatService.sendMessage(chatId, message)
+                chatService.sendMessage(chatId, message, "chats")
                 updateCurrentMessage("")
             }
         }
     }
-
-
 
     fun getMessages(name: String) {
         viewModelScope.launch {
@@ -71,7 +72,7 @@ class ChatViewModel @Inject constructor(
             val currentUserId = currentUserId
             val chatId =
                 if (currentUserId < receiverId.toString()) "$currentUserId-$receiverId" else "$receiverId-$currentUserId"
-            chatService.getMessages(chatId).collect { chatMessages ->
+            chatService.getMessages(chatId, "chats").collect { chatMessages ->
                 _messages.value = chatMessages
 
                 //Recupero los obj mensajes totalmente
