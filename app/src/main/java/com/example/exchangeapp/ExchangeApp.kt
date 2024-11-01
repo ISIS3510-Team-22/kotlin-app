@@ -121,22 +121,23 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
         )
     }
 
-    composable("$INFO_SUB_SCREEN1/{name}"){ backStackEntry ->
+    composable("$INFO_SUB_SCREEN1/{name}") { backStackEntry ->
         var name = backStackEntry.arguments?.getString("name") ?: "Unknown"
-        BasicScreen(name = name , popUp = { appState.popUp() })
+        BasicScreen(name = name, popUp = { appState.popUp() })
     }
 
-    composable("$INFO_SUB_SCREEN2/{name}"){ backStackEntry ->
+    composable("$INFO_SUB_SCREEN2/{name}") { backStackEntry ->
         var name = backStackEntry.arguments?.getString("name") ?: "Unknown"
-        SearchBarScreen(name = name , popUp = { appState.popUp() })
+        SearchBarScreen(name = name, popUp = { appState.popUp() })
     }
 
 
-    composable(NEWS__SCREEN){
+    composable(NEWS__SCREEN) {
         NewsScreen(
-            open = { route -> appState.navigate(route)}
+            open = { route -> appState.navigate(route) }
         )
-    composable(PROFILE_SCREEN){
+    }
+    composable(PROFILE_SCREEN) {
         ProfileScreen()
     }
 }
