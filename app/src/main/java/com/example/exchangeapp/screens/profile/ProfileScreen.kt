@@ -88,9 +88,8 @@ fun ProfileScreen(
             }
             else
             {
-                Log.d("TREX", "No profile picture found")
                 Image(
-                    painter = painterResource(R.drawable.you), // Ícono de usuario por defecto
+                    painter = painterResource(R.drawable.user),
                     contentDescription = "Default User Icon",
                     modifier = Modifier.size(348.dp)
                 )
