@@ -20,6 +20,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.exchangeapp.model.service.module.ConnectionStatus
+import com.example.exchangeapp.screens.MessageBox
+import com.example.exchangeapp.screens.MessageBubble
+import com.example.exchangeapp.screens.connectivityStatus
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
