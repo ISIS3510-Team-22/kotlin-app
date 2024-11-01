@@ -1,5 +1,7 @@
 package com.example.exchangeapp.screens.information
 
+import androidx.compose.runtime.mutableStateOf
+import com.example.exchangeapp.DataStorage.SharedPreferencesManager
 import com.example.exchangeapp.INFO_SUB_SCREEN1
 import com.example.exchangeapp.INFO_SUB_SCREEN2
 import com.example.exchangeapp.MENU_SCREEN
@@ -10,10 +12,20 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class InformationViewModel @Inject constructor() : ExchangeAppViewModel() {
+class InformationViewModel @Inject constructor(
+    private val sharedPreferencesManager: SharedPreferencesManager
+) : ExchangeAppViewModel() {
+
+    var clickCounter = mutableStateOf<Map<String, Int>>(emptyMap())
+        private set
 
     init {
         Firebase.analytics.logEvent("Info_Screen",null)
+        if (sharedPreferencesManager.hasStoredData()) {
+            loadButtonClickInfo()
+        } else {
+            clickCounter.value = emptyMap() // Initialize as an empty map if no stored data
+        }
     }
 
     fun onMenuClick(open: (String) -> Unit) {
@@ -34,4 +46,23 @@ class InformationViewModel @Inject constructor() : ExchangeAppViewModel() {
             open("$INFO_SUB_SCREEN2/$name")
 
     }
+
+    fun updateButtonClick(label: String) {
+        val currentCounter = clickCounter.value.toMutableMap()
+        currentCounter[label] = (currentCounter[label] ?: 0) + 1
+        clickCounter.value = currentCounter
+
+        sharedPreferencesManager.saveSortedButtonInfo(currentCounter.toList())
+    }
+
+    fun saveButtonClickInfo(buttonInfo: List<Pair<String, Int>>) {
+        sharedPreferencesManager.saveSortedButtonInfo(buttonInfo)
+    }
+
+    private fun loadButtonClickInfo() {
+        // Load saved button click data and update clickCounter state
+        val savedData = sharedPreferencesManager.loadSortedButtonInfo()
+        clickCounter.value = savedData.toMap()
+    }
+
 }

@@ -84,6 +84,9 @@ dependencies {
     implementation(libs.dagger.hilt.android)
     implementation(libs.androidx.material.icons.extended)
 
+    //Gson to manage JSON
+    implementation("com.google.code.gson:gson:2.11.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
