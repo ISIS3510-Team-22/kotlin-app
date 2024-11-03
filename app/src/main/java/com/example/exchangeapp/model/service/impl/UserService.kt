@@ -52,6 +52,27 @@ class UserService @Inject constructor(
         Log.e("UserService", "Error fetching users", e)
     }
 
+    fun getCurrentUser(userId: String): Flow<User> = flow {
+        val document = firestore.collection("users").document(userId).get().await()
+        val name = document.getString("name") ?: ""
+        val email = document.getString("email") ?: ""
+        val profilePictureUrl = document.getString("profilePictureUrl")
+        val lat = document.getDouble("lat") ?: 0.0
+        val long = document.getDouble("long") ?: 0.0
+
+        val user = User(
+            id = userId,
+            name = name,
+            email = email,
+            profilePictureUrl = profilePictureUrl,
+            lat = lat,
+            long = long
+        )
+        emit(user)
+    }.catch { e ->
+        Log.e("UserService", "Error fetching current user", e)
+    }
+
 
 
 }
