@@ -1,6 +1,5 @@
 package com.example.exchangeapp.screens.information.subviews
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -48,7 +47,7 @@ fun BasicScreen(
 ) {
     val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
 
-    var showConnectionRestored = remember { mutableStateOf(false) }
+    val showConnectionRestored = remember { mutableStateOf(false) }
 
     LaunchedEffect(connectionAvailable) {
         if (connectionAvailable) {
@@ -95,7 +94,6 @@ fun BasicScreen(
             }
             Text(labels[name].toString(), style = MaterialTheme.typography.headlineMedium, color = Color.White)
         }
-        Log.d("content", viewModel.documentsCache.value.toString())
         Spacer(modifier = Modifier.height(16.dp))
         documentDataList.forEach { documentData ->
             Card (
