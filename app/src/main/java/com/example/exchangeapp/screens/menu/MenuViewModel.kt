@@ -1,5 +1,6 @@
 package com.example.exchangeapp.screens.menu
 
+import com.example.exchangeapp.PROFILE_SCREEN
 import com.example.exchangeapp.SIGN_IN_SCREEN
 import com.example.exchangeapp.model.service.AccountService
 import com.example.exchangeapp.screens.ExchangeAppViewModel
@@ -20,5 +21,9 @@ class MenuViewModel @Inject constructor(
             clearAndNavigate(SIGN_IN_SCREEN)
 
         }
+    }
+
+    fun onProfileClick(open: (String) -> Unit) {
+        open(PROFILE_SCREEN)
     }
 }

@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.exchangeapp.screens.aichat.AiChatScreen
 import com.example.exchangeapp.ui.theme.ExchangeAppTheme
 import com.example.exchangeapp.screens.auth.forgot_password.ForgotPasswordScreen
 import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
@@ -26,7 +27,10 @@ import com.example.exchangeapp.screens.information.subviews.BasicScreen
 import com.example.exchangeapp.screens.information.subviews.SearchBarScreen
 import com.example.exchangeapp.screens.menu.MenuScreen
 import com.example.exchangeapp.screens.navigation.NavigationScreen
+import com.example.exchangeapp.screens.news.NewsScreen
+import com.example.exchangeapp.screens.profile.ProfileScreen
 import com.example.exchangeapp.screens.splash.SplashScreen
+import com.example.exchangeapp.ui.theme.ExchangeAppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 
 @Composable
@@ -114,16 +118,31 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
     composable(MENU_SCREEN) {
         MenuScreen(
             popUp = { appState.popUp() },
-            clearAndNavigate = { route -> appState.clearAndNavigate(route) })
+            clearAndNavigate = { route -> appState.clearAndNavigate(route) },
+            open = { route -> appState.navigate(route) }
+        )
     }
 
-    composable("$INFO_SUB_SCREEN1/{name}"){ backStackEntry ->
+    composable("$INFO_SUB_SCREEN1/{name}") { backStackEntry ->
         var name = backStackEntry.arguments?.getString("name") ?: "Unknown"
-        BasicScreen(name = name , popUp = { appState.popUp() })
+        BasicScreen(name = name, popUp = { appState.popUp() })
     }
 
-    composable("$INFO_SUB_SCREEN2/{name}"){ backStackEntry ->
+    composable("$INFO_SUB_SCREEN2/{name}") { backStackEntry ->
         var name = backStackEntry.arguments?.getString("name") ?: "Unknown"
-        SearchBarScreen(name = name , popUp = { appState.popUp() })
+        SearchBarScreen(name = name, popUp = { appState.popUp() })
+    }
+
+    composable(AI_CHAT_SCREEN){
+        AiChatScreen(open = { route -> appState.navigate(route) })
+    }
+
+    composable(NEWS__SCREEN) {
+        NewsScreen(
+            open = { route -> appState.navigate(route) }
+        )
+    }
+    composable(PROFILE_SCREEN) {
+        ProfileScreen()
     }
 }

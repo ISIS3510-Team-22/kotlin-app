@@ -13,18 +13,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +49,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.exchangeapp.model.service.module.ConnectionStatus
+import com.example.exchangeapp.model.service.module.Message
 import com.example.exchangeapp.model.service.module.currentConnectivityStatus
 import com.example.exchangeapp.model.service.module.observeConnectivityAsFlow
 
@@ -215,5 +221,89 @@ fun ConnectionBackBox(visible: Boolean) {
         ) {
             Text("Connection restored", color = Color.White)
         }
+    }
+}
+
+@Composable
+fun MessageBox(
+    currentMessage: String,
+    updateMsgFun: (String) -> Unit,
+    sendMsgFun: (String, String) -> Unit = { _, _ -> },
+    sendMsgFunAI: (String) -> Unit = {},
+    isEnabled: Boolean,
+    isAiChat: Boolean = false,
+    receiverName: String = "",
+
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        OutlinedTextField(
+            value = currentMessage,
+            onValueChange = { updateMsgFun(it) },
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 8.dp),
+            shape = MaterialTheme.shapes.large,
+            placeholder = { Text("Write a message...", color = Color(0xFFE8E8E8)) },
+            colors = TextFieldDefaults.colors(
+                focusedTextColor = Color.White,
+                unfocusedTextColor = Color.White,
+                cursorColor = Color.White,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.White,
+                unfocusedIndicatorColor = Color.Gray,
+                selectionColors = TextSelectionColors(
+                    handleColor = Color.White,
+                    backgroundColor = Color.LightGray
+                )
+            )
+        )
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(50))
+                .background(Color(0xFFFFFFFF))
+        ) {
+            IconButton(
+                onClick =if (isAiChat) {
+                    { sendMsgFunAI(currentMessage) }
+                }else{
+                    { sendMsgFun(receiverName, currentMessage) }
+                },
+                enabled = isEnabled
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.Send,
+                    "Send button",
+                    tint = if (isEnabled) Color(0xFF0F3048) else Color.Gray
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun MessageBubble(message: Message, isSentByCurrentUser: Boolean) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .wrapContentWidth(if (isSentByCurrentUser) Alignment.End else Alignment.Start)
+    ) {
+        Text(
+            text = message.message,
+            style = MaterialTheme.typography.bodyLarge.copy(),
+            color = if (isSentByCurrentUser) Color.White else Color.Black,
+            textAlign = TextAlign.Start,
+            modifier = Modifier
+                .background(
+                    color = if (isSentByCurrentUser) Color(0xFF4CAF50) else Color(0xFFE0E0E0),
+                    shape = MaterialTheme.shapes.medium
+                )
+                .padding(10.dp)
+        )
     }
 }

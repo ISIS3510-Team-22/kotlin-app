@@ -1,17 +1,17 @@
 package com.example.exchangeapp.screens.chatpreview
 
+import android.content.Context
 import android.location.Location
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.exchangeapp.INFO_SCREEN
 import com.example.exchangeapp.MENU_SCREEN
-import com.example.exchangeapp.SIGN_UP_SCREEN
 import com.example.exchangeapp.model.service.AccountService
 import com.example.exchangeapp.model.service.User
 import com.example.exchangeapp.model.service.UserRepository
 import com.example.exchangeapp.model.service.impl.ChatService
 import com.example.exchangeapp.model.service.impl.LocationService
+import com.example.exchangeapp.model.service.module.Chat
+import com.example.exchangeapp.model.service.module.Message
 import com.example.exchangeapp.screens.ExchangeAppViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,9 +24,13 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.io.File
+
 
 @HiltViewModel
 class ChatPreviewViewModel @Inject constructor(
@@ -44,13 +48,35 @@ class ChatPreviewViewModel @Inject constructor(
     val currentUserId = accountService.currentUserId
     var chatId = ""
 
+
+
     init {
         Firebase.analytics.logEvent("Chat_Prev_Screen",null)
-        fetchUserNames()
-        fetchUsers()
 
 
     }
+
+
+
+    fun updateInfo(internet: Boolean, context: Context) {
+        if (internet) {
+            Log.d("TREX", "Entrando a guardar los datos")
+            fetchUserNames()
+            fetchUsers()
+            saveSnapshotToCache(context)
+            Log.d("TREX", "Entrando a guardar los datos")
+        } else {
+            // Cargar usuarios desde el caché
+            Log.d("TREX", "Entrando a extraer datos")
+            fetchUsersFromCache(context)
+            errorMessage.value = "No internet connection"
+        }
+    }
+
+
+
+
+
 
     private fun fetchUserNames() {
         viewModelScope.launch {
@@ -69,6 +95,103 @@ class ChatPreviewViewModel @Inject constructor(
                 }
         }
     }
+
+    fun saveSnapshotToCache(context: Context) {
+        viewModelScope.launch {
+            // Usa la lista de usuarios en el ViewModel
+            val users = firestore.collection("users").get().await()
+            val chats = firestore.collection("chats").get().await()
+
+            val documentUserList = users.documents.map { document ->
+                User(
+                    id = document.id,
+                    name = document.getString("name") ?: "",
+                    email = document.getString("email") ?: "",
+                    lat = document.getDouble("lat"),
+                    long = document.getDouble("long"),
+                    dis = document.getDouble("dis") ?: 0.0
+                )
+            }
+
+            val documentChatList = chats.documents.map { document ->
+
+                val messages = document.reference.collection("messages").get().await()
+
+                val messageList = messages.documents.map { msgDocument ->
+                    Message(
+                        id = msgDocument.id,
+                        message = msgDocument.getString("message") ?: "",
+                        senderId = msgDocument.getString("senderId") ?: "Unknown",
+                        receiverId = msgDocument.getString("receiverId") ?: "Unknown",
+                        timestamp = msgDocument.getLong("timestamp") ?: 0L
+                    )
+                }
+
+                Chat(
+                    id = document.id,
+                    users = (document.get("users") as? List<String> ?: emptyList()),
+                    messages = messageList
+
+                )
+            }
+
+            // Serializa la lista de usuarios a JSON
+            val jsonStringUsers = Json.encodeToString(documentUserList)
+            val jsonStringChats = Json.encodeToString(documentChatList)
+
+            // Escribe el JSON en un archivo en el directorio de caché
+            val cacheDir = context.cacheDir
+            val fileUsers = File(cacheDir, "user_snapshot.json")
+            val fileChats = File(cacheDir, "chat_snapshot.json")
+
+            fileUsers.writeText(jsonStringUsers)
+            Log.d("TREX", "Datos de usuarios guardados en caché")
+            fileChats.writeText(jsonStringChats)
+        }
+    }
+
+    private fun getSnapshotFromCache(context: Context): List<User>? {
+        return try {
+            // Leer el contenido del archivo JSON
+            val cacheDir = context.cacheDir
+            val file = File(cacheDir, "user_snapshot.json")
+
+            // Verificar si el archivo existe
+            if (file.exists()) {
+                val jsonString = file.readText()
+                // Deserializar el JSON a una lista de objetos User
+                Json.decodeFromString<List<User>>(jsonString)
+            } else {
+                Log.d("TREX", "No se encontró el archivo de caché")
+                null
+            }
+        } catch (e: Exception) {
+            // Manejar cualquier excepción, como errores de lectura o deserialización
+            Log.e("TREX", "Error al leer el caché: ${e.message}")
+            null
+        }
+    }
+
+
+
+    private fun fetchUsersFromCache(context: Context) {
+        viewModelScope.launch {
+            // Lee los usuarios del caché
+
+            val cachedUsers = getSnapshotFromCache(context)
+
+            // Si la lista no es nula, actualiza el estado de los usuarios
+            if (cachedUsers != null && cachedUsers.isNotEmpty()) {
+                _users.value = cachedUsers
+                Log.d("TREX", cachedUsers.toString())
+            } else {
+                // Manejar el caso donde no hay usuarios en caché
+                _users.value = emptyList() // O puedes mostrar un mensaje de error
+            }
+        }
+    }
+
+
 
 
 
