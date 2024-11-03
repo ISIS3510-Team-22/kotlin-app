@@ -3,6 +3,7 @@ package com.example.exchangeapp.screens.menu
 import com.example.exchangeapp.SIGN_IN_SCREEN
 import com.example.exchangeapp.model.service.AccountService
 import com.example.exchangeapp.screens.ExchangeAppViewModel
+import com.example.exchangeapp.screens.information.subviews.BasicScreenViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -12,10 +13,12 @@ class MenuViewModel @Inject constructor(
 ) : ExchangeAppViewModel() {
 
 
-    fun logOut(clearAndNavigate:(String)->Unit){
+    fun logOut(clearAndNavigate:(String)->Unit,subViewVM : BasicScreenViewModel ){
         launchCatching {
             accountService.signOut()
+            subViewVM.clearDocumentsCache()
             clearAndNavigate(SIGN_IN_SCREEN)
+
         }
     }
 }
