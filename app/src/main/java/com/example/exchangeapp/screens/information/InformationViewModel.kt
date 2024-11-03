@@ -7,6 +7,7 @@ import com.example.exchangeapp.INFO_SUB_SCREEN2
 import com.example.exchangeapp.MENU_SCREEN
 import com.example.exchangeapp.screens.ExchangeAppViewModel
 import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.logEvent
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -34,6 +35,14 @@ class InformationViewModel @Inject constructor(
         }
     }
 
+    fun updateButtonClick(label: String) {
+        val currentCounter = clickCounter.value.toMutableMap()
+        currentCounter[label] = (currentCounter[label] ?: 0) + 1
+        clickCounter.value = currentCounter
+
+        sharedPreferencesManager.saveSortedButtonInfo(currentCounter.toList())
+    }
+
     fun onSubViewClick(name: String, open: (String) -> Unit) {
         val basics = listOf(
             "recipes",
@@ -45,15 +54,15 @@ class InformationViewModel @Inject constructor(
         else
             open("$INFO_SUB_SCREEN2/$name")
 
+        Firebase.analytics.logEvent("SubViews_visits"){
+            param("SubViewName", name)
+            clickCounter.value[name]?.let { param("Visits", it.toLong()) }
+        }
+        //Firebase.analytics.logEvent(name, null)
+
     }
 
-    fun updateButtonClick(label: String) {
-        val currentCounter = clickCounter.value.toMutableMap()
-        currentCounter[label] = (currentCounter[label] ?: 0) + 1
-        clickCounter.value = currentCounter
 
-        sharedPreferencesManager.saveSortedButtonInfo(currentCounter.toList())
-    }
 
     fun saveButtonClickInfo(buttonInfo: List<Pair<String, Int>>) {
         sharedPreferencesManager.saveSortedButtonInfo(buttonInfo)
