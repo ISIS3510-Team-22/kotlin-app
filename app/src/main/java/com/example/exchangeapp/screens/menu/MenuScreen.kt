@@ -26,12 +26,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.exchangeapp.R
+import com.example.exchangeapp.screens.information.subviews.BasicScreenViewModel
 
 @Composable
 fun MenuScreen(
     clearAndNavigate: (String) -> Unit,
     popUp: ()->Unit,
     viewModel: MenuViewModel = hiltViewModel(),
+    subViewVM : BasicScreenViewModel = hiltViewModel(),
     open: (String) -> Unit,
 ) {
     Column(
@@ -65,7 +67,7 @@ fun MenuScreen(
         ) {
             TextButton(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                onClick = { viewModel.logOut(clearAndNavigate) },
+                onClick = { viewModel.logOut(clearAndNavigate, subViewVM) },
             ) {
                 Text(
                     stringResource(R.string.log_out),

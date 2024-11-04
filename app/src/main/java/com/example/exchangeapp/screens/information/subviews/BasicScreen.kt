@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -22,6 +21,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +31,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.exchangeapp.model.service.module.ConnectionStatus
+import com.example.exchangeapp.screens.ConnectionBackBox
+import com.example.exchangeapp.screens.NoInternetBox
+import com.example.exchangeapp.screens.connectivityStatus
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -40,6 +45,17 @@ fun BasicScreen(
     viewModel: BasicScreenViewModel = hiltViewModel(),
     popUp : () -> Unit
 ) {
+    val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
+
+    val showConnectionRestored = remember { mutableStateOf(false) }
+
+    LaunchedEffect(connectionAvailable) {
+        if (connectionAvailable) {
+            showConnectionRestored.value = true
+            delay(2000)
+            showConnectionRestored.value = false
+        }
+    }
 
     var documentDataList by remember { mutableStateOf(emptyList<Map<String, Any>>()) }
 
@@ -61,6 +77,9 @@ fun BasicScreen(
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
+        NoInternetBox(connectionAvailable)
+        ConnectionBackBox(showConnectionRestored.value)
+        Spacer(Modifier.height(1.dp))
         Row {
             IconButton(
                 onClick = {popUp() }
@@ -85,8 +104,7 @@ fun BasicScreen(
                     Color.White,
                     MaterialTheme.colorScheme.tertiary,
                     MaterialTheme.colorScheme.onTertiary
-                ),
-                shape = RoundedCornerShape(30)
+                )
             ) {
                 DisplayDocumentData( documentData = documentData)
             }

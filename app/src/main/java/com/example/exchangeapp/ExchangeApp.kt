@@ -16,7 +16,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.exchangeapp.screens.aichat.AiChatScreen
-import com.example.exchangeapp.ui.theme.ExchangeAppTheme
 import com.example.exchangeapp.screens.auth.forgot_password.ForgotPasswordScreen
 import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
 import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
@@ -143,6 +142,6 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
         )
     }
     composable(PROFILE_SCREEN) {
-        ProfileScreen()
+        ProfileScreen(popUp = { appState.popUp() })
     }
 }

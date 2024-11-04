@@ -13,6 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +38,7 @@ import com.example.exchangeapp.R
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
+    popUp : () -> Unit
 ) {
     val user by viewModel.currentUser.collectAsState()
 
@@ -52,16 +57,27 @@ fun ProfileScreen(
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ){
+            IconButton(
+                onClick = {popUp() }
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                    "",
+                    modifier = Modifier
+                        .size(60.dp),
+                    tint = Color.White
+                )
+            }
+            Spacer(modifier = Modifier.weight(0.8f))
             Text(
                 text = "PROFILE",
                 fontSize = 40.sp,
                 color = Color.White,
-
                 style = MaterialTheme.typography.displayMedium
             )
+            Spacer(modifier = Modifier.weight(1.2f))
         }
 
         Spacer(modifier = Modifier.height(50.dp))
