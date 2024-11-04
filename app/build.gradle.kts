@@ -88,6 +88,7 @@ dependencies {
 
     //Gson to manage JSON
     implementation(libs.gson)
+    implementation(libs.androidx.runtime.livedata)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
