@@ -2,6 +2,7 @@ package com.example.exchangeapp.screens.news
 
 import android.webkit.WebView
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -66,7 +67,7 @@ fun NewsScreen(
                 verticalArrangement = Arrangement.Center
             ) {
                 items(urls) { item ->
-                    WebPageViewer(item)
+                    WebPageViewer(item, viewModel)
                     Spacer(modifier.height(16.dp))
                 }
             }
@@ -83,12 +84,15 @@ fun NewsScreen(
 }
 
 @Composable
-fun WebPageViewer (url:String){
+fun WebPageViewer (url:String, viewModel: NewsViewModel){
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clip(RoundedCornerShape(16.dp))
+            .clickable{
+                viewModel.onWebViewClick(url)
+            }
     ) {
         AndroidView(factory = { context ->
             WebView(context).apply {
