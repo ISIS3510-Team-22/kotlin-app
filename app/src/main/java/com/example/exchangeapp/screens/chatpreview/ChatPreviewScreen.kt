@@ -54,15 +54,13 @@ fun ChatPreviewScreen(
     open: (String) -> Unit,
     viewModel: ChatPreviewViewModel = hiltViewModel()
 ) {
-    val userNames by viewModel.userNames.collectAsState()
     val users by viewModel.users.collectAsState()
-    var userList by remember { mutableStateOf<List<User>>(emptyList()) }
+    var userList = viewModel.userList.collectAsState()
     val locationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         Log.d("PERMISSION", if (isGranted) "Got permission" else "Permission denied")
     }
-    var currentLocation by remember { mutableStateOf<Location?>(null) }
     val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
     val context = LocalContext.current
     var showConnectionRestored = remember { mutableStateOf(false) }
@@ -77,8 +75,8 @@ fun ChatPreviewScreen(
 
     LaunchedEffect(users) {
 
-        if (userList.isEmpty()) {
-            userList = users.toList()
+        if (userList.value.isEmpty()) {
+            viewModel.updateUserList(users.toList())
         }
     }
 
@@ -102,7 +100,7 @@ fun ChatPreviewScreen(
         TopBar(onMenuClick = { viewModel.onMenuClick(open) }, screenTitle = "CHAT",
             icon = Icons.Default.LocationOn, iconDescription = "Location", iconAction = {
                 viewModel.handleLocationUpdate(users) { updatedUsers ->
-                    userList = updatedUsers
+                    viewModel.updateUserList(updatedUsers)
                 }
             })
 
@@ -137,7 +135,7 @@ fun ChatPreviewScreen(
             LazyColumn(
                 modifier = Modifier.padding(bottom = 65.dp, top = 10.dp)
             ) {
-                items(userList) { user ->
+                items(userList.value) { user ->
                     Card(
                         onClick = { viewModel.getMessagesAndSetupChat(user.name, open) },
                         elevation = CardDefaults.cardElevation(5.dp),

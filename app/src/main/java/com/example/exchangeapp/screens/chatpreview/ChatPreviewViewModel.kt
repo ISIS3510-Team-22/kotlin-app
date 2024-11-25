@@ -26,6 +26,9 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.tasks.await
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -45,17 +48,16 @@ class ChatPreviewViewModel @Inject constructor(
     val userNames: StateFlow<List<String>> = _userNames.asStateFlow()
     private val _users = MutableStateFlow<List<User>>(emptyList())
     val users: StateFlow<List<User>> = _users.asStateFlow()
+    val userList = MutableStateFlow<List<User>>(emptyList())
     val currentUserId = accountService.currentUserId
     var chatId = ""
 
 
 
     init {
-        Firebase.analytics.logEvent("Chat_Prev_Screen",null)
-
-
+        Firebase.analytics.logEvent("Chat_Prev_Screen", null)
+        startLocationUpdates(users.value)
     }
-
 
 
     fun updateInfo(internet: Boolean, context: Context) {
@@ -316,6 +318,26 @@ class ChatPreviewViewModel @Inject constructor(
     fun onMenuClick(open: (String) -> Unit){
         open(MENU_SCREEN)
     }
+
+    fun updateUserList(users: List<User>){
+        userList.value = users
+    }
+
+    fun startLocationUpdates(users: List<User>) {
+        viewModelScope.launch {
+            while (isActive) {
+                handleLocationUpdate(users) { updatedUsers ->
+                    // Update LiveData with the new user list
+                    updateUserList(updatedUsers)
+                }
+                delay(20000) // Delay for 60 seconds (1 minute)
+            }
+        }
+    }
+
+
+
+
 }
 
 
