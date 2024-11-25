@@ -6,7 +6,6 @@ import android.util.Log
 import com.example.exchangeapp.model.service.module.ConnectionStatus
 import com.example.exchangeapp.screens.ExchangeAppViewModel
 import com.example.exchangeapp.screens.auth.ValidationUtils
-import com.example.exchangeapp.screens.connectivityStatus
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
