@@ -43,19 +43,23 @@ fun BasicScreen(
     name: String,
     modifier: Modifier = Modifier,
     viewModel: BasicScreenViewModel = hiltViewModel(),
-    popUp : () -> Unit
+    popUp: () -> Unit
 ) {
     val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
-
-    val showConnectionRestored = remember { mutableStateOf(false) }
+    var wasConnectionAvailable = remember { mutableStateOf(true) }
+    var showConnectionRestored = remember { mutableStateOf(false) }
 
     LaunchedEffect(connectionAvailable) {
         if (connectionAvailable) {
-            showConnectionRestored.value = true
-            delay(2000)
-            showConnectionRestored.value = false
+            if (connectionAvailable && !wasConnectionAvailable.value) {
+                showConnectionRestored.value = true
+                delay(2000)
+                showConnectionRestored.value = false
+            }
+            wasConnectionAvailable.value = connectionAvailable
         }
     }
+
 
     var documentDataList by remember { mutableStateOf(emptyList<Map<String, Any>>()) }
 
@@ -82,13 +86,12 @@ fun BasicScreen(
         Spacer(Modifier.height(1.dp))
         Row {
             IconButton(
-                onClick = {popUp() }
+                onClick = { popUp() }
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                     "",
-                    modifier = Modifier
-                        .size(60.dp),
+                    modifier = Modifier.size(60.dp),
                     tint = Color.White
                 )
             }
@@ -96,9 +99,8 @@ fun BasicScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
         documentDataList.forEach { documentData ->
-            Card (
-                modifier = modifier
-                    .background(Color(0xFF18354d)),
+            Card(
+                modifier = modifier.background(Color(0xFF18354d)),
                 colors = CardColors(
                     Color(0xFF18354d),
                     Color.White,
@@ -106,7 +108,7 @@ fun BasicScreen(
                     MaterialTheme.colorScheme.onTertiary
                 )
             ) {
-                DisplayDocumentData( documentData = documentData)
+                DisplayDocumentData(documentData = documentData)
             }
             Spacer(modifier = Modifier.height(8.dp))
         }
