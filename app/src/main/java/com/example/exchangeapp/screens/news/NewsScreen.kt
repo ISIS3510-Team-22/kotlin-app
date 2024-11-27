@@ -73,7 +73,6 @@ fun NewsScreen(
             }
         }
     } else {
-        // Show the noInternetAnimation when there is no internet connection
         NoInternetAnimation(
             open,
             modifier = Modifier.fillMaxSize(),
@@ -128,10 +127,10 @@ fun NoInternetAnimation(
         Column (modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center){
-            Text("There is no internet connection")
+            Text("There is no internet connection", color = Color.White)
             Spacer(modifier = modifier.height(8.dp))
             DotLottieAnimation(
-                source = DotLottieSource.Asset("no_inet_cat.lottie"), // from url .lottie / .json
+                source = DotLottieSource.Asset("no_inet_cat.lottie"),
                 autoplay = true,
                 loop = true,
                 speed = 2f,
