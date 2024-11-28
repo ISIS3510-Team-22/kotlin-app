@@ -68,7 +68,6 @@ class BasicScreenViewModel @Inject constructor() : ExchangeAppViewModel() {
 
     fun clearDocumentsCache() {
         documentsCache.value = null
-
         Log.d("Tyranitar", "Cache cleared.")
     }
 

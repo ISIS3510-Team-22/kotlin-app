@@ -22,6 +22,7 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +34,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.exchangeapp.model.service.module.ConnectionStatus
+import com.example.exchangeapp.screens.ConnectionBackBox
+import com.example.exchangeapp.screens.NoInternetBox
+import com.example.exchangeapp.screens.connectivityStatus
+import kotlinx.coroutines.delay
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,6 +48,21 @@ fun SearchBarScreen(
     modifier: Modifier = Modifier,
     viewModel: BasicScreenViewModel = hiltViewModel(),
     popUp : () -> Unit){
+
+    val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
+    var wasConnectionAvailable = remember { mutableStateOf(true) }
+    var showConnectionRestored = remember { mutableStateOf(false) }
+
+    LaunchedEffect(connectionAvailable) {
+        if (connectionAvailable) {
+            if (connectionAvailable && !wasConnectionAvailable.value) {
+                showConnectionRestored.value = true
+                delay(2000)
+                showConnectionRestored.value = false
+            }
+            wasConnectionAvailable.value = connectionAvailable
+        }
+    }
 
     var text by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
@@ -63,6 +84,9 @@ fun SearchBarScreen(
             .background(Color(0xFF0F3048))
             .padding(16.dp)
     ) {
+        NoInternetBox(connectionAvailable)
+        ConnectionBackBox(showConnectionRestored.value)
+        Spacer(Modifier.height(1.dp))
         Row {
             IconButton(
                 onClick = {popUp() }

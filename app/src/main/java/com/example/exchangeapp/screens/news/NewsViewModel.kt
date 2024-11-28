@@ -14,13 +14,24 @@ class NewsViewModel @Inject constructor() : ExchangeAppViewModel() {
     private  val _webPageUrls = MutableLiveData<List<String>>()
     val webPageUrl : LiveData<List<String>> = _webPageUrls
 
+    val categories = mapOf(
+        "https://www.theguardian.com/education" to "Education",
+        "https://www.nytimes.com/international/section/education" to "Education",
+        "https://apnews.com/education" to "Education",
+        "https://www.usnews.com/topics/subjects/education" to "Education",
+        "https://www.euronews.com/tag/entertainment" to "Entertainment",
+        "https://www.etonline.com/" to "Entertainment",
+        "https://edition.cnn.com/entertainment" to "Entertainment",
+        "https://abcnews.go.com/Entertainment" to "Entertainment",
+        "https://www.ft.com/eu-economy" to "Economy",
+        "https://www.bbc.com/news/business/economy" to "Economy",
+        "https://www.nytimes.com/section/business/economy" to "Economy",
+        "https://edition.cnn.com/business/economy" to "Economy"
+    )
+
     init {
-        _webPageUrls.value = listOf(
-            "https://www.theguardian.com/education",
-            "https://www.nytimes.com/international/section/education",
-            "https://www.euronews.com/tag/entertainment",
-            "https://www.ft.com/eu-economy"
-        )
+        // Select 4 random keys (URLs) from the categories map
+        _webPageUrls.value = categories.keys.shuffled().take(4).toList()
     }
 
     fun onMenuClick(open: (String) -> Unit) {
@@ -30,13 +41,13 @@ class NewsViewModel @Inject constructor() : ExchangeAppViewModel() {
     }
 
     fun onWebViewClick(url:String){
-        val categories = mapOf(
-            "https://www.theguardian.com/education" to "Education",
-            "https://www.nytimes.com/international/section/education" to "Education",
-            "https://www.euronews.com/tag/entertainment" to "Entertainment",
-            "https://www.ft.com/eu-economy" to "Economy"
-        )
         categories[url]?.let { Firebase.analytics.logEvent(it, null) }
+
+        // Update the URL list based on the category of the clicked URL
+        val clickedCategory = categories[url]
+        if (clickedCategory != null) {
+            _webPageUrls.value = categories.filterValues { it == clickedCategory }.keys.toList()
+        }
     }
 
 }
