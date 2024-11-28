@@ -28,6 +28,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.exchangeapp.CAMERA_SCREEN
 import com.example.exchangeapp.R
+import com.example.exchangeapp.model.service.module.ConnectionStatus
+import com.example.exchangeapp.screens.connectivityStatus
 
 @Composable
 fun ProfileScreen(
@@ -36,10 +38,15 @@ fun ProfileScreen(
     open: (String) -> Unit,
 ) {
     val user by viewModel.currentUser.collectAsState()
+    val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
+
+    LaunchedEffect(connectionAvailable) {
+        viewModel.setConnectivityStatus(connectionAvailable)
+    }
 
     // Reload user data whenever this screen is recomposed (e.g., when coming back from camera)
     LaunchedEffect(key1 = true) {
-        viewModel.reloadCurrentUser()
+        viewModel.loadUser()
     }
 
     Column(
@@ -108,6 +115,7 @@ fun ProfileScreen(
             // Place the button partially outside the circle
             IconButton(
                 onClick = { open(CAMERA_SCREEN) },
+                enabled = connectionAvailable,
                 modifier = Modifier
                     .align(Alignment.BottomEnd) // Align to bottom-right of the outer box
                     .offset(x = (-15).dp, y = (-8).dp) // Slight offset to position outside the circle
