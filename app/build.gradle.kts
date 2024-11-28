@@ -69,6 +69,7 @@ dependencies {
     //Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
+    implementation (libs.firebase.storage.ktx)
     implementation(libs.hilt.navigation.compose)
     implementation (libs.androidx.hilt.navigation.fragment)
     implementation (libs.google.firebase.analytics)
@@ -112,4 +113,14 @@ dependencies {
     implementation (libs.okhttp)
 
     implementation(libs.dotenv.vault.kotlin)
+
+    val camerax_version = "1.5.0-alpha03"
+    implementation("androidx.camera:camera-camera2:${camerax_version}")
+    implementation("androidx.camera:camera-lifecycle:${camerax_version}")
+    implementation("androidx.camera:camera-view:${camerax_version}")
+
+    val room_version = "2.4.3"
+    implementation ("androidx.room:room-runtime:${room_version}")
+    implementation ("androidx.room:room-ktx:${room_version}")
+
 }

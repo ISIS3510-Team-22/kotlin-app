@@ -14,15 +14,18 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val accountService: AccountService
-
-) : ExchangeAppViewModel(){
+) : ExchangeAppViewModel() {
 
     private val _currentUser = MutableStateFlow<User?>(null)
     val currentUser: StateFlow<User?> = _currentUser.asStateFlow()
     val currentUserId = accountService.currentUserId
 
     init {
-        getCurrentUser()
+        getCurrentUser() // Fetch the current user initially
+    }
+
+    fun reloadCurrentUser() {
+        getCurrentUser() // Refresh the user data when needed
     }
 
     private fun getCurrentUser() {
@@ -32,9 +35,4 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
-
-
-
-
-
 }
