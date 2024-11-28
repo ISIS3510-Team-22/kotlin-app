@@ -7,6 +7,7 @@ composeBomVersion = "2024.10.01"
 coreKtxVersion = "1.15.0"
 firebaseAnalytics = "22.1.2"
 firebaseBom = "33.5.1"
+firebaseStorageKtx = "21.0.1"
 gson = "2.11.0"
 hiltAndroidVersion = "2.52"
 hiltCompiler = "2.52"
@@ -51,6 +52,7 @@ dotlottie-android = { module = "com.github.LottieFiles:dotlottie-android", versi
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics", version.ref = "firebaseAnalytics" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }

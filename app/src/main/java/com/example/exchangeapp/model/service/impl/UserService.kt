@@ -73,6 +73,26 @@ class UserService @Inject constructor(
         Log.e("UserService", "Error fetching current user", e)
     }
 
+    fun updateProfilePictureUrl(userId: String, newProfilePictureUrl: String): Flow<Boolean> = flow {
+        Log.d("IMAGEUPLOAD", "userId: $userId")
+
+        try {
+            val userRef = firestore.collection("users").document(userId)
+            Log.d("IMAGEUPLOAD", "updateProfilePictureUrl: $userId")
+
+            // Update the profilePictureUrl field
+            userRef.update("profilePictureUrl", newProfilePictureUrl).await()
+
+            // Emit success result
+            emit(true)
+        } catch (e: Exception) {
+            // Log error and emit failure result
+            Log.e("UserService", "Error updating profile picture URL", e)
+            emit(false)
+        }
+    }
+
+
 
 
 }

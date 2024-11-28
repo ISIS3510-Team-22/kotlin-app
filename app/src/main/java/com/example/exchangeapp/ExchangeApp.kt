@@ -19,6 +19,7 @@ import com.example.exchangeapp.screens.aichat.AiChatScreen
 import com.example.exchangeapp.screens.auth.forgot_password.ForgotPasswordScreen
 import com.example.exchangeapp.screens.auth.sign_in.SignInScreen
 import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
+import com.example.exchangeapp.screens.camera.CameraScreen
 import com.example.exchangeapp.screens.chat.ChatScreen
 import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
 import com.example.exchangeapp.screens.information.InformationScreen
@@ -142,6 +143,10 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
         )
     }
     composable(PROFILE_SCREEN) {
-        ProfileScreen(popUp = { appState.popUp() })
+        ProfileScreen(popUp = { appState.popUp() }, open = { route -> appState.navigate(route) })
+    }
+
+    composable(CAMERA_SCREEN) {
+        CameraScreen(popUp = { appState.popUp() })
     }
 }
