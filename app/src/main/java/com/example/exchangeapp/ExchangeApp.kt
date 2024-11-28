@@ -36,7 +36,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 
-fun ExchangeApp() {
+fun ExchangeApp(fusedLocationProviderClient: FusedLocationProviderClient) {
     ExchangeAppTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
             val appState = rememberAppState()
