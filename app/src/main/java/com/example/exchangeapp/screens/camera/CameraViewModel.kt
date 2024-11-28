@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CameraViewModel @Inject constructor(
     private val userService: UserService,
-    private val accountService: AccountService,
+    private val accountService: AccountService
 ) : ExchangeAppViewModel() {
     val currentUserId = accountService.currentUserId
 
@@ -29,7 +29,7 @@ class CameraViewModel @Inject constructor(
         }
     }
 
-    fun updateProfilePictureUrl(profilePictureUrl: String) {
+    fun updateProfilePictureUrl(profilePictureUrl: String, popUp: () -> Unit,) {
 
         // Ensure the current user is not null before attempting to update
         currentUser.let {
@@ -37,6 +37,7 @@ class CameraViewModel @Inject constructor(
                 userService.updateProfilePictureUrl(currentUserId, profilePictureUrl).collect { success ->
                     if (success) {
                         Log.d("IMAGEUPLOAD", "Profile picture URL updated successfully.")
+                        popUp()
                     } else {
                         Log.e("IMAGEUPLOAD", "Failed to update profile picture URL.")
                     }

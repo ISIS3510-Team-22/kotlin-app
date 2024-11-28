@@ -1,7 +1,10 @@
 package com.example.exchangeapp.screens.profile
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -15,11 +18,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -111,25 +116,50 @@ fun ProfileScreen(
                     )
                 }
             }
+            Box(                    modifier = Modifier
+                .align(Alignment.BottomEnd) // Align to bottom-right of the outer box
+                .offset(
+                    x = (-15).dp,
+                    y = (-8).dp
+                ) // Slight offset to position outside the circle
+                .size(48.dp)
+                .background(Color.White, shape = CircleShape) // Circular background
+                .padding(8.dp)) {
 
-            // Place the button partially outside the circle
-            IconButton(
-                onClick = { open(CAMERA_SCREEN) },
-                enabled = connectionAvailable,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd) // Align to bottom-right of the outer box
-                    .offset(x = (-15).dp, y = (-8).dp) // Slight offset to position outside the circle
-                    .size(48.dp)
-                    .background(Color.White, shape = CircleShape) // Circular background
-                    .padding(8.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.CameraAlt, // Camera icon
-                    contentDescription = "Change Profile Picture",
-                    tint = Color(0xFF0F3048)
+
+                // Place the button partially outside the circle
+                IconButton(
+                    onClick = { open(CAMERA_SCREEN) },
+                    enabled = connectionAvailable,
+
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.CameraAlt, // Camera icon
+                        contentDescription = "Change Profile Picture",
+                        tint = Color(0xFF0F3048)
+                    )
+                }
+            }
+            var context = LocalContext.current
+            if (!connectionAvailable) {
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) {
+                            Toast
+                                .makeText(context, "Cannot update profile picture, check your connection", Toast.LENGTH_SHORT)
+                                .show()
+                        }
                 )
             }
         }
+
+
+
+
 
         Spacer(modifier = Modifier.height(76.dp))
 

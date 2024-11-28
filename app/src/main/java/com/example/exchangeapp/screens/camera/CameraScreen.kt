@@ -1,8 +1,10 @@
 package com.example.exchangeapp.screens.camera
 
 import android.Manifest
+import android.content.Context
 import android.net.Uri
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.view.LifecycleCameraController
@@ -36,7 +38,7 @@ import java.util.concurrent.Executor
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun CameraScreen(viewModel: CameraViewModel = hiltViewModel()) {
+fun CameraScreen(viewModel: CameraViewModel = hiltViewModel(), popUp : () -> Unit) {
     val permissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
 
     val context = LocalContext.current
@@ -44,6 +46,7 @@ fun CameraScreen(viewModel: CameraViewModel = hiltViewModel()) {
         LifecycleCameraController(context)
     }
     val lifecycle = LocalLifecycleOwner.current
+
 
     LaunchedEffect(Unit) {
         permissionState.launchPermissionRequest()
@@ -56,7 +59,7 @@ fun CameraScreen(viewModel: CameraViewModel = hiltViewModel()) {
             FloatingActionButton(
                 onClick = {
                     val executor = ContextCompat.getMainExecutor(context)
-                    takePicture(cameraController, executor, viewModel)
+                    takePicture(cameraController, executor, viewModel, popUp, context)
                 },
                 contentColor = Color(0xFF0F3048)
             ) {
@@ -75,7 +78,7 @@ fun CameraScreen(viewModel: CameraViewModel = hiltViewModel()) {
     }
 }
 
-private fun takePicture(cameraController: LifecycleCameraController, executor: Executor, viewModel: CameraViewModel) {
+private fun takePicture(cameraController: LifecycleCameraController, executor: Executor, viewModel: CameraViewModel, popUp: () -> Unit, context: Context) {
     val file = File.createTempFile("imagetest", ".jpg")
     val outputDirectory = ImageCapture.OutputFileOptions.Builder(file).build()
 
@@ -85,7 +88,10 @@ private fun takePicture(cameraController: LifecycleCameraController, executor: E
         object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                 // Upload image to Firebase Storage
-                uploadImageToStorage(file, viewModel)
+                uploadImageToStorage(file, viewModel, popUp)
+                //Send confirmation toast
+                Toast.makeText(context, "Image saved successfully", Toast.LENGTH_SHORT).show()
+
             }
 
             override fun onError(exception: ImageCaptureException) {
@@ -118,17 +124,18 @@ fun CameraComposable(
 }
 
 
-private fun uploadImageToStorage(file: File, viewModel: CameraViewModel) {
+private fun uploadImageToStorage(file: File, viewModel: CameraViewModel, popUp: () -> Unit) {
     val storageReference = FirebaseStorage.getInstance().reference
     val fileUri = Uri.fromFile(file)
     val profileImagesRef = storageReference.child("profile_pictures/${file.name}")
     profileImagesRef.putFile(fileUri)
-        .addOnSuccessListener { taskSnapshot ->
+        .addOnSuccessListener { _ ->
             // Get the download URL
             profileImagesRef.downloadUrl.addOnSuccessListener { uri ->
                 // Update the profile picture URL in Firestore
                 val profilePictureUrl = uri.toString()
-                viewModel.updateProfilePictureUrl(profilePictureUrl)
+                viewModel.updateProfilePictureUrl(profilePictureUrl, popUp)
+
             }
         }
         .addOnFailureListener { e ->

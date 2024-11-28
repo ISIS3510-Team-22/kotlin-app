@@ -16,7 +16,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val accountService: AccountService,
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
 ) : ExchangeAppViewModel() {
 
     private val gson = Gson()

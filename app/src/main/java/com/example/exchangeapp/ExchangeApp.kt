@@ -36,7 +36,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 
-fun ExchangeApp(fusedLocationProviderClient: FusedLocationProviderClient) {
+fun ExchangeApp() {
     ExchangeAppTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
             val appState = rememberAppState()
@@ -147,6 +147,6 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
     }
 
     composable(CAMERA_SCREEN) {
-        CameraScreen()
+        CameraScreen(popUp = { appState.popUp() })
     }
 }
