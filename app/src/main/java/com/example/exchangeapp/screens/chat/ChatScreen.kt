@@ -120,7 +120,7 @@ fun ChatScreen(
                 DotLottieAnimation(
                     source = DotLottieSource.Asset("plane_loading.lottie"),
                     autoplay = true,
-                    loop = false,
+                    loop = true,
                     speed = 3f,
                     useFrameInterpolation = false,
                     modifier = Modifier.scale(0.7f)
