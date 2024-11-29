@@ -1,6 +1,7 @@
 package com.example.exchangeapp.screens.information.subviews
 
 import android.util.Log
+import com.example.exchangeapp.UNIVERSITY_SCREEN
 import com.example.exchangeapp.screens.ExchangeAppViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -69,6 +70,10 @@ class BasicScreenViewModel @Inject constructor() : ExchangeAppViewModel() {
     fun clearDocumentsCache() {
         documentsCache.value = null
         Log.d("Tyranitar", "Cache cleared.")
+    }
+
+    fun onUniversityClick(university:String, open : (String) -> Unit){
+        open("$UNIVERSITY_SCREEN/$university")
     }
 
 }
