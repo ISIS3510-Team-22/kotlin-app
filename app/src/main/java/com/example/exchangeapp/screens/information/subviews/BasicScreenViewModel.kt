@@ -72,7 +72,7 @@ class BasicScreenViewModel @Inject constructor() : ExchangeAppViewModel() {
         Log.d("Tyranitar", "Cache cleared.")
     }
 
-    fun onUniversityClick(university:String, open : (String) -> Unit){
+    fun onUniversityClick(university: String, open: (String) -> Unit){
         open("$UNIVERSITY_SCREEN/$university")
     }
 

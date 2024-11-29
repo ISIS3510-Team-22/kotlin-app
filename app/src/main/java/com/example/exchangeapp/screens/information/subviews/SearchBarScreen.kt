@@ -153,8 +153,6 @@ fun SearchBarScreen(
 fun DisplayDocumentData2(documentData: Map<String, Any>, viewModel: BasicScreenViewModel,
                          open: (String) -> Unit) {
 
-    var isExpanded by remember { mutableStateOf(false) }
-
     // Extract the title from the document data
     val titleOrName = documentData["title"]?.toString() ?: documentData["name"]?.toString() ?: "No Title or Name"
 
@@ -181,25 +179,7 @@ fun DisplayDocumentData2(documentData: Map<String, Any>, viewModel: BasicScreenV
                     color = Color.White
                 )
             }
-
-
-            ExpandableButton(
-                expanded = isExpanded,
-                onClick = { isExpanded = !isExpanded } // Toggle the state
-            )
         }
 
-        if (isExpanded) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                details.forEach { (key, value) ->
-                    Text(text = "$key: $value", style = MaterialTheme.typography.bodyMedium)
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            }
-        }
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -54,8 +55,6 @@ fun UniversityScreen(
         }
     }
 
-
-
     Column (
         modifier = modifier
             .fillMaxSize()
@@ -80,9 +79,34 @@ fun UniversityScreen(
             Text(university, style = MaterialTheme.typography.headlineMedium, color = Color.White)
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text("Aca va la info de la universidad (country, city, students)")
-        Button(onClick = {viewModel.displayDetils(university,open)}) {
+        //UniversityDetails(details)
+        Button(onClick = {viewModel.displayDetails(university,open)}) {
             Text("Comments",style = MaterialTheme.typography.headlineMedium, color = Color.White )
         }
     }
+}
+
+@Composable
+fun UniversityDetails(documentData: Map<String, Any>){
+
+    val details = documentData.filterKeys { it !in listOf("title", "name","createdAt") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        details.forEach { (key, value) ->
+            Text(text = "$key: $value", style = MaterialTheme.typography.bodyMedium)
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+    }
+    }
+
 }
