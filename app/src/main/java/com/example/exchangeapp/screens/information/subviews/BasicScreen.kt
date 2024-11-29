@@ -165,7 +165,7 @@ fun DisplayDocumentData(documentData: Map<String, Any>) {
 }
 
 @Composable
-private fun ExpandableButton(
+fun ExpandableButton(
     expanded: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
