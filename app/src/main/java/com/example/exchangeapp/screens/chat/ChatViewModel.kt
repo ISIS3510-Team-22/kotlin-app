@@ -10,6 +10,8 @@ import com.example.exchangeapp.model.service.module.Chat
 import com.example.exchangeapp.model.service.module.Message
 import com.example.exchangeapp.screens.ExchangeAppViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -88,16 +90,18 @@ class ChatViewModel @Inject constructor(
             val chatId =
                 if (currentUserId < receiverId.toString()) "$currentUserId-$receiverId" else "$receiverId-$currentUserId"
 
-            fetchChatsFromCache(context)
+            val cachedChatsDeferred = async(Dispatchers.IO) { fetchChatsFromCache(context) }
+            val cachedChats = cachedChatsDeferred.await()
+            _chats.value = cachedChats
 
-            val chat = _chats.value.find { it.id == chatId }
+            val chat = cachedChats.find { it.id == chatId }
             if (chat != null) {
-                _messages.value = chat.messages
+                _messages.value = chat.messages.reversed()
                 Log.d("TREX", chat.messages.toString())
             }
-
-
-
+            else {
+                errorMessage.value = "Cannot start a new chat without internet connection"
+            }
         }
     }
 
@@ -123,21 +127,8 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    private fun fetchChatsFromCache(context: Context) {
-        viewModelScope.launch {
-            // Lee los usuarios del caché
-
-            val cachedChats = getChatSnapshotFromCache(context)
-
-            // Si la lista no es nula, actualiza el estado de los usuarios
-            if (cachedChats != null && cachedChats.isNotEmpty()) {
-                _chats.value = cachedChats
-                Log.d("TREX", cachedChats.toString())
-            } else {
-                // Manejar el caso donde no hay usuarios en caché
-                _chats.value = emptyList() // O puedes mostrar un mensaje de error
-            }
-        }
+    private fun fetchChatsFromCache(context: Context): List<Chat> {
+        return getChatSnapshotFromCache(context).orEmpty()
     }
 
     fun updateCurrentMessage(newMessage: String) {
