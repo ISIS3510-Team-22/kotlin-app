@@ -22,6 +22,7 @@ import com.example.exchangeapp.screens.auth.sign_up.SignUpScreen
 import com.example.exchangeapp.screens.camera.CameraScreen
 import com.example.exchangeapp.screens.chat.ChatScreen
 import com.example.exchangeapp.screens.chatpreview.ChatPreviewScreen
+import com.example.exchangeapp.screens.comments.AddCommentScreen
 import com.example.exchangeapp.screens.information.InformationScreen
 import com.example.exchangeapp.screens.information.subviews.BasicScreen
 import com.example.exchangeapp.screens.information.subviews.SearchBarScreen
@@ -155,4 +156,13 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
         var university = backStackEntry.arguments?.getString("university") ?: "Unknown"
         UniversityScreen(university = university,open = { route -> appState.navigate(route) }, popUp = { appState.popUp() })
     }
+
+    composable("addCommentScreen/{universityName}") { backStackEntry ->
+        val universityName = backStackEntry.arguments?.getString("universityName")
+        if (universityName != null) {
+            AddCommentScreen(universityName = universityName, onBack = { appState.popUp() })
+        }
+    }
+
+
 }
