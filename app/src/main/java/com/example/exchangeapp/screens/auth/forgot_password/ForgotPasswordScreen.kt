@@ -21,6 +21,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +38,10 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.exchangeapp.R
+import com.example.exchangeapp.model.service.module.ConnectionStatus
 import com.example.exchangeapp.screens.CustomTextField
+import com.example.exchangeapp.screens.connectivityStatus
+import com.google.api.Context
 
 @SuppressLint("NewApi")
 @Composable
@@ -51,9 +55,17 @@ fun ForgotPasswordScreen(
     val emailError = viewModel.emailError.collectAsState()
     val context = LocalContext.current
     val errorColor = Color("#e63022".toColorInt())
+    val connectionStatus = connectivityStatus().value
+    viewModel.updateConnectionStatus(connectionStatus)
+    val connectionAvailable = viewModel.connectionStatus.collectAsState().value == ConnectionStatus.Available
 
     BackHandler {
         popUp()
+    }
+    LaunchedEffect(connectionAvailable) {
+        if (connectionAvailable) {
+            viewModel.processPendingEmailRequests(context)
+        }
     }
 
     Column(
@@ -87,7 +99,7 @@ fun ForgotPasswordScreen(
             placeHolder = "Email",
             type = KeyboardType.Email,
             action = if (isEnabled.value) ImeAction.Send else ImeAction.Done,
-            onSend = { viewModel.onSendClick() },
+            onSend = { viewModel.onSendClick(context) },
         )
         if (emailError.value != "") {
             Text(
@@ -105,11 +117,13 @@ fun ForgotPasswordScreen(
         Spacer(Modifier.padding(20.dp))
 
 
+
+
         Button(
             enabled = isEnabled.value,
             onClick = {
                 Toast.makeText(context, "Recover email sent!", Toast.LENGTH_SHORT).show()
-                viewModel.onSendClick()
+                viewModel.onSendClick(context)
             },
             shape = RoundedCornerShape(35),
             colors = ButtonColors(
