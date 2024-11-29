@@ -30,6 +30,7 @@ import com.example.exchangeapp.screens.navigation.NavigationScreen
 import com.example.exchangeapp.screens.news.NewsScreen
 import com.example.exchangeapp.screens.profile.ProfileScreen
 import com.example.exchangeapp.screens.splash.SplashScreen
+import com.example.exchangeapp.screens.universities.UniversityScreen
 import com.example.exchangeapp.ui.theme.ExchangeAppTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 
@@ -130,7 +131,7 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
 
     composable("$INFO_SUB_SCREEN2/{name}") { backStackEntry ->
         var name = backStackEntry.arguments?.getString("name") ?: "Unknown"
-        SearchBarScreen(name = name, popUp = { appState.popUp() })
+        SearchBarScreen(name = name, popUp = { appState.popUp() },open = { route -> appState.navigate(route) })
     }
 
     composable(AI_CHAT_SCREEN){
@@ -148,5 +149,10 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
 
     composable(CAMERA_SCREEN) {
         CameraScreen(popUp = { appState.popUp() })
+    }
+
+    composable("$UNIVERSITY_SCREEN/{university}"){backStackEntry ->
+        var university = backStackEntry.arguments?.getString("university") ?: "Unknown"
+        UniversityScreen(university = university,open = { route -> appState.navigate(route) }, popUp = { appState.popUp() })
     }
 }

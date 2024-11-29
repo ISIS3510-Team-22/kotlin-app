@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +25,8 @@ import com.example.exchangeapp.model.service.module.ConnectionStatus
 import com.example.exchangeapp.screens.MessageBox
 import com.example.exchangeapp.screens.MessageBubble
 import com.example.exchangeapp.screens.connectivityStatus
+import com.lottiefiles.dotlottie.core.compose.ui.DotLottieAnimation
+import com.lottiefiles.dotlottie.core.util.DotLottieSource
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -104,16 +107,36 @@ fun ChatScreen(
 
         }
 
-
-        LazyColumn(
-            modifier = Modifier.weight(1f),
-
+        if (messages.isEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .background(Color(0xFF0F3048))
+                    .padding(bottom = 85.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-            items(messages) { message ->
-                MessageBubble(
-                    message = message,
-                    isSentByCurrentUser = message.senderId == currentUserId
+                DotLottieAnimation(
+                    source = DotLottieSource.Asset("plane_loading.lottie"),
+                    autoplay = true,
+                    loop = false,
+                    speed = 3f,
+                    useFrameInterpolation = false,
+                    modifier = Modifier.scale(0.7f)
                 )
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+
+                ) {
+                items(messages) { message ->
+                    MessageBubble(
+                        message = message,
+                        isSentByCurrentUser = message.senderId == currentUserId
+                    )
+                }
             }
         }
 

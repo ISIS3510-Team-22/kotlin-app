@@ -14,6 +14,7 @@ const val INFO_SUB_SCREEN2 = "SearchBarScreen"
 const val AI_CHAT_SCREEN = "AiChatScreen"
 const val PROFILE_SCREEN = "ProfileScreen"
 const val CAMERA_SCREEN = "CameraScreen"
+const val UNIVERSITY_SCREEN = "UniversityScreen"
 
 const val NEWS__SCREEN = "NewsScreen"
 

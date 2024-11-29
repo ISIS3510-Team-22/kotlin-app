@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -21,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.exchangeapp.model.service.module.ConnectionStatus
 import com.example.exchangeapp.screens.ConnectionBackBox
@@ -47,7 +50,8 @@ fun SearchBarScreen(
     name : String,
     modifier: Modifier = Modifier,
     viewModel: BasicScreenViewModel = hiltViewModel(),
-    popUp : () -> Unit){
+    popUp : () -> Unit,
+    open: (String) -> Unit){
 
     val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
     var wasConnectionAvailable = remember { mutableStateOf(true) }
@@ -137,9 +141,65 @@ fun SearchBarScreen(
                 ),
                 shape = RoundedCornerShape(30)
             ) {
-                DisplayDocumentData( documentData = documentData)
+                DisplayDocumentData2( documentData = documentData,viewModel,open)
             }
             Spacer(modifier = Modifier.height(8.dp))
+        }
+    }
+}
+
+
+@Composable
+fun DisplayDocumentData2(documentData: Map<String, Any>, viewModel: BasicScreenViewModel,
+                         open: (String) -> Unit) {
+
+    var isExpanded by remember { mutableStateOf(false) }
+
+    // Extract the title from the document data
+    val titleOrName = documentData["title"]?.toString() ?: documentData["name"]?.toString() ?: "No Title or Name"
+
+
+    val details = documentData.filterKeys { it !in listOf("title", "name","createdAt") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            TextButton(onClick = {viewModel.onUniversityClick(titleOrName, open)
+            }) {
+                Text(
+                    text = titleOrName,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 20.sp,
+                    modifier = Modifier.weight(1f),
+                    color = Color.White
+                )
+            }
+
+
+            ExpandableButton(
+                expanded = isExpanded,
+                onClick = { isExpanded = !isExpanded } // Toggle the state
+            )
+        }
+
+        if (isExpanded) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                details.forEach { (key, value) ->
+                    Text(text = "$key: $value", style = MaterialTheme.typography.bodyMedium)
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
         }
     }
 }
