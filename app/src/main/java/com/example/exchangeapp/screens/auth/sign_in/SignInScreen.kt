@@ -1,6 +1,7 @@
 package com.example.exchangeapp.screens.auth.sign_in
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
@@ -76,6 +77,7 @@ fun SignInScreen(
     val errorColor = Color("#e63022".toColorInt())
 
     val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
+    var wasConnectionAvailable = remember { mutableStateOf(true) }
 
     ToastListener(viewModel)
 
@@ -85,12 +87,14 @@ fun SignInScreen(
 
     var showConnectionRestored = remember { mutableStateOf(false) }
 
+
     LaunchedEffect(connectionAvailable) {
-        if (connectionAvailable) {
+        if (connectionAvailable  && !wasConnectionAvailable.value) {
             showConnectionRestored.value = true
             delay(2000)
             showConnectionRestored.value = false
         }
+        wasConnectionAvailable.value = connectionAvailable
     }
 
     Column(
@@ -104,6 +108,7 @@ fun SignInScreen(
         Alignment.CenterHorizontally
 
     ) {
+        Log.d("SignInScreen", "Connection available: $connectionAvailable")
         NoInternetBox(connectionAvailable)
         ConnectionBackBox(showConnectionRestored.value)
         Spacer(Modifier.weight(1f))
