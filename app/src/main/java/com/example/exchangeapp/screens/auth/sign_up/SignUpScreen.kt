@@ -83,8 +83,10 @@ fun SignUpScreen(
 
     val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
 
+
     val imeInsets = WindowInsets.ime
     val isKeyboardPresent = imeInsets.asPaddingValues().calculateBottomPadding() != 0.0.dp
+    var wasConnectionAvailable = remember { mutableStateOf(true) }
 
     ToastListener(viewModel)
 
@@ -92,13 +94,13 @@ fun SignUpScreen(
     var showConnectionRestored = remember { mutableStateOf(false) }
 
     LaunchedEffect(connectionAvailable) {
-        if (connectionAvailable) {
+        if (connectionAvailable  && !wasConnectionAvailable.value) {
             showConnectionRestored.value = true
             delay(2000)
             showConnectionRestored.value = false
         }
+        wasConnectionAvailable.value = connectionAvailable
     }
-
     Column(
         modifier = modifier
             .fillMaxWidth()
