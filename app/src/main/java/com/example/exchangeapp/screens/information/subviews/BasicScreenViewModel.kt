@@ -36,7 +36,7 @@ class BasicScreenViewModel @Inject constructor(
         }
     }
 
-    val documentsCache = MutableStateFlow<List<Map<String, Any>>?>(null)
+    private val documentsCache = MutableStateFlow<List<Map<String, Any>>?>(null)
 
     fun getDocumentsData(collection: String, onDataReceived: (List<Map<String, Any>>) -> Unit) {
         // Check if the data is already cached

@@ -55,10 +55,9 @@ fun UniversityScreen(
     popUp: () -> Unit
 ) {
     val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
-    val wasConnectionAvailable = remember { mutableStateOf(true) }
+    remember { mutableStateOf(true) }
     val showConnectionRestored = remember { mutableStateOf(false) }
     val comments by commentViewModel.comments.collectAsState(emptyList())
-    val user by commentViewModel.currentUser.collectAsState()
     val University = university
 
     // State to hold the fetched university details

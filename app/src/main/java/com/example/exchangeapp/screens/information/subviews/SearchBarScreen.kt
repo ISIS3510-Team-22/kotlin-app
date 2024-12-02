@@ -175,7 +175,7 @@ fun DisplayDocumentData2(documentData: Map<String, Any>, viewModel: BasicScreenV
     val titleOrName = documentData["title"]?.toString() ?: documentData["name"]?.toString() ?: "No Title or Name"
 
 
-    val details = documentData.filterKeys { it !in listOf("title", "name","createdAt") }
+    documentData.filterKeys { it !in listOf("title", "name","createdAt") }
 
     Column(
         modifier = Modifier

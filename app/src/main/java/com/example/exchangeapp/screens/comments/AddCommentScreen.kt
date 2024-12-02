@@ -18,8 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -38,7 +36,6 @@ fun AddCommentScreen(
     val commentText = remember { mutableStateOf("") }
     val rating = remember { mutableStateOf(0) }
     val context = LocalContext.current
-    val user by viewModel.currentUser.collectAsState()
 
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {

@@ -6,14 +6,12 @@ import com.example.exchangeapp.DataStorage.SharedPreferencesManager
 import com.example.exchangeapp.screens.ExchangeAppViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class UniversityViewModel @Inject constructor(
-    private val sharedPreferencesManager: SharedPreferencesManager
+    private val sharedPreferencesManager: SharedPreferencesManager,
 ) : ExchangeAppViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
@@ -62,9 +60,7 @@ class UniversityViewModel @Inject constructor(
 
     fun saveLastViewedUniversity(university: String) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                sharedPreferencesManager.saveLastViewedUniversity(university)
-            }
+            sharedPreferencesManager.saveLastViewedUniversity(university)
         }
     }
 
