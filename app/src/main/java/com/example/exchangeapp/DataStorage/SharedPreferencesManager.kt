@@ -34,5 +34,13 @@ class SharedPreferencesManager(context: SharedPreferences) {
         return sharedPreferences.contains("sortedButtonInfo")
     }
 
+    fun saveLastViewedUniversity(university: String) {
+        sharedPreferences.edit().putString("lastViewedUniversity", university).apply()
+    }
+
+    fun loadLastViewedUniversity(): String? {
+        return sharedPreferences.getString("lastViewedUniversity", null)
+    }
+
 
 }

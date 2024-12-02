@@ -81,6 +81,16 @@ fun UniversityScreen(
     }
     LaunchedEffect(key1 = true) {
         commentViewModel.fetchUser()
+        commentViewModel.fetchComments(university)
+    }
+
+    //For SharedPreferences
+    val lastViewedUniversity = remember { mutableStateOf<String?>(null) }
+
+    // Save the current university as last viewed
+    LaunchedEffect(university) {
+        viewModel.saveLastViewedUniversity(university)
+        lastViewedUniversity.value = viewModel.loadLastViewedUniversity()
     }
 
     Column(

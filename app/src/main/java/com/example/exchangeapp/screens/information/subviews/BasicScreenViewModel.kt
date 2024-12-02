@@ -1,6 +1,7 @@
 package com.example.exchangeapp.screens.information.subviews
 
 import android.util.Log
+import com.example.exchangeapp.DataStorage.SharedPreferencesManager
 import com.example.exchangeapp.UNIVERSITY_SCREEN
 import com.example.exchangeapp.screens.ExchangeAppViewModel
 import com.google.firebase.firestore.FirebaseFirestore
@@ -9,7 +10,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class BasicScreenViewModel @Inject constructor() : ExchangeAppViewModel() {
+class BasicScreenViewModel @Inject constructor(
+    private val sharedPreferencesManager: SharedPreferencesManager
+) : ExchangeAppViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
 
