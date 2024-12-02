@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
@@ -16,8 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -30,16 +30,26 @@ import com.example.exchangeapp.model.service.module.Comment
 fun AddCommentScreen(
     universityName: String,
     onBack: () -> Unit,
-    viewModel: CommentViewModel = hiltViewModel()
+    viewModel: CommentViewModel = hiltViewModel(),
+    popUp: () -> Unit
 ) {
     val commentText = remember { mutableStateOf("") }
     val rating = remember { mutableStateOf(0) }
     val context = LocalContext.current
-    val user by viewModel.currentUser.collectAsState()
 
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text("Add a Comment for $universityName", style = MaterialTheme.typography.headlineSmall)
+        Row(){
+            IconButton(onClick = { popUp() }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                    contentDescription = "Back",
+                    modifier = Modifier.size(60.dp)
+                )
+            }
+            Text("Add a Comment for $universityName", style = MaterialTheme.typography.headlineSmall)
+        }
+
 
         val commentText = remember { mutableStateOf("") }
 

@@ -41,6 +41,7 @@ import com.example.exchangeapp.model.service.module.ConnectionStatus
 import com.example.exchangeapp.screens.ConnectionBackBox
 import com.example.exchangeapp.screens.NoInternetBox
 import com.example.exchangeapp.screens.connectivityStatus
+import com.example.exchangeapp.screens.universities.UniversityViewModel
 import kotlinx.coroutines.delay
 
 
@@ -50,12 +51,15 @@ fun SearchBarScreen(
     name : String,
     modifier: Modifier = Modifier,
     viewModel: BasicScreenViewModel = hiltViewModel(),
+    universityViewModel: UniversityViewModel = hiltViewModel(),
     popUp : () -> Unit,
     open: (String) -> Unit){
 
     val connectionAvailable = connectivityStatus().value == ConnectionStatus.Available
     var wasConnectionAvailable = remember { mutableStateOf(true) }
     var showConnectionRestored = remember { mutableStateOf(false) }
+    //For SharedPreferences
+    val lastViewedUniversity = remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(connectionAvailable) {
         if (connectionAvailable) {
@@ -66,6 +70,7 @@ fun SearchBarScreen(
             }
             wasConnectionAvailable.value = connectionAvailable
         }
+        lastViewedUniversity.value = universityViewModel.loadLastViewedUniversity()
     }
 
     var text by remember { mutableStateOf("") }
@@ -129,6 +134,19 @@ fun SearchBarScreen(
         ) {
             }
         Spacer(modifier = Modifier.height(16.dp))
+
+        // Display last viewed university
+        lastViewedUniversity.value?.let {
+            Text(
+                text = "Last viewed university: $it",
+                color = Color.White,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         documentDataList.forEach { documentData ->
             Card (
                 modifier = modifier
@@ -153,13 +171,11 @@ fun SearchBarScreen(
 fun DisplayDocumentData2(documentData: Map<String, Any>, viewModel: BasicScreenViewModel,
                          open: (String) -> Unit) {
 
-    var isExpanded by remember { mutableStateOf(false) }
-
     // Extract the title from the document data
     val titleOrName = documentData["title"]?.toString() ?: documentData["name"]?.toString() ?: "No Title or Name"
 
 
-    val details = documentData.filterKeys { it !in listOf("title", "name","createdAt") }
+    documentData.filterKeys { it !in listOf("title", "name","createdAt") }
 
     Column(
         modifier = Modifier
@@ -181,25 +197,7 @@ fun DisplayDocumentData2(documentData: Map<String, Any>, viewModel: BasicScreenV
                     color = Color.White
                 )
             }
-
-
-            ExpandableButton(
-                expanded = isExpanded,
-                onClick = { isExpanded = !isExpanded } // Toggle the state
-            )
         }
 
-        if (isExpanded) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                details.forEach { (key, value) ->
-                    Text(text = "$key: $value", style = MaterialTheme.typography.bodyMedium)
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            }
-        }
     }
 }
