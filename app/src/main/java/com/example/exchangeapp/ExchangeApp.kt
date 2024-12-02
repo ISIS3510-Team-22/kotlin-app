@@ -160,7 +160,7 @@ fun NavGraphBuilder.exchangeGraph(appState: ExchangeAppState) {
     composable("addCommentScreen/{universityName}") { backStackEntry ->
         val universityName = backStackEntry.arguments?.getString("universityName")
         if (universityName != null) {
-            AddCommentScreen(universityName = universityName, onBack = { appState.popUp() })
+            AddCommentScreen(universityName = universityName, onBack = { appState.popUp() },popUp = { appState.popUp() } )
         }
     }
 
